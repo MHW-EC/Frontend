@@ -36,11 +36,27 @@ class App extends React.Component {
       isLoading: false,
       error: undefined,
       progress: {
-        color: 'secondary',
+        color: 'primary',
         value: 0,
         variant: 'indeterminate'
       }
     }
+  }
+
+  setProcess = (newProcesState) => {
+    const { 
+      state: { process } 
+    } = this;
+    this.setState({
+      process: {
+        ...process,
+        ...newProcesState,
+        progress: {
+          ...process.progress,
+          ...(newProcesState.progress || {}),
+        }
+      }
+    });
   }
 
   toogleSideBar = () => {
@@ -73,7 +89,8 @@ class App extends React.Component {
 
     const {
       toogleSideBar,
-      toogleLightMode
+      toogleLightMode,
+      setProcess
     } = this;
 
     return (
@@ -82,7 +99,8 @@ class App extends React.Component {
           sideBarIsOpen,
           toogleSideBar,
           lightMode,
-          toogleLightMode
+          toogleLightMode,
+          setProcess
         }}>
         <Router>
           {

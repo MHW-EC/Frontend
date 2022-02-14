@@ -7,6 +7,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
+import CareerStep from './career';
 
 class Steps extends React.Component {
 
@@ -18,8 +19,7 @@ class Steps extends React.Component {
         label: 'Career',
         descriptiom: 'Select you carrer',
         error: undefined,
-        data: undefined,
-        isOptional: true
+        data: undefined
       },
       {
         id: '1',
@@ -27,8 +27,7 @@ class Steps extends React.Component {
         label: 'Theory class',
         descriptiom: 'Select some theory classes',
         error: undefined,
-        data: undefined,
-        isOptional: false
+        data: undefined
       },
       {
         id: '2',
@@ -36,8 +35,7 @@ class Steps extends React.Component {
         label: 'Practical class',
         descriptiom: 'Select some practical classes',
         error: undefined,
-        data: undefined,
-        isOptional: false,
+        data: undefined
       },
       {
         id: '3',
@@ -45,8 +43,7 @@ class Steps extends React.Component {
         label: 'Schedule',
         descriptiom: 'Review your schedules',
         error: undefined,
-        data: undefined,
-        isOptional: false,
+        data: undefined
       }
     ],
     activeStep: 0,
@@ -99,30 +96,52 @@ class Steps extends React.Component {
     });
   };
 
+  getComponentByStep = (step) => {
+    switch(step){
+      case 0:
+        return <CareerStep stepId={String(step)} />
+      default: 
+        return (<div>DEFAULT COMPONENT</div>)
+    }
+  }
+
+  updateStep = (stepId, newStep) => {
+    this.setState({
+      steps: this.state.steps.map(step => {
+        if(step.id == stepId){
+          return {
+            ...step,
+            ...newStep
+          }
+        }
+        return step;
+      })
+    })
+  }
+
   render() {
 
     const {
       steps,
       activeStep
     } = this.state;
-
+    console.log({steps});
     const {
       isStepOptional,
       handleNext,
       handleBack,
       handleReset,
       handleSkip,
-      isStepSkipped
+      getComponentByStep,
+      isStepSkipped,
+      updateStep
     } = this;
 
     return (
       <StepsContext.Provider
         value={{
-          sdk: 2,
-          user: 3,
-          reports: 4,
-          history: 4,
-          entities: 3
+          updateStep,
+          steps
         }}>
         <Box m={6} mt={3} sx={{ width: 'auto' }}>
           <Stepper activeStep={activeStep}>
@@ -165,7 +184,9 @@ class Steps extends React.Component {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+              {
+                getComponentByStep(activeStep)
+              }
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                 <Button
                   color="inherit"

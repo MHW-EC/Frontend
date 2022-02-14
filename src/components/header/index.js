@@ -55,7 +55,7 @@ const Header = () => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6">Mi Horario Web</Typography>
+        <Typography variant="h6">MHW</Typography>
         <div>
           <IconButton
             color="inherit"
