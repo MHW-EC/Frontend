@@ -7,6 +7,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
+import MainContext from './../Context';
 import CareerStep from './career';
 
 class Steps extends React.Component {
@@ -14,39 +15,43 @@ class Steps extends React.Component {
   state = {
     steps: [
       {
-        id: '0',
+        id: 0,
         name: 'career',
         label: 'Career',
-        descriptiom: 'Select you carrer',
+        description: 'Select you career',
         error: undefined,
-        data: undefined
+        data: undefined,
+        selectedValues: undefined
       },
       {
-        id: '1',
+        id: 1,
         name: 'theoryClass',
         label: 'Theory class',
-        descriptiom: 'Select some theory classes',
+        description: 'Choose some theory classes',
         error: undefined,
-        data: undefined
+        data: undefined,
+        selectedValues: undefined
       },
       {
-        id: '2',
+        id: 2,
         name: 'practicalClass',
         label: 'Practical class',
-        descriptiom: 'Select some practical classes',
+        description: 'Choose some practical classes',
         error: undefined,
-        data: undefined
+        data: undefined,
+        selectedValues: undefined
       },
       {
-        id: '3',
+        id: 3,
         name: 'schedule',
         label: 'Schedule',
-        descriptiom: 'Review your schedules',
+        description: 'Review your schedules',
         error: undefined,
-        data: undefined
+        data: undefined,
+        selectedValues: undefined
       }
     ],
-    activeStep: 0,
+    activeStepId: 0,
     skipped: new Set()
   }
 
@@ -60,55 +65,58 @@ class Steps extends React.Component {
 
   handleNext = () => {
     let newSkipped = this.state.skipped;
-    if (this.isStepSkipped(this.state.activeStep)) {
+    if (this.isStepSkipped(this.state.activeStepId)) {
       newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(this.state.activeStep);
+      newSkipped.delete(this.state.activeStepId);
     }
 
     this.setState({
-      activeStep: this.state.activeStep + 1,
+      activeStepId: this.state.activeStepId + 1,
       skipped: newSkipped
     });
   };
 
   handleBack = () => {
     this.setState({
-      activeStep: this.state.activeStep - 1
+      activeStepId: this.state.activeStepId - 1
     })
   };
 
   handleSkip = () => {
-    if (!this.isStepOptional(this.state.activeStep)) {
+    if (!this.isStepOptional(this.state.activeStepId)) {
       throw new Error("You can't skip a step that isn't optional.");
     }
 
     const newSkipped = new Set(this.state.skipped.values());
-    newSkipped.add(this.state.activeStep);
+    newSkipped.add(this.state.activeStepId);
     this.setState({
-      activeStep: this.state.activeStep + 1,
+      activeStepId: this.state.activeStepId + 1,
       skipped: newSkipped
     });
   };
 
   handleReset = () => {
     this.setState({
-      activeStep: 0
+      activeStepId: 0
     });
   };
 
-  getComponentByStep = (step) => {
-    switch(step){
+  getComponentByStep = (stepId) => {
+    switch (stepId) {
       case 0:
-        return <CareerStep stepId={String(step)} />
-      default: 
+        return <CareerStep stepId={String(stepId)} />
+      default:
         return (<div>DEFAULT COMPONENT</div>)
     }
   }
 
   updateStep = (stepId, newStep) => {
+    console.log("Old", this.state.steps[stepId]);
+    console.log("New", newStep);
+
     this.setState({
       steps: this.state.steps.map(step => {
-        if(step.id == stepId){
+        if (step.id == stepId) {
           return {
             ...step,
             ...newStep
@@ -122,10 +130,18 @@ class Steps extends React.Component {
   render() {
 
     const {
+      process: {
+        isLoading
+      } = {}
+    } = this.context;
+    console.log("context", this.context);
+    const {
       steps,
-      activeStep
+      activeStepId
     } = this.state;
-    console.log({steps});
+
+    console.log({ steps });
+
     const {
       isStepOptional,
       handleNext,
@@ -144,19 +160,16 @@ class Steps extends React.Component {
           steps
         }}>
         <Box m={6} mt={3} sx={{ width: 'auto' }}>
-          <Stepper activeStep={activeStep}>
+          <Stepper activeStep={activeStepId}>
             {
-              steps.map(({ id, label, error }, index) => {
+              steps.map((step) => {
+                const { id, label, error } = step
                 const stepProps = {};
                 const labelProps = {};
-                if (isStepSkipped(index)) {
-                  stepProps.completed = false;
-                }
-                if (isStepOptional(index)) {
-                  labelProps.optional = (
-                    <Typography variant="caption">Optional</Typography>
-                  );
-                }
+
+                if (isStepSkipped(id)) stepProps.completed = false;
+                if (isStepOptional(id)) labelProps.optional = (<Typography variant="caption">Optional</Typography>);
+
                 if (error) {
                   labelProps.error = error !== undefined;
                   labelProps.optional = (
@@ -166,54 +179,80 @@ class Steps extends React.Component {
                   );
                 }
                 return (
-                  <Step key={id} {...stepProps}>
-                    <StepLabel {...labelProps}>{label}</StepLabel>
+                  <Step
+                    key={String(id)}
+                    {...stepProps}>
+                    <StepLabel
+                      {...labelProps}>
+                      {
+                        label
+                      }
+                    </StepLabel>
                   </Step>
                 );
-              })}
+              })
+            }
           </Stepper>
-          {activeStep === steps.length ? (
-            <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>
-                All steps completed - you&apos;re finished
-              </Typography>
-              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                <Box sx={{ flex: '1 1 auto' }} />
-                <Button onClick={handleReset}>Reset</Button>
-              </Box>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              {
-                getComponentByStep(activeStep)
-              }
-              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                <Button
-                  color="inherit"
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  sx={{ mr: 1 }}
-                >
-                  Back
-                </Button>
-                <Box sx={{ flex: '1 1 auto' }} />
-                {isStepOptional(activeStep) && (
-                  <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                    Skip
-                  </Button>
-                )}
-
-                <Button onClick={handleNext}>
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
-              </Box>
-            </React.Fragment>
-          )}
+          {
+            activeStepId === steps.length
+              ? (
+                <React.Fragment>
+                  <Typography sx={{ mt: 2, mb: 1 }}>
+                    All steps completed - you&apos;re finished
+                  </Typography>
+                  <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                    <Box sx={{ flex: '1 1 auto' }} />
+                    <Button onClick={handleReset}>Reset</Button>
+                  </Box>
+                </React.Fragment>
+              )
+              : (
+                <React.Fragment>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      pt: 2,
+                      justifyContent: 'center'
+                    }}>
+                    <Button
+                      color="error"
+                      variant="contained"
+                      disabled={activeStepId === 0}
+                      onClick={handleBack}
+                      sx={{ mr: 5 }}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      disabled={!isStepOptional(activeStepId)}
+                      variant="outlined"
+                      onClick={handleSkip}
+                      sx={{ mr: 1 }}>
+                      Skip
+                    </Button>
+                    <Button
+                      disabled={
+                        isLoading || 
+                        (!steps[activeStepId].selectedValues)
+                      }
+                      variant="contained"
+                      onClick={handleNext}>
+                      {
+                        activeStepId === steps.length - 1 ? 'Finish' : 'Next'
+                      }
+                    </Button>
+                  </Box>
+                  {
+                    getComponentByStep(activeStepId)
+                  }
+                </React.Fragment>
+              )
+          }
         </Box>
       </StepsContext.Provider>
     )
   }
-
 }
-
+Steps.contextType = MainContext;
 export default Steps;

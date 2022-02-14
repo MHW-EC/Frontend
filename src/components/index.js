@@ -81,10 +81,7 @@ class App extends React.Component {
     const {
       sideBarIsOpen,
       lightMode,
-      process: {
-        isLoading,
-        progress
-      }
+      process
     } = this.state;
 
     const {
@@ -93,6 +90,11 @@ class App extends React.Component {
       setProcess
     } = this;
 
+    const {
+      isLoading,
+      progress
+    } = process
+
     return (
       <MainContext.Provider
         value={{
@@ -100,7 +102,8 @@ class App extends React.Component {
           toogleSideBar,
           lightMode,
           toogleLightMode,
-          setProcess
+          setProcess,
+          process
         }}>
         <Router>
           {

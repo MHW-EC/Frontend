@@ -30,7 +30,6 @@ const Home = (props) => {
             {"Multiplayer mode (soon)"}
           </Button>
         </Link>
-
       </div>
     </div>
   )
