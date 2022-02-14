@@ -7,31 +7,21 @@ import StepsContext from './../Context';
 import MainContext from './../../Context';
 import { getData } from './../../../services';
 
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
-const topFilms = [
-  {
-    id: 1,
-    title: 'Ejemplo 1'
-  },
-  {
-    id: 2,
-    title: 'Ejemplo 2'
-  }
-]
 export default function CareerStep(props) {
   const { stepId } = props
   const { setProcess } = useContext(MainContext);
-  const { updateStep } = useContext(StepsContext);
-  const [options, setOptions] = useState();
+  const { steps, updateStep } = useContext(StepsContext);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const step = steps[Number(stepId)];
+  const {
+    selectedValues: stepSelectedValues,
+    data: stepData,
+    description: stepDescription
+  } = step;
+  console.log({step, stepDescription});
   const fetchDataIfNeeded = async () => {
-    if(!loading && options == undefined){
+    if(!loading && !stepData){
       try{
         setLoading(true);
         setProcess({
@@ -48,7 +38,6 @@ export default function CareerStep(props) {
           data: careerOptions,
           error: undefined
         })
-        setOptions(careerOptions);
       }catch(error){
         updateStep(stepId, {
           data: undefined,
@@ -65,6 +54,8 @@ export default function CareerStep(props) {
   return (
     <Box m={6} mt={3} sx={{ width: 'auto', "> *": { margin: "auto" } }}>
       <Autocomplete
+      autoComplete
+      clearOnEscape
       sx={{ width: 300 }}
       open={open}
       onOpen={() => {
@@ -73,18 +64,27 @@ export default function CareerStep(props) {
         }
       }
       onClose={() => setOpen(false)}
+      onChange={(_, values) => {
+        console.log({values})
+        updateStep(stepId, {
+          selectedValues: values
+        })
+      }}
+      defaultValue={
+        stepSelectedValues
+      }
       isOptionEqualToValue={
         (option, value) => option.title === value.title
       }
       getOptionLabel={
         (option) => option.nombre || ""
       }
-      options={options || []}
+      options={stepData || []}
       loading={loading}
       renderInput={(params) => (
         <TextField
           {...params}
-          label="CareerStep"
+          label={stepDescription}
           InputProps={{
             ...params.InputProps,
             endAdornment: (

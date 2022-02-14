@@ -1,6 +1,7 @@
 
 import React, { useContext } from 'react';
 import MainContext from './../Context';
+import Box from '@mui/material/Box';
 import {
   AppBar,
   Toolbar,
@@ -48,27 +49,41 @@ const Header = () => {
   // }, [isThemeLight, initTheme]);
   return (
     <AppBar position="sticky">
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          onClick={() => toogleSideBar()}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6">MHW</Typography>
-        <div>
-          <IconButton
-            color="inherit"
-            onClick={toogleLightMode}
-          >
-            {
-              lightMode 
-              ? <LightModeIcon />
-              : <NightlightRoundIcon />
-            }
-          </IconButton>
-
-        </div>
+      <Toolbar 
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between'
+          }}>
+        <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row'
+              }}>
+            <IconButton
+              color="inherit"
+              onClick={() => toogleSideBar()}>
+              <MenuIcon />
+            </IconButton>
+            <Typography 
+              variant="h6"
+              sx={{ margin: "auto" }}>
+              {
+                "MHW"
+              }
+            </Typography>
+          </Box>
+          <Box>
+            <IconButton
+              color="inherit"
+              onClick={toogleLightMode}>
+              {
+                lightMode
+                  ? <LightModeIcon />
+                  : <NightlightRoundIcon />
+              }
+            </IconButton>
+          </Box>
       </Toolbar>
     </AppBar>
   )
