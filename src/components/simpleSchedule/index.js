@@ -9,6 +9,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import MainContext from './../Context';
 import CareerStep from './career';
+import TheoryClassStep from './theoryClass';
 
 class Steps extends React.Component {
 
@@ -105,6 +106,8 @@ class Steps extends React.Component {
     switch (stepId) {
       case 0:
         return <CareerStep stepId={String(stepId)} />
+      case 1:
+        return <TheoryClassStep stepId={String(stepId)}/>
       default:
         return (<div>DEFAULT COMPONENT</div>)
     }
@@ -159,7 +162,13 @@ class Steps extends React.Component {
           updateStep,
           steps
         }}>
-        <Box m={6} mt={3} sx={{ width: 'auto' }}>
+        <Box 
+          //m={6}
+          //mt={3}
+          sx={{
+            width: 'auto',
+            height: "100vh",
+          }}>
           <Stepper activeStep={activeStepId}>
             {
               steps.map((step) => {

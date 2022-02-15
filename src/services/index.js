@@ -1,16 +1,20 @@
 
-const url = process.env.URL || "https://ccgcmb0zka.execute-api.sa-east-1.amazonaws.com/prod/read"
-
+const url = process.env.MHW_LAMBDA_READ_URL || "https://ccgcmb0zka.execute-api.sa-east-1.amazonaws.com/prod/read"
+console.log("env", process.env)
 export async function getData(params) {
   const {
     resourceName,
-    query
+    query,
+    queryParams,
+    projectedFields
   } = params;
   if(!resourceName || !query) throw new Error("EMPTY PARAMS NOT ALLOWED")
 
   const payload = {
     resourceName,
-    query
+    query,
+    queryParams,
+    projectedFields
   }
   let response;
   try {

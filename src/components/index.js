@@ -1,11 +1,13 @@
 
 import React from "react";
 import MainContext from './Context';
-import Header from './header';
-import SideBar from './sideBar';
+// import Header from './header';
+// import SideBar from './sideBar';
+import Options from './options';
 import Home from './home';
 import SimpleSchedule from './simpleSchedule';
 import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
 import {
   BrowserRouter as Router,
   Switch,
@@ -44,8 +46,8 @@ class App extends React.Component {
   }
 
   setProcess = (newProcesState) => {
-    const { 
-      state: { process } 
+    const {
+      state: { process }
     } = this;
     this.setState({
       process: {
@@ -105,29 +107,37 @@ class App extends React.Component {
           setProcess,
           process
         }}>
-        <Router>
-          {
-            isLoading && 
-            <LinearProgress
-            variant={progress.variant}
-            value={progress.value}
-            color={progress.color}/>
-          }
-          <SideBar />
-          <Header />
-          <Switch>
+        <Box
+          sx={{
+            position: 'relative',
+            transform: 'translateZ(0px)',
+            flexGrow: 1,
+            height: '100vh'}}>
+          <Router>
             {
-              ROUTES.map((route, index) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  exact={route.exact}
-                  children={<route.component />}
-                />
-              ))
+              isLoading &&
+              <LinearProgress
+                variant={progress.variant}
+                value={progress.value}
+                color={progress.color} />
             }
-          </Switch>
-        </Router>
+            {/*<SideBar />
+          <Header />*/}
+            <Switch>
+              {
+                ROUTES.map((route, index) => (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    exact={route.exact}
+                    children={<route.component />}
+                  />
+                ))
+              }
+            </Switch>
+            <Options />
+          </Router>
+        </Box>
       </MainContext.Provider>
     )
   }
