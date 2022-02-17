@@ -216,7 +216,7 @@ class Steps extends React.Component {
                       justifyContent: 'center'
                     }}>
                     <Button
-                      color="error"
+                      color="info"
                       variant="contained"
                       disabled={activeStepId === 0}
                       onClick={handleBack}

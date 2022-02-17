@@ -61,8 +61,8 @@ const SideBar = () => {
                     <Icon />
                   </ListItemIcon>
                   <Link 
-                    to={path} 
-                    underline="none">
+                    to={path}
+                    style={{ textDecoration: 'auto', color: 'inherit' }}>
                     <ListItemText 
                       primary={label} />
                   </Link>
