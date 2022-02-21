@@ -6,6 +6,7 @@ import MainContext from './Context';
 import Options from './options';
 import Home from './home';
 import SimpleSchedule from './simpleSchedule';
+import TransferTable from '../sharedComponents/TransferTable';
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 import {
