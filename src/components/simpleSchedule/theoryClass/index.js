@@ -29,6 +29,7 @@ export default function TheoryClassStep(props) {
     data: stepData = [],
     description: stepDescription
   } = step;
+  console.log("TheoryClass", step);
   const [pagination, setPagination] = useState({
     page: 0,
     pageSize: THEORY_CLASS_TABLE_PAGES[0],
@@ -39,8 +40,6 @@ export default function TheoryClassStep(props) {
   const {
     isLoading
   } = process;
-
-  console.log({ step, stepDescription });
 
   const getElementId = (element) => element._id;
   const [queryString, setQuery] = useState("");
@@ -189,7 +188,7 @@ export default function TheoryClassStep(props) {
     }
   }
 
-  const handleSearch = async () => {
+  const handleSearch = async (event) => {
     await updateTotalRows();
     await updateRows();
   };
@@ -272,13 +271,25 @@ export default function TheoryClassStep(props) {
             checkedValues: values
           })}
           left={stepData}
-          setLeft = {(values) => updateStep(stepId, {
-            data: values
-          })}
+          setLeft = {(values) => { 
+            console.log("setting left", values);
+            updateStep(
+              stepId,
+              {
+                data: values
+              }
+            )
+          }}
           right={stepSelectedValues}
-          setRight = {(values) => updateStep(stepId, {
-            selectedValues: values
-          })}
+          setRight = {(values) => {
+            console.log("setting right", values);
+            updateStep(
+              stepId,
+              {
+                selectedValues: values
+              }
+            )
+          }}
           columns={tableColumns}
           tableStyle={{ height: 400, width: '100%' }}
           getRowId={getElementId}

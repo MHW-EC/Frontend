@@ -114,8 +114,6 @@ class Steps extends React.Component {
   }
 
   updateStep = (stepId, newStep) => {
-    console.log("Old", this.state.steps[stepId]);
-    console.log("New", newStep);
 
     this.setState({
       steps: this.state.steps.map(step => {
@@ -137,7 +135,7 @@ class Steps extends React.Component {
         isLoading
       } = {}
     } = this.context;
-    console.log("context", this.context);
+
     const {
       steps,
       activeStepId

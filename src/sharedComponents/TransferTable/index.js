@@ -6,8 +6,12 @@ import { DataGrid } from '@mui/x-data-grid';
 
 
 const TableWrapper = (props) => {
-  const { 
-    rows, rowIdGetter, columns, onSelectionModelChange, style 
+  const {
+    rows,
+    rowIdGetter,
+    columns,
+    onSelectionModelChange,
+    style
   } = props;
   return (
     <div
@@ -47,7 +51,8 @@ export default function TransferTable(props) {
     left, setLeft,
     right, setRight
   } = props;
-  console.log(props);
+
+  console.log({left, right, checked});
 
   const leftChecked = Array.intersection(checked, left, rowsEquals);
   const rightChecked = Array.intersection(checked, right, rowsEquals);
@@ -61,6 +66,18 @@ export default function TransferTable(props) {
       setChecked(Array.union(checked, items, rowsEquals));
     }
   };
+
+  const handleAllLeft = () => {// <-
+    setLeft(left.concat(right));
+    setRight([]);
+    setChecked(Array.difference(checked, rightChecked, rowsEquals));
+  }
+
+  const handleAllRight = () => {// ->
+    setRight(right.concat(left));
+    setLeft([]);
+    setChecked(Array.difference(checked, leftChecked, rowsEquals));
+  }
 
   const handleCheckedRight = () => {
     setRight(right.concat(leftChecked));
@@ -94,6 +111,16 @@ export default function TransferTable(props) {
             sx={{ my: 0.5 }}
             variant="outlined"
             size="small"
+            onClick={handleAllRight}
+            disabled={left.length === 0}
+            aria-label="move all right"
+          >
+            ≫
+          </Button>
+          <Button
+            sx={{ my: 0.5 }}
+            variant="outlined"
+            size="small"
             onClick={handleCheckedRight}
             disabled={leftChecked.length === 0}
             aria-label="move selected right"
@@ -109,6 +136,16 @@ export default function TransferTable(props) {
             aria-label="move selected left"
           >
             &lt;
+          </Button>
+          <Button
+            sx={{ my: 0.5 }}
+            variant="outlined"
+            size="small"
+            onClick={handleAllLeft}
+            disabled={right.length === 0}
+            aria-label="move all left"
+          >
+            ≪
           </Button>
         </Grid>
       </Grid>

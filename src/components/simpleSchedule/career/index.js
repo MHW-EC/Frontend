@@ -19,7 +19,7 @@ export default function CareerStep(props) {
   const {
     isLoading
   } = process
-  console.log({ step, stepDescription });
+  
   const fetchDataIfNeeded = async () => {
     if (!isLoading && !stepData) {
       try {
@@ -76,7 +76,6 @@ export default function CareerStep(props) {
           }}
           onClose={() => setOpen(false)}
           onChange={(_, values) => {
-            console.log({ values })
             updateStep(stepId, {
               selectedValues: values
             })
