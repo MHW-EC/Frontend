@@ -24,7 +24,7 @@ const intersection = (array, anotherArray, equals) => {
   if(!(array instanceof Array) || !(anotherArray instanceof Array)){
     throw notArrayError;
   }
-  if(array.length == 0 || anotherArray.length == 0) return array;
+  if(array.length == 0 || anotherArray.length == 0) return result;
   for(let i = 0; i < array.length; i++){
     const arrayValue = array[i];
     let valueFound = false;
@@ -42,13 +42,11 @@ const union = (array, anotherArray, equals) => {
   if(!(array instanceof Array) || !(anotherArray instanceof Array)){
     throw notArrayError;
   }
-  if(array.length == 0 || anotherArray.length == 0) return array;
   for(let i = 0; i < array.length; i++){
     const arrayValue = array[i];
     let valueFound = false;
     for(let j = 0; j < result.length; j++){
-      const resultValue = result[j];
-      valueFound = equals(arrayValue, resultValue);
+      valueFound = equals(arrayValue, result[j]);
       if(valueFound) break;
     }
     if(!valueFound) result.push(arrayValue);
@@ -57,8 +55,7 @@ const union = (array, anotherArray, equals) => {
     const arrayValue = anotherArray[i];
     let valueFound = false;
     for(let j = 0; j < result.length; j++){
-      const resultValue = result[j];
-      valueFound = equals(arrayValue, resultValue);
+      valueFound = equals(arrayValue, result[j]);
       if(valueFound) break;
     }
     if(!valueFound) result.push(arrayValue);

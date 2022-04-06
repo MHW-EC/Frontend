@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import { Array } from './../utils';
+import utils from './../utils';
 import { DataGrid } from '@mui/x-data-grid';
-
-
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 const TableWrapper = (props) => {
   const {
     rows,
@@ -63,9 +63,10 @@ export default function TransferTable(props) {
     rowsEquals
   } = props;
   const {
-    checked, setChecked,
-    left, setLeft,
+    leftChecked, setLeftChecked,
+    left,
     right, setRight,
+    rightChecked, setRightChecked,
     leftExtra
   } = props;
   const {
@@ -73,45 +74,16 @@ export default function TransferTable(props) {
     pagination,
     setPagination
   } = leftExtra;
+  console.log({left, right, leftChecked, rightChecked});
 
-  console.log({left, right, checked});
-  console.log({leftExtra});
-
-  const leftChecked = Array.intersection(checked, left, rowsEquals);
-  const rightChecked = Array.intersection(checked, right, rowsEquals);
-
-  const numberOfChecked = (items) => Array.intersection(checked, items, rowsEquals).length;
-
-  const handleToggleAll = (items) => {
-    if (numberOfChecked(items) === items.length) {
-      setChecked(Array.difference(checked, items, rowsEquals));
-    } else {
-      setChecked(Array.union(checked, items, rowsEquals));
-    }
+  const handleCheckedToRight = () => {
+    setRight(utils.Array.union(right, leftChecked, rowsEquals))
   };
 
-  const handleAllLeft = () => {// <-
-    setLeft(left.concat(right));
-    setRight([]);
-    setChecked(Array.difference(checked, rightChecked, rowsEquals));
-  }
-
-  const handleAllRight = () => {// ->
-    setRight(right.concat(left));
-    setLeft([]);
-    setChecked(Array.difference(checked, leftChecked, rowsEquals));
-  }
-
-  const handleCheckedRight = () => {
-    setRight(right.concat(leftChecked));
-    setLeft(Array.difference(left, leftChecked, rowsEquals));
-    setChecked(Array.difference(checked, leftChecked, rowsEquals));
-  };
-
-  const handleCheckedLeft = () => {
-    setLeft(left.concat(rightChecked));
-    setRight(Array.difference(right, rightChecked, rowsEquals));
-    setChecked(Array.difference(checked, rightChecked, rowsEquals));
+  const handleCheckedToLeft = () => {
+    const result = utils.Array.difference(right, rightChecked, rowsEquals);
+    setRight(result)
+    setRightChecked(result)
   };
 
   return (
@@ -126,7 +98,9 @@ export default function TransferTable(props) {
           rowIdGetter={getRowId}
           style={tableStyle}
           columns={columns}
-          onSelectionModelChange={handleToggleAll}
+          onSelectionModelChange={(items)=> {
+            setLeftChecked(items)
+          }}
           isLoading={isLoading}
           pagination={pagination}
           setPagination={setPagination}/>
@@ -137,41 +111,21 @@ export default function TransferTable(props) {
             sx={{ my: 0.5 }}
             variant="outlined"
             size="small"
-            onClick={handleAllRight}
-            disabled={left.length === 0}
-            aria-label="move all right"
-          >
-            ≫
-          </Button>
-          <Button
-            sx={{ my: 0.5 }}
-            variant="outlined"
-            size="small"
-            onClick={handleCheckedRight}
+            onClick={handleCheckedToRight}
             disabled={leftChecked.length === 0}
             aria-label="move selected right"
           >
-            &gt;
+            <ContentCopyIcon/>
           </Button>
           <Button
             sx={{ my: 0.5 }}
             variant="outlined"
             size="small"
-            onClick={handleCheckedLeft}
+            onClick={handleCheckedToLeft}
             disabled={rightChecked.length === 0}
             aria-label="move selected left"
           >
-            &lt;
-          </Button>
-          <Button
-            sx={{ my: 0.5 }}
-            variant="outlined"
-            size="small"
-            onClick={handleAllLeft}
-            disabled={right.length === 0}
-            aria-label="move all left"
-          >
-            ≪
+            <DeleteOutlineIcon/>
           </Button>
         </Grid>
       </Grid>
@@ -181,7 +135,10 @@ export default function TransferTable(props) {
           rowIdGetter={getRowId}
           style={tableStyle}
           columns={columns}
-          onSelectionModelChange={handleToggleAll} />
+          onSelectionModelChange={(items)=> {
+            setRightChecked(items);
+          }}
+          />
       </Grid>
     </Grid>
   );

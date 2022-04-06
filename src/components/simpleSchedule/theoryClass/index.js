@@ -24,19 +24,19 @@ export default function TheoryClassStep(props) {
   const { steps, updateStep } = useContext(StepsContext);
   const step = steps[Number(stepId)];
   const {
-    checkedValues: stepCheckedValues = [],
     selectedValues: stepSelectedValues = [],
     data: stepData = [],
     description: stepDescription
   } = step;
-  console.log("TheoryClass", step);
+  const [searchChecked, setSearchChecked] = useState([]);
+  const [selectedChecked, setSelectedChecked] = useState([]);
   const [pagination, setPagination] = useState({
     page: 0,
     pageSize: THEORY_CLASS_TABLE_PAGES[0],
     rowCount: 0,
     rowsPerPageOptions: THEORY_CLASS_TABLE_PAGES
   });
-
+console.log({stepSelectedValues});
   const {
     isLoading
   } = process;
@@ -151,31 +151,6 @@ export default function TheoryClassStep(props) {
     event.preventDefault();
   };
 
-  // const handleSetPage = (newPage) => {
-  //   setPagination({
-  //     ...pagination,
-  //     page: newPage
-  //   })
-  // }
-  // const handleSetPageSize = (newPageSize) => {
-  //   setPagination({
-  //     ...pagination,
-  //     pageSize: newPageSize
-  //   })
-  // }
-
-  // const handleToConfirmed = () => {
-  //   setRight(right.concat(searchedChecked));
-  //   setLeft(not(left, searchedChecked));
-  //   setGlobalSelected(not(globalSelected, searchedChecked));
-  // };
-
-  // const handleToSearched = () => {
-  //   setLeft(left.concat(confirmedChecked));
-  //   setRight(not(right, confirmedChecked));
-  //   setGlobalSelected(not(globalSelected, confirmedChecked));
-  // };
-
   return (
     <Grid
       container={true}
@@ -220,26 +195,15 @@ export default function TheoryClassStep(props) {
       </Grid>
       <Grid xs={12}>
         <TransferTable
-          checked={stepCheckedValues}
-          setChecked={(values) => updateStep(stepId, {
-            checkedValues: values
-          })}
+          leftChecked={searchChecked}
+          setLeftChecked={setSearchChecked}
           left={stepData}
           leftExtra={{
             pagination, 
             setPagination, 
             isLoading
           }}
-          setLeft={(values) => {
-            console.log("setting left", values);
-            updateStep(
-              stepId,
-              {
-                data: values
-              }
-            )
-          }}
-          right={stepSelectedValues}
+          right={stepSelectedValues}//stepSelectedValues
           setRight={(values) => {
             console.log("setting right", values);
             updateStep(
@@ -249,12 +213,12 @@ export default function TheoryClassStep(props) {
               }
             )
           }}
+          rightChecked={selectedChecked}
+          setRightChecked={setSelectedChecked}
           columns={tableColumns}
           tableStyle={{ height: 400, width: '100%' }}
           getRowId={getElementId}
-          rowsEquals={
-            (row, anotherRow) => row._id == anotherRow._id
-          } />
+          rowsEquals={(row, anotherRow) => row._id === anotherRow._id} />
       </Grid>
     </Grid>
   );
