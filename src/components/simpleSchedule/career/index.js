@@ -33,8 +33,6 @@ export default function CareerStep(props) {
           resourceName: 'Career',
           query: 'getAll',
           projectedFields: ["_id", "facultad", "nombre"]
-        }, {
-          id: '1-1'
         })
         updateStep(stepId, {
           data: careerOptions,

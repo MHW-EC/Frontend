@@ -33,10 +33,10 @@ export default function TheoryClassStep(props) {
   const [pagination, setPagination] = useState({
     page: 0,
     pageSize: THEORY_CLASS_TABLE_PAGES[0],
-    totalItems: 0,
+    rowCount: 0,
     rowsPerPageOptions: THEORY_CLASS_TABLE_PAGES
-  })
-  
+  });
+
   const {
     isLoading
   } = process;
@@ -51,56 +51,12 @@ export default function TheoryClassStep(props) {
     { field: 'paralelo', headerName: 'Course', width: 150 },
     { field: 'profesor', headerName: 'Teacher', width: 150 },
   ]
-
-  // useEffect(() => {
-  //   (async () => {
-  //     if (!isLoading && !stepData) {
-  //       try {
-  //         setProcess({
-  //           isLoading: true,
-  //           progress: {
-  //             variant: 'indeterminate'
-  //           }
-  //         })
-
-  //         const {
-  //           page,
-  //           pageSize
-  //         } = pagination;
-
-  //         const matchesPracticalClass = await getData({
-  //           resourceName: 'TheoryClass',
-  //           query: 'getByQuery',
-  //           queryParams: {
-  //             target: queryString,
-  //             pagination: {
-  //               from: pageSize * (page - 1),
-  //               pageSize
-  //             }
-  //           },
-  //           projectedFields: [
-  //             "_id", "codigo", "nombre",
-  //             "paralelo", "profesor"
-  //           ]
-  //         })
-  //         updateStep(stepId, {
-  //           data: matchesPracticalClass,
-  //           error: undefined
-  //         })
-  //       } catch (error) {
-  //         updateStep(stepId, {
-  //           data: undefined,
-  //           error: error instanceof Error
-  //             ? error.message
-  //             : error
-  //         })
-  //       }
-  //       setProcess({
-  //         isLoading: false
-  //       })
-  //     }
-  //   })();
-  // }, [pagination.page]);
+  
+  useEffect(() => {
+    (async () => {
+      await updateRows();
+    })();
+  }, [pagination.page, pagination.pageSize]);
 
   const updateTotalRows = async () => {
     if (!isLoading) {
@@ -117,15 +73,12 @@ export default function TheoryClassStep(props) {
           query: 'getTotalOfRecords',
           queryParams: {
             target: queryString
-            }
-          },
-          {
-            id: '2-1'
           }
+        }
         )
         setPagination({
           ...pagination,
-          totalItems: totalMatches
+          rowCount: totalMatches
         })
 
       } catch (error) {
@@ -142,7 +95,7 @@ export default function TheoryClassStep(props) {
     }
   }
   const updateRows = async () => {
-    if (!isLoading) {
+    if (!isLoading && queryString?.length ) {
       try {
         setProcess({
           isLoading: true,
@@ -150,22 +103,23 @@ export default function TheoryClassStep(props) {
             variant: 'indeterminate'
           }
         })
+        const {
+          page,
+          pageSize
+        } = pagination;
 
         const result = await getData({
           resourceName: "TheoryClass",
           query: "getByQuery",
           queryParams: {
-            target: "jedrez",
+            target: queryString,
             pagination: {
-              from: pagination.page * pagination.pageSize,
-              pageSize: pagination.pageSize
+              from: page * pageSize,
+              pageSize: pageSize
             }
           },
           projectedFields: tableColumns.map(tC => tC.field)
-      },
-          {
-            id: '2-2'
-          }
+        }
         )
         updateStep(
           stepId,
@@ -267,11 +221,16 @@ export default function TheoryClassStep(props) {
       <Grid xs={12}>
         <TransferTable
           checked={stepCheckedValues}
-          setChecked = {(values) => updateStep(stepId, {
+          setChecked={(values) => updateStep(stepId, {
             checkedValues: values
           })}
           left={stepData}
-          setLeft = {(values) => { 
+          leftExtra={{
+            pagination, 
+            setPagination, 
+            isLoading
+          }}
+          setLeft={(values) => {
             console.log("setting left", values);
             updateStep(
               stepId,
@@ -281,7 +240,7 @@ export default function TheoryClassStep(props) {
             )
           }}
           right={stepSelectedValues}
-          setRight = {(values) => {
+          setRight={(values) => {
             console.log("setting right", values);
             updateStep(
               stepId,

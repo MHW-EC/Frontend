@@ -11,7 +11,10 @@ const TableWrapper = (props) => {
     rowIdGetter,
     columns,
     onSelectionModelChange,
-    style
+    style,
+    isLoading,
+    pagination,
+    setPagination
   } = props;
   return (
     <div
@@ -34,7 +37,20 @@ const TableWrapper = (props) => {
         }
         disableColumnMenu={true}
         checkboxSelection={true}
-        getRowId={rowIdGetter} />
+        getRowId={rowIdGetter} 
+        {
+          ...(pagination 
+            ? {
+              ...pagination,
+              loading: isLoading,
+              pagination: true,
+              paginationMode: "server",
+              onPageChange: (page) => setPagination((prev) => ({ ...prev, page })),
+              onPageSizeChange: (pageSize) => setPagination((prev) => ({ ...prev, pageSize, page: 0 }))
+            }
+            : {})
+        }
+        />
     </div>
   )
 }
@@ -49,10 +65,17 @@ export default function TransferTable(props) {
   const {
     checked, setChecked,
     left, setLeft,
-    right, setRight
+    right, setRight,
+    leftExtra
   } = props;
+  const {
+    isLoading,
+    pagination,
+    setPagination
+  } = leftExtra;
 
   console.log({left, right, checked});
+  console.log({leftExtra});
 
   const leftChecked = Array.intersection(checked, left, rowsEquals);
   const rightChecked = Array.intersection(checked, right, rowsEquals);
@@ -103,7 +126,10 @@ export default function TransferTable(props) {
           rowIdGetter={getRowId}
           style={tableStyle}
           columns={columns}
-          onSelectionModelChange={handleToggleAll} />
+          onSelectionModelChange={handleToggleAll}
+          isLoading={isLoading}
+          pagination={pagination}
+          setPagination={setPagination}/>
       </Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center">
