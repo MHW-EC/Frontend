@@ -143,8 +143,9 @@ console.log({stepSelectedValues});
   }
 
   const handleSearch = async (event) => {
-    await updateTotalRows();
-    await updateRows();
+    await Promise.all([updateTotalRows(), updateRows()]);
+    // await updateTotalRows();
+    // await updateRows();
   };
 
   const handleMouseDown = (event) => {
@@ -169,15 +170,24 @@ console.log({stepSelectedValues});
           noValidate
           autoComplete="off"
         >
-          <FormControl variant="outlined" sx={{
+          <FormControl 
+            variant="outlined" 
+            sx={{
             'width': '100%'
-          }}>
+            }}>
             <InputLabel htmlFor="component-outlined">{stepDescription}</InputLabel>
             <OutlinedInput
               id="component-outlined"
               value={queryString}
               onChange={(event) => { setQuery(event.target.value) }}
               label={stepDescription}
+              onKeyPress={(event) => {console.log(event)}}
+              onKeyPress={(event) => {
+                if (event.code === "Enter") {
+                  event.preventDefault();
+                  handleSearch();
+                }
+              }}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -203,7 +213,7 @@ console.log({stepSelectedValues});
             setPagination, 
             isLoading
           }}
-          right={stepSelectedValues}//stepSelectedValues
+          right={stepSelectedValues}
           setRight={(values) => {
             console.log("setting right", values);
             updateStep(

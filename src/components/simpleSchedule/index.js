@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import MainContext from './../Context';
 import CareerStep from './career';
 import TheoryClassStep from './theoryClass';
+import PracticalClassStep from './practicalClass';
 
 class Steps extends React.Component {
 
@@ -108,6 +109,8 @@ class Steps extends React.Component {
         return <CareerStep stepId={String(stepId)} />
       case 1:
         return <TheoryClassStep stepId={String(stepId)}/>
+      case 2:
+        return <PracticalClassStep stepId={String(stepId)} lastStepId={String(stepId - 1)}/>
       default:
         return (<div>DEFAULT COMPONENT</div>)
     }
