@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import StepsContext from './../Context';
 import MainContext from './../../Context';
 import Grid from '@mui/material/Grid';
-import CardMateria from "./CardMateria";
+import CardMateria from "./Reel";
 
 export default function PracticalClassStep(props) {
   const { stepId, lastStepId } = props

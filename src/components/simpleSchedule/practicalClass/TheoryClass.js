@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { 
+import {
   Card,
   CardActions,
   CardContent,
@@ -12,7 +12,9 @@ import {
   Button,
   Divider,
   Zoom,
-  Skeleton
+  Skeleton,
+  Box,
+  Paper
 } from '@mui/material';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
@@ -20,7 +22,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 // import DialogPractico from './dialog-practico';
 // import DialogStats from './dialog-stats';
-import utils from './../../../utils';
+import utils from '../../../utils';
 
 // import {
 //   addSeleccionado,
@@ -54,27 +56,29 @@ const classes = {
     transform: 'scale(0.8)',
   },
   div: {
-    padding: 12,
+    padding: "16px",
     alignContent: 'left',
     alignItems: 'left',
   },
   fab: {
     position: 'absolute',
-    right: (theme) => theme.spacing(0),
-    top: (theme) => theme.spacing(0),
+    right: '0',
+    top: '0',
   },
   ghostIcon: {
     opacity: 0,
     padding: 10,
   },
   avatar: {
-    backgroundColor: 'red',
+    backgroundColor: 'gray',
   },
   root: {
     height: 'auto',
+    marginRight: '16px'
   },
   rootTop: {
     borderColor: '#D4AF37',
+    marginRight: '16px'
   },
   avatarTop: {
     backgroundColor: '#D4AF37',
@@ -91,50 +95,41 @@ export default function SimpleCard(props) {
     profesor: profesorName = "",
     profesorJoined: profesorDetail = {},
     // lastParaleloProfesorJoined: lastStudentFeedback
-  } = paralelo ||  {};
+  } = paralelo || {};
   const [open, setOpen] = useState(false);
   const [openStats, setOpenStats] = useState(false);
   const [cargado, setCargado] = useState(true);
-  const [isAdd, setIsAdd] = useState(1); //necesariamente numerico y no bool
+  const [isAdded, setAdded] = useState("Add"); //necesariamente numerico y no bool
   const seleccionados = [];
-  console.log("----",paralelo);
+  console.log("----", paralelo);
 
-  // const handleAddRemove = () => {
-  //   if (isAdd) {
-  //     let materiaCode = paralelo['_id'].split('_')[0];
-  //     let amount = countByTeorico(seleccionados, materiaCode);
-  //     if (amount >= BOUNDARIES.COURSES.THEORY_CLASS.MAX) {
-  //       console.log("max reached");
-  //       return;
-  //     }
-  //     // dispatch(addSeleccionado(paralelo['_id']));
-  //     setIsAdd(0);
-  //   } else {
-  //     // dispatch(removeSeleccionado(paralelo['_id']));
-  //     setIsAdd(1);
-  //   }
-  //   // if (paralelo['paralelos_practicos'].length === 0) {
-  //   //   isAdd
-  //   //     ? dispatch(addPaquete([paralelo], paralelo['_id']))
-  //   //     : dispatch(removePaquete(paralelo['_id']));
-  //   // }
-  // };
+  const handleAddRemove = () => {
+    if (isAdded == 'Add') {
+      // let materiaCode = paralelo['_id'].split('_')[0];
+      // let amount = countByTeorico(seleccionados, materiaCode);
+      // if (amount >= BOUNDARIES.COURSES.THEORY_CLASS.MAX) {
+      //   console.log("max reached");
+      //   return;
+      // }
+      // dispatch(addSeleccionado(paralelo['_id']));
+      setAdded("Remove");
+    } else if (isAdded == 'Remove') {
+      // dispatch(removeSeleccionado(paralelo['_id']));
+      setAdded("Add");
+    }
+    // if (paralelo['paralelos_practicos'].length === 0) {
+    //   isAdded
+    //     ? dispatch(addPaquete([paralelo], paralelo['_id']))
+    //     : dispatch(removePaquete(paralelo['_id']));
+    // }
+  };
 
   const fabs = [
-    {
-      color: 'inherit',
-      sx: classes.fab,
-      icon: <AddBoxOutlinedIcon />,
-      label: 'Disabled',
-      entra: -1,
-      tooltipNode: 'Añadir teórico',
-    },
     {
       color: 'primary',
       sx: classes.fab,
       icon: <AddBoxOutlinedIcon />,
       label: 'Add',
-      entra: 1,
       tooltipNode: 'Añadir teórico',
     },
     {
@@ -142,7 +137,6 @@ export default function SimpleCard(props) {
       sx: classes.fab,
       icon: <DeleteOutlinedIcon />,
       label: 'Remove',
-      entra: 0,
       tooltipNode: 'Remover teórico',
     },
   ];
@@ -162,51 +156,20 @@ export default function SimpleCard(props) {
   const handleCloseDialogStats = () => {
     setOpenStats(false);
   };
-  const getAction = () => {
-    return (
-      paralelo && (
-        <>
-          <AddBoxOutlinedIcon sx={classes.ghostIcon} />
-          {fabs.map((fab, index) => (
-            <Zoom
-              key={fab.color}
-              in={isAdd === fab.entra}
-              timeout={{
-                appear: 500,
-                enter: 300,
-                exit: 500,
-               }}
-              unmountOnExit
-            >
-              <Tooltip title={fab.tooltipNode}>
-                <IconButton
-                  aria-label={fab.label}
-                  sx={fab.sx}
-                  color={fab.color}
-                  onClick={() => {
-                    // handleAddRemove();
-                  }}
-                >
-                  {fab.icon}
-                </IconButton>
-              </Tooltip>
-            </Zoom>
-          ))}
-        </>
-      )
-    );
-  };
-  return paralelo  ? (
-    <Card 
+  return paralelo ? (
+    <Card
       sx={
-        top 
-        ? classes.rootTop 
-        : classes.root
+        {
+          "display": "inline-block",
+          ...(top
+            ? classes.rootTop
+            : classes.root)
+        }
       }
       variant="outlined">
       <CardHeader
         avatar={
-          <Avatar 
+          <Avatar
             sx={
               top ? classes.avatarTop : classes.avatar
             }>
@@ -215,7 +178,38 @@ export default function SimpleCard(props) {
             }
           </Avatar>
         }
-        action={getAction()}
+        action={
+          paralelo &&
+          <Box sx={{
+            display: 'flex',
+            position: 'relative',
+            width: "60px"
+          }}>
+            {
+              fabs.map((fab) => (
+                <Zoom
+                  key={fab.color}
+                  appear={false}
+                  in={isAdded === fab.label}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <Tooltip
+                    title={fab.tooltipNode}
+                    placement="bottom">
+                    <IconButton
+                      sx={fab.sx}
+                      color={fab.color}
+                      onClick={handleAddRemove}
+                    >
+                      {fab.icon}
+                    </IconButton>
+                  </Tooltip>
+                </Zoom>
+              ))
+            }
+          </Box>
+        }
         title={profesorName || 'SIN NOMBRE'}
         subheader={
           <>
@@ -245,7 +239,7 @@ export default function SimpleCard(props) {
             }
           </>
         }
-        style={{ padding: 12 }}
+      // style={{ padding: 12 }}
       />
       <Divider />
       <CardContent sx={classes.div}>
@@ -253,58 +247,101 @@ export default function SimpleCard(props) {
           Clases
         </Typography>
         {
-          paralelo?.eventos?.clases.map(({inicio, fin}) => (
-            <React.Fragment 
+          paralelo?.eventos?.clases.map(({ inicio, fin }) => (
+            <React.Fragment
               key={`${inicio}-${fin}`}
             >
-              <Typography 
+              <Typography
                 variant="body2"
-                aling="left"
+                align="right"
                 color="textSecondary">
                 {
-                  `- ${formatters.interval(inicio, fin)}`
+                  `${formatters.interval(inicio, fin)}`
                 }
               </Typography>
             </React.Fragment>
-          ))}
+          ))
+        }
         {
           paralelo?.eventos && (
-          <React.Fragment>
-            <Typography 
-              variant="body2" 
-              component="p">
-              Examenes
-            </Typography>
-            <Typography 
-              variant="body2"
-              component="p"
-              color="textSecondary">
-                {
-                  `- Parcial ${formatters.intervalExam(paralelo.eventos.examenes.parcial['inicio'],paralelo.eventos.examenes.parcial['fin'])}`
-                }
-            </Typography>
-            <Typography 
-              variant="body2" 
-              component="p" 
-              color="textSecondary">
-                {
-                  `- Final ${formatters.intervalExam(paralelo.eventos.examenes.final['inicio'],paralelo.eventos.examenes.final['fin'])}`
-                }
-            </Typography>
-            <Typography 
-              variant="body2" 
-              component="p" 
-              color="textSecondary">
-                {
-                  `- Mejoramiento ${formatters.intervalExam(paralelo.eventos.examenes.mejoramiento['inicio'],paralelo.eventos.examenes.mejoramiento['fin'])}`
-                }
-            </Typography>
-          </React.Fragment>
-        )}
+            <React.Fragment>
+              <Typography
+                variant="body2"
+                component="p">
+                Examenes
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between"
+                }}>
+                <Typography
+                  variant="body2"
+                  component="div"
+                  color="textSecondary">
+                  {
+                    'Parcial '
+                  }
+                </Typography>
+                <Typography
+                  variant="body2"
+                  component="div"
+                  color="textSecondary">
+                  {
+                    `${formatters.intervalExam(paralelo.eventos.examenes.parcial['inicio'], paralelo.eventos.examenes.parcial['fin'])}`
+                  }
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between"
+                }}>
+                <Typography
+                  variant="body2"
+                  component="div"
+                  color="textSecondary">
+                  {
+                    'Final '
+                  }
+                </Typography>
+                <Typography
+                  variant="body2"
+                  component="div"
+                  color="textSecondary">
+                  {
+                    `${formatters.intervalExam(paralelo.eventos.examenes.final['inicio'], paralelo.eventos.examenes.final['fin'])}`
+                  }
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between"
+                }}>
+                <Typography
+                  variant="body2"
+                  component="div"
+                  color="textSecondary">
+                  {
+                    'Mejoramiento '
+                  }
+                </Typography>
+                <Typography
+                  variant="body2"
+                  component="div"
+                  color="textSecondary">
+                  {
+                    `${formatters.intervalExam(paralelo.eventos.examenes.mejoramiento['inicio'], paralelo.eventos.examenes.mejoramiento['fin'])}`
+                  }
+                </Typography>
+              </Box>
+            </React.Fragment>
+          )}
       </CardContent>
       {
-        paralelo && 
-        paralelo.paralelos_practicos?.length > 0 && 
+        paralelo &&
+        paralelo.paralelos_practicos?.length > 0 &&
         <>
           <Divider />
           <CardActions>
@@ -312,9 +349,9 @@ export default function SimpleCard(props) {
               size="small"
               onClick={handleParAsociados}
               color="primary"
-              endIcon={<AddCircleOutlineOutlinedIcon />}
+              startIcon={<AddCircleOutlineOutlinedIcon />}
             >
-              Par asociados
+              {"Practical classes"}
             </Button>
             {/* <DialogPractico
               id="práctico-menu"
@@ -330,11 +367,11 @@ export default function SimpleCard(props) {
       }
     </Card>
   ) : (
-    <Card 
+    <Card
       variant="outlined">
       <CardHeader
         avatar={
-          <Skeleton 
+          <Skeleton
             animation="wave"
             variant="circle"
             width={40}
@@ -342,39 +379,40 @@ export default function SimpleCard(props) {
         }
         title={
           <div
-            style={{ 
+            style={{
               width: '80%',
               marginLeft: 'auto',
-              marginRight: 'auto' }
-              }>
-            <Skeleton 
-              animation="wave" 
-              variant="text" 
-              height={10}/>
+              marginRight: 'auto'
+            }
+            }>
+            <Skeleton
+              animation="wave"
+              variant="text"
+              height={10} />
           </div>
         }
         subheader={
           <div
             style={{
-              width: '50%', 
+              width: '50%',
               marginLeft: 'auto',
-              marginRight: 'auto' 
+              marginRight: 'auto'
             }}>
-            <Skeleton 
+            <Skeleton
               animation="wave"
               variant="text"
-              height={10}/>
+              height={10} />
           </div>
         }
       />
-      <CardContent 
-        style={{ 
-          padding: 0 
+      <CardContent
+        style={{
+          padding: 0
         }}>
-        <Skeleton 
-          animation="wave" 
-          variant="rect" 
-          height={150}/>
+        <Skeleton
+          animation="wave"
+          variant="rect"
+          height={150} />
       </CardContent>
       <CardActions>
         <Skeleton

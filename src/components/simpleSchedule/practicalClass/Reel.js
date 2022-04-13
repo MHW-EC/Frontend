@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
-import StepsContext from './../Context';
-import MainContext from './../../Context';
-import { getData } from './../../../services';
+import StepsContext from '../Context';
+import MainContext from '../../Context';
+import { getData } from '../../../services';
 
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
@@ -9,7 +9,7 @@ import CardActions from '@mui/material/CardActions';
 import Card from '@mui/material/Card';
 import ImageListItem from '@mui/material/ImageListItem';
 
-import CardTeorico from './CardTeorico';
+import CardTeorico from './TheoryClass';
 import Skeleton from '@mui/material/Skeleton';
 
 import CustomImageList from './CustomImageList';
@@ -33,6 +33,8 @@ const classes = {
   },
   cardContent: {
     padding: 2,
+    overflow: "auto",
+    whiteSpace: "nowrap"
   },
   palette: {
     primary: {
@@ -130,16 +132,12 @@ export default function CardMateria(props) {
             ? <Typography align="center">
               {`THERE IS NO INFORMATION FOR ${theoryClassName} - ${theoryClassCode}`}
             </Typography>
-            : <div>
-              {
-                theoryClasses.map((practicalClass, index) => (
-                  <CardTeorico
-                    paralelo={practicalClass}
-                    top={index === 0 && practicalClass['score'] !== null}
-                  />
-                ))
-              }
-            </div>
+            : theoryClasses.map((practicalClass, index) => (
+              <CardTeorico
+                paralelo={practicalClass}
+                top={index === 0 && practicalClass['score'] !== null}
+              />
+            ))
         }
       </CardContent>
       <CardActions sx={classes.cardActions}>

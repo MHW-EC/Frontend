@@ -43,8 +43,8 @@ export default function UseWidth(props) {
 					height: 'auto',
 					padding: 10,
 					spacing: 10, 
-					flexWrap: 'nowrap',
-					transform: 'translateZ(0)',
+					whiteSpace: 'nowrap',
+					overflow: 'auto',
 				}}
 				cols={getCols(width)}
 				children={props.children} />
