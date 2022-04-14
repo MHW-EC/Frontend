@@ -1,5 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Grid, TextField, Autocomplete } from '@mui/material';
+
+import React, { useContext, useState, useEffect, useMemo } from 'react';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 import StepsContext from './../Context';
 import MainContext from './../../Context';
 import Grid from '@mui/material/Grid';
@@ -19,7 +21,13 @@ export default function CareerStep(props) {
   const {
     isLoading
   } = process
-  
+  const requestControler = useMemo(() => new AbortController(), []);
+  const abortSignal = requestControler.signal;
+
+  useEffect(() => {
+    return () => requestControler.abort();
+  }, [requestControler]);
+
   const fetchDataIfNeeded = async () => {
     if (!isLoading && !stepData) {
       try {
@@ -33,16 +41,21 @@ export default function CareerStep(props) {
           resourceName: 'Career',
           query: 'getAll',
           projectedFields: ["_id", "facultad", "nombre"]
-        })
+        }, abortSignal)
         updateStep(stepId, {
           data: careerOptions,
           error: undefined
         })
       } catch (error) {
-        updateStep(stepId, {
-          data: undefined,
-          error: error instanceof Error ? error.message : error,
-        });
+        if (!error instanceof DOMException ||
+          error?.message !== 'The user aborted a request.') {
+          updateStep(stepId, {
+            data: undefined,
+            error: error instanceof Error 
+              ? error.message 
+              : error
+          })
+        }
       }
       setProcess({
         isLoading: false,
@@ -53,7 +66,9 @@ export default function CareerStep(props) {
   return (
     <Grid
       container={true}
-      spacing={3}
+      sx={{
+        paddingTop: '16px'
+      }}
       justifyContent="center"
       alignItems="center">
       <Grid
@@ -78,12 +93,12 @@ export default function CareerStep(props) {
               selectedValues: values
             })
           }}
-          value={stepSelectedValues || { nombre: "" , facultad: ""}}
+          value={stepSelectedValues || { nombre: "", facultad: "" }}
           isOptionEqualToValue={
             (option, value) => option.title === value.title
           }
           getOptionLabel={
-            ({nombre, facultad}) => nombre ? `${nombre} - ${facultad}` : ""
+            ({ nombre, facultad }) => nombre ? `${nombre} - ${facultad}` : ""
           }
           options={stepData || []}
           loading={isLoading}

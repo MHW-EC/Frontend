@@ -1,12 +1,9 @@
 
 import React from "react";
 import MainContext from './Context';
-// import Header from './header';
-// import SideBar from './sideBar';
 import Options from './options';
 import Home from './home';
 import SimpleSchedule from './simpleSchedule';
-import TransferTable from '../sharedComponents/TransferTable';
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 import {
@@ -80,6 +77,7 @@ class App extends React.Component {
 
   render() {
     console.log("App render");
+    
 
     const {
       sideBarIsOpen,
@@ -113,17 +111,20 @@ class App extends React.Component {
             position: 'relative',
             transform: 'translateZ(0px)',
             flexGrow: 1,
-            height: '100vh'}}>
+            height: '100vh'
+            }}>
           <Router>
             {
               isLoading &&
               <LinearProgress
+                sx={{
+                  position: "absolute",
+                  width: '100%'
+                }}
                 variant={progress.variant}
                 value={progress.value}
                 color={progress.color} />
             }
-            {/*<SideBar />
-          <Header />*/}
             <Switch>
               {
                 ROUTES.map((route, index) => (

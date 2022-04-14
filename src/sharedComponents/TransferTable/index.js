@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import utils from './../utils';
@@ -29,7 +29,7 @@ const TableWrapper = (props) => {
             onSelectionModelChange(
               selectedRowsIds.map(
                 selectedId => rows.find(
-                  row => rowIdGetter(row) == selectedId
+                  row => rowIdGetter(row) === selectedId
                 )
               )
             )
@@ -50,6 +50,7 @@ const TableWrapper = (props) => {
             }
             : {})
         }
+        disableSelectionOnClick={true}
         />
     </div>
   )
@@ -87,12 +88,13 @@ export default function TransferTable(props) {
   };
 
   return (
-    <Grid
-      container
-      spacing={2}
-      justifyContent="center"
-      alignItems="center">
-      <Grid item>
+    <>
+      <Grid item
+        xs={12}
+        sm={10}
+        md={8}
+        lg={5}
+        xl={5}>
         <TableWrapper
           rows={left}
           rowIdGetter={getRowId}
@@ -105,7 +107,12 @@ export default function TransferTable(props) {
           pagination={pagination}
           setPagination={setPagination}/>
       </Grid>
-      <Grid item>
+      <Grid item
+        xs={10}
+        sm={4}
+        md={12}
+        lg={1}
+        xl={1}>
         <Grid container direction="column" alignItems="center">
           <Button
             sx={{ my: 0.5 }}
@@ -129,7 +136,12 @@ export default function TransferTable(props) {
           </Button>
         </Grid>
       </Grid>
-      <Grid item>
+      <Grid item
+        xs={12}
+        sm={10}
+        md={8}
+        lg={5}
+        xl={5}>
         <TableWrapper
           rows={right}
           rowIdGetter={getRowId}
@@ -140,6 +152,6 @@ export default function TransferTable(props) {
           }}
           />
       </Grid>
-    </Grid>
+    </>
   );
 }

@@ -2,38 +2,22 @@
 import React, { useContext } from 'react';
 
 import StepsContext from './../Context';
-import MainContext from './../../Context';
 import Grid from '@mui/material/Grid';
 import CardMateria from "./Reel";
 
 export default function PracticalClassStep(props) {
   const { stepId, lastStepId } = props
-  const { process, setProcess } = useContext(MainContext);
-  const { steps, updateStep } = useContext(StepsContext);
-  const step = steps[Number(stepId)];
+  const { steps } = useContext(StepsContext);
   const lastStep = steps[Number(lastStepId)];
 
   const {
-    selectedValues: stepSelectedValues = [],
-    data: stepData = [],
-    description: stepDescription
-  } = step;
-
-  const {
-    selectedValues: lastStepSelectedValues = [],
-    data: lastStepData = [],
-    description: lastStepDescription
+    selectedValues: lastStepSelectedValues = []
   } = lastStep;
-
-  const {
-    isLoading
-  } = process;
 
   const uniqueTheoryClassByCodes = [
     ...new Map(lastStepSelectedValues.map(item => [item.codigo, item])
     ).values()
   ]
-  console.log({uniqueTheoryClassByCodes});
 
   return (
     <Grid

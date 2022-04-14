@@ -9,9 +9,6 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import GroupIcon from '@mui/icons-material/Group';
 import MainContext from './../Context';
-import {
-  Link
-} from "react-router-dom";
 
 const ACTIONS = [
   { icon: <EventNoteIcon />, name: 'New schedule', path: '/simple-schedule' },
@@ -31,8 +28,8 @@ const Options = () => {
         ariaLabel="SpeedDial basic example"
         sx={{
           position: 'absolute',
-          bottom: 32,
-          right: 32
+          bottom: '24px',
+          right: '24px'
         }}
         icon={<SpeedDialIcon />}
         onClose={handleClose}

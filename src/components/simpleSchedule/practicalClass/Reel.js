@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useMemo } from 'react';
 import StepsContext from '../Context';
 import MainContext from '../../Context';
 import { getData } from '../../../services';
@@ -7,12 +7,11 @@ import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Card from '@mui/material/Card';
-import ImageListItem from '@mui/material/ImageListItem';
 
 import CardTeorico from './TheoryClass';
 import Skeleton from '@mui/material/Skeleton';
 
-import CustomImageList from './CustomImageList';
+// import CustomImageList from './CustomImageList';
 
 const classes = {
   root: {
@@ -32,6 +31,7 @@ const classes = {
     backgroundColor: (theme) => theme.palette.primary.main,
   },
   cardContent: {
+    height: '300px',
     padding: 2,
     overflow: "auto",
     whiteSpace: "nowrap"
@@ -59,10 +59,8 @@ const classes = {
 }
 
 export default function CardMateria(props) {
-  const { process, setProcess } = useContext(MainContext);
-  const {
-    isLoading
-  } = process;
+  const { setProcess } = useContext(MainContext);
+
   const {
     _class: {
       codigo: theoryClassCode,
@@ -73,11 +71,17 @@ export default function CardMateria(props) {
   const { steps, updateStep } = useContext(StepsContext);
   const step = steps[Number(stepId)];
   const {
-    selectedValues: stepSelectedValues = [],
     data: stepData = {}
   } = step;
   const theoryClasses = stepData[theoryClassCode];
   console.log({ theoryClasses });
+
+  const requestControler = useMemo(() => new AbortController(), []);
+  const abortSignal = requestControler.signal;
+  useEffect(() => {
+    return () => requestControler.abort();
+  }, [requestControler]);
+
   useEffect(() => {
     (async () => {
       if (!theoryClasses) {
@@ -95,7 +99,7 @@ export default function CardMateria(props) {
             queryParams: {
               classCode: theoryClassCode
             }
-          });
+          }, abortSignal);
 
           updateStep(
             stepId,
@@ -120,7 +124,7 @@ export default function CardMateria(props) {
         })
       }
     })()
-  }, []);
+  }, [abortSignal, setProcess, stepData, stepId, theoryClassCode, theoryClasses, updateStep]);
 
   return theoryClasses ? (
     <Card

@@ -1,7 +1,7 @@
 // const API_URL = "https://5239af1a-a557-4587-8f6a-2a8409a0d9b5.mock.pstmn.io/prod/read"
 const API_URL = "https://ccgcmb0zka.execute-api.sa-east-1.amazonaws.com/prod/read"
 
-export async function getData(params) {
+export async function getData(params, abortSignal) {
   const {
     resourceName,
     query,
@@ -22,7 +22,8 @@ export async function getData(params) {
   try {
     response = await fetch(apiUrl.toString(), {
       method: 'POST',
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal: abortSignal
     });
   } catch (error) {
     throw error;

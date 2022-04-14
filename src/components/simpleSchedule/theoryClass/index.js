@@ -1,5 +1,8 @@
 
-import React, { useContext, useState, useEffect } from 'react';
+import React, { 
+  useContext, useState, useEffect, 
+  useMemo, useCallback 
+} from 'react';
 
 import StepsContext from './../Context';
 import MainContext from './../../Context';
@@ -16,8 +19,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TransferTable from './../../../sharedComponents/TransferTable';
 import Grid from '@mui/material/Grid';
 
-const THEORY_CLASS_TABLE_PAGES = [5, 10, 25, 50]
-
 export default function TheoryClassStep(props) {
   const { stepId } = props
   const { process, setProcess } = useContext(MainContext);
@@ -32,9 +33,9 @@ export default function TheoryClassStep(props) {
   const [selectedChecked, setSelectedChecked] = useState([]);
   const [pagination, setPagination] = useState({
     page: 0,
-    pageSize: THEORY_CLASS_TABLE_PAGES[0],
+    pageSize: 10,
     rowCount: 0,
-    rowsPerPageOptions: THEORY_CLASS_TABLE_PAGES
+    rowsPerPageOptions: [10, 25, 50]
   });
 console.log({stepSelectedValues});
   const {
@@ -43,22 +44,86 @@ console.log({stepSelectedValues});
 
   const getElementId = (element) => element._id;
   const [queryString, setQuery] = useState("");
+  const requestControler = useMemo(() => new AbortController(), []);
+  const abortSignal = requestControler.signal;
 
-  const tableColumns = [
-    { field: '_id', headerName: 'Id', width: 150 },
-    { field: 'codigo', headerName: 'Code', width: 150 },
-    { field: 'nombre', headerName: 'Name', width: 150 },
-    { field: 'paralelo', headerName: 'Course', width: 150 },
-    { field: 'profesor', headerName: 'Teacher', width: 150 },
-  ]
+
+  const tableColumns = useMemo(() => [
+    { field: 'codigo', headerName: 'Code', width: 100 },
+    { field: 'nombre', headerName: 'Name', width: 300 },
+    { field: 'paralelo', headerName: 'Course', width: 50 },
+    { field: 'profesor', headerName: 'Teacher', width: 300 },
+    { field: '_id', headerName: 'Id', width: 125 }
+  ], []);
+
+  useEffect(() => {
+    return () => requestControler.abort();
+  }, [requestControler]);
+
+  const totalMatchesCb = useCallback(() => {
+    return getData({
+      resourceName: 'TheoryClass',
+      query: 'getTotalOfRecords',
+      queryParams: {
+        target: queryString
+      }
+    }, abortSignal);
+  },[queryString, abortSignal]);
   
+  const resultCb = useCallback(() => {
+    const {
+      page,
+      pageSize
+    } = pagination;
+    return getData({
+      resourceName: "TheoryClass",
+      query: "getByQuery",
+      queryParams: {
+        target: queryString,
+        pagination: {
+          from: page * pageSize,
+          pageSize: pageSize
+        }
+      },
+      projectedFields: tableColumns.map(tC => tC.field)
+    }, abortSignal
+    )
+  }, [pagination, tableColumns, queryString, abortSignal]);
+
   useEffect(() => {
     (async () => {
-      await updateRows();
+      if (!isLoading && queryString?.length ) {
+        try {
+          setProcess({
+            isLoading: true,
+            progress: {
+              variant: 'indeterminate'
+            }
+          });
+          const result = await resultCb();
+          updateStep(
+            stepId,
+            {
+              data: result,
+              error: undefined
+            }
+          )
+        } catch (error) {
+          updateStep(stepId, {
+            data: undefined,
+            error: error instanceof Error
+              ? error.message
+              : error
+          })
+        }
+        setProcess({
+          isLoading: false
+        })
+      }
     })();
   }, [pagination.page, pagination.pageSize]);
-
-  const updateTotalRows = async () => {
+  
+  const handleSearch = async () => {
     if (!isLoading) {
       try {
         setProcess({
@@ -67,60 +132,9 @@ console.log({stepSelectedValues});
             variant: 'indeterminate'
           }
         })
-
-        const totalMatches = await getData({
-          resourceName: 'TheoryClass',
-          query: 'getTotalOfRecords',
-          queryParams: {
-            target: queryString
-          }
-        }
-        )
-        setPagination({
-          ...pagination,
-          rowCount: totalMatches
-        })
-
-      } catch (error) {
-        updateStep(stepId, {
-          data: undefined,
-          error: error instanceof Error
-            ? error.message
-            : error
-        })
-      }
-      setProcess({
-        isLoading: false
-      })
-    }
-  }
-  const updateRows = async () => {
-    if (!isLoading && queryString?.length ) {
-      try {
-        setProcess({
-          isLoading: true,
-          progress: {
-            variant: 'indeterminate'
-          }
-        })
-        const {
-          page,
-          pageSize
-        } = pagination;
-
-        const result = await getData({
-          resourceName: "TheoryClass",
-          query: "getByQuery",
-          queryParams: {
-            target: queryString,
-            pagination: {
-              from: page * pageSize,
-              pageSize: pageSize
-            }
-          },
-          projectedFields: tableColumns.map(tC => tC.field)
-        }
-        )
+        const [
+          result, totalMatches
+        ] = await Promise.all([resultCb(), totalMatchesCb()]);
         updateStep(
           stepId,
           {
@@ -128,34 +142,34 @@ console.log({stepSelectedValues});
             error: undefined
           }
         )
-      } catch (error) {
-        updateStep(stepId, {
-          data: undefined,
-          error: error instanceof Error
-            ? error.message
-            : error
+        setPagination({
+          ...pagination,
+          rowCount: totalMatches
         })
+        setProcess({
+          isLoading: false
+        })
+      }catch(error){
+        if (!error instanceof DOMException ||
+          error?.message !== 'The user aborted a request.') {
+          updateStep(stepId, {
+            data: undefined,
+            error: error instanceof Error 
+              ? error.message 
+              : error
+          })
+        }
       }
-      setProcess({
-        isLoading: false
-      })
     }
-  }
-
-  const handleSearch = async (event) => {
-    await Promise.all([updateTotalRows(), updateRows()]);
-    // await updateTotalRows();
-    // await updateRows();
-  };
-
-  const handleMouseDown = (event) => {
-    event.preventDefault();
   };
 
   return (
     <Grid
       container={true}
-      spacing={3}
+      // spacing={3}
+      sx={{
+        paddingTop: '16px'
+      }}
       justifyContent="center"
       alignItems="center">
       <Grid
@@ -181,7 +195,6 @@ console.log({stepSelectedValues});
               value={queryString}
               onChange={(event) => { setQuery(event.target.value) }}
               label={stepDescription}
-              onKeyPress={(event) => {console.log(event)}}
               onKeyPress={(event) => {
                 if (event.code === "Enter") {
                   event.preventDefault();
@@ -193,7 +206,9 @@ console.log({stepSelectedValues});
                   <IconButton
                     aria-label="search by queryString"
                     onClick={handleSearch}
-                    onMouseDown={handleMouseDown}
+                    onMouseDown={(event) => {
+                      event.preventDefault();
+                    }}
                     edge="end">
                     <SearchIcon />
                   </IconButton>
@@ -203,7 +218,15 @@ console.log({stepSelectedValues});
           </FormControl>
         </Box>
       </Grid>
-      <Grid xs={12}>
+      <Grid 
+        xs={12}
+        container
+        sx={{
+          paddingTop: '16px'
+        }}
+        // spacing={2}
+        justifyContent="center"
+        alignItems="center">
         <TransferTable
           leftChecked={searchChecked}
           setLeftChecked={setSearchChecked}
@@ -215,7 +238,6 @@ console.log({stepSelectedValues});
           }}
           right={stepSelectedValues}
           setRight={(values) => {
-            console.log("setting right", values);
             updateStep(
               stepId,
               {

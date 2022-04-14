@@ -164,13 +164,18 @@ class Steps extends React.Component {
           steps
         }}>
         <Box 
-          //m={6}
-          //mt={3}
           sx={{
             width: 'auto',
             height: "100vh",
+            paddingLeft: '16px',
+            paddingRight: "16px",
+            paddingBottom: "16px"
           }}>
-          <Stepper activeStep={activeStepId}>
+          <Stepper 
+            sx={{
+              paddingTop: "16px"
+            }}
+            activeStep={activeStepId}>
             {
               steps.map((step) => {
                 const { id, label, error } = step

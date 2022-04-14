@@ -161,6 +161,7 @@ export default function SimpleCard(props) {
       sx={
         {
           "display": "inline-block",
+          "height": "inherit",
           ...(top
             ? classes.rootTop
             : classes.root)
