@@ -110,7 +110,7 @@ export default (props) => {
           )
         } catch (error) {
           updateStep(stepId, {
-            data: undefined,
+            // data: undefined,
             error: error instanceof Error
               ? error.message
               : error

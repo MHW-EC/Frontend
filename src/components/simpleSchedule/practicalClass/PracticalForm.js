@@ -86,15 +86,16 @@ export default (props) => {
 						stepId,
 						{
 							data: {
-								...stepData,
+								// ...stepData,
 								[teoricoid]: result
 							},
 							error: undefined
-						}
+						},
+						'data'
 					)
 				} catch (error) {
 					updateStep(stepId, {
-						data: undefined,
+						// data: undefined,
 						error: error instanceof Error
 							? error.message
 							: error
@@ -104,17 +105,6 @@ export default (props) => {
 			}
 		})()
 	}, []);
-
-	// const dispatch = useDispatch();
-	// const parAsociados = useSelector((state, codigo) =>
-	// 	asociadosSelector(state, teoricoid)
-	// );
-
-	// useEffect(() => {
-	// 	if (!parAsociados) {
-	// 		dispatch(getAsociados(teoricoid));
-	// 	}
-	// });
 
 	// const handleChecking = (evento, teorico, practico) => {
 	// 	let checked = evento.target.checked;

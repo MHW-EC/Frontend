@@ -84,10 +84,10 @@ const classes = {
   },
 }
 
-export default function TheoryClass(props) {
+export default (props) => {
   const {
     paralelo,
-    top, 
+    top,
     stepId
   } = props || {};
   const {
@@ -97,7 +97,7 @@ export default function TheoryClass(props) {
   } = paralelo || {};
   const [open, setOpen] = useState(false);
   const [openStats, setOpenStats] = useState(false);
-  const [cargado, setCargado] = useState(true);
+  const [cargado, setCargado] = useState(false);
   const [isAdded, setAdded] = useState("Add"); //necesariamente numerico y no bool
 
 
@@ -262,79 +262,88 @@ export default function TheoryClass(props) {
           ))
         }
         {
-          paralelo?.eventos && (
+          paralelo?.eventos?.examenes && (
             <React.Fragment>
               <Typography
                 variant="body2"
                 component="p">
                 Examenes
               </Typography>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between"
-                }}>
-                <Typography
-                  variant="body2"
-                  component="div"
-                  color="textSecondary">
-                  {
-                    'Parcial '
-                  }
-                </Typography>
-                <Typography
-                  variant="body2"
-                  component="div"
-                  color="textSecondary">
-                  {
-                    `${formatters.intervalExam(paralelo.eventos.examenes.parcial['inicio'], paralelo.eventos.examenes.parcial['fin'])}`
-                  }
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between"
-                }}>
-                <Typography
-                  variant="body2"
-                  component="div"
-                  color="textSecondary">
-                  {
-                    'Final '
-                  }
-                </Typography>
-                <Typography
-                  variant="body2"
-                  component="div"
-                  color="textSecondary">
-                  {
-                    `${formatters.intervalExam(paralelo.eventos.examenes.final['inicio'], paralelo.eventos.examenes.final['fin'])}`
-                  }
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between"
-                }}>
-                <Typography
-                  variant="body2"
-                  component="div"
-                  color="textSecondary">
-                  {
-                    'Mejoramiento '
-                  }
-                </Typography>
-                <Typography
-                  variant="body2"
-                  component="div"
-                  color="textSecondary">
-                  {
-                    `${formatters.intervalExam(paralelo.eventos.examenes.mejoramiento['inicio'], paralelo.eventos.examenes.mejoramiento['fin'])}`
-                  }
-                </Typography>
-              </Box>
+              {
+                paralelo.eventos.examenes.parcial &&
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between"
+                  }}>
+                  <Typography
+                    variant="body2"
+                    component="div"
+                    color="textSecondary">
+                    {
+                      'Parcial '
+                    }
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    component="div"
+                    color="textSecondary">
+                    {
+                      `${formatters.intervalExam(paralelo.eventos.examenes.parcial['inicio'], paralelo.eventos.examenes.parcial['fin'])}`
+                    }
+                  </Typography>
+                </Box>
+              }
+              {
+                paralelo.eventos.examenes.final &&
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between"
+                  }}>
+                  <Typography
+                    variant="body2"
+                    component="div"
+                    color="textSecondary">
+                    {
+                      'Final '
+                    }
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    component="div"
+                    color="textSecondary">
+                    {
+                      `${formatters.intervalExam(paralelo.eventos.examenes.final['inicio'], paralelo.eventos.examenes.final['fin'])}`
+                    }
+                  </Typography>
+                </Box>
+              }
+              {
+                paralelo.eventos.examenes.mejoramiento &&
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between"
+                  }}>
+                  <Typography
+                    variant="body2"
+                    component="div"
+                    color="textSecondary">
+                    {
+                      'Mejoramiento '
+                    }
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    component="div"
+                    color="textSecondary">
+                    {
+                      `${formatters.intervalExam(paralelo.eventos.examenes.mejoramiento['inicio'], paralelo.eventos.examenes.mejoramiento['fin'])}`
+                    }
+                  </Typography>
+                </Box>
+              }
             </React.Fragment>
           )}
       </CardContent>
@@ -353,16 +362,16 @@ export default function TheoryClass(props) {
               {"Practical classes"}
             </Button>
             {
-            //  <PracticalDialog
-            //   id="practicalMenu"
-            //   open={open}
-            //   cargado={cargado}
-            //   keepMounted
-            //   onClose={handleCloseDialog}
-            //   teoricoid={paralelo['_id']}
-            //   teorico={paralelo}
-            //   stepId={stepId}
-            // /> 
+              <PracticalDialog
+                id="practicalMenu"
+                open={open}
+                cargado={cargado}
+                keepMounted
+                onClose={handleCloseDialog}
+                teoricoid={paralelo['_id']}
+                teorico={paralelo}
+                stepId={stepId}
+              />
             }
           </CardActions>
         </>
