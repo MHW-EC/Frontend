@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
   Card,
@@ -13,14 +13,13 @@ import {
   Divider,
   Zoom,
   Skeleton,
-  Box,
-  Paper
+  Box
 } from '@mui/material';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-// import DialogPractico from './dialog-practico';
+import PracticalDialog from './PracticalDialog';
 // import DialogStats from './dialog-stats';
 import utils from '../../../utils';
 
@@ -85,11 +84,11 @@ const classes = {
   },
 }
 
-export default function SimpleCard(props) {
-  // const classes = useStyles();
+export default function TheoryClass(props) {
   const {
     paralelo,
-    top
+    top, 
+    stepId
   } = props || {};
   const {
     profesor: profesorName = "",
@@ -100,8 +99,7 @@ export default function SimpleCard(props) {
   const [openStats, setOpenStats] = useState(false);
   const [cargado, setCargado] = useState(true);
   const [isAdded, setAdded] = useState("Add"); //necesariamente numerico y no bool
-  const seleccionados = [];
-  console.log("----", paralelo);
+
 
   const handleAddRemove = () => {
     if (isAdded == 'Add') {
@@ -187,9 +185,9 @@ export default function SimpleCard(props) {
             width: "60px"
           }}>
             {
-              fabs.map((fab) => (
+              fabs.map((fab, idx) => (
                 <Zoom
-                  key={fab.color}
+                  key={String(idx)}
                   appear={false}
                   in={isAdded === fab.label}
                   mountOnEnter
@@ -248,9 +246,9 @@ export default function SimpleCard(props) {
           Clases
         </Typography>
         {
-          paralelo?.eventos?.clases.map(({ inicio, fin }) => (
+          paralelo?.eventos?.clases.map(({ inicio, fin }, idx) => (
             <React.Fragment
-              key={`${inicio}-${fin}`}
+              key={`${idx}`}
             >
               <Typography
                 variant="body2"
@@ -354,15 +352,18 @@ export default function SimpleCard(props) {
             >
               {"Practical classes"}
             </Button>
-            {/* <DialogPractico
-              id="práctico-menu"
-              open={open}
-              cargado={cargado}
-              keepMounted
-              onClose={handleCloseDialog}
-              teoricoid={paralelo['_id']}
-              teorico={paralelo}
-            /> */}
+            {
+            //  <PracticalDialog
+            //   id="practicalMenu"
+            //   open={open}
+            //   cargado={cargado}
+            //   keepMounted
+            //   onClose={handleCloseDialog}
+            //   teoricoid={paralelo['_id']}
+            //   teorico={paralelo}
+            //   stepId={stepId}
+            // /> 
+            }
           </CardActions>
         </>
       }

@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 
 import StepsContext from './../Context';
 import Grid from '@mui/material/Grid';
-import CardMateria from "./Reel";
+import Reel from "./Reel";
 
 export default function PracticalClassStep(props) {
   const { stepId, lastStepId } = props
@@ -28,14 +28,14 @@ export default function PracticalClassStep(props) {
       {
         uniqueTheoryClassByCodes.map((_class) => (
 					<Grid
-						key={_class.id}
+						key={_class.codigo}
 						item
 						xs={12}
 						xl={10}
 						sm={9}
 						md={7}
 						lg={7}>
-						<CardMateria 
+						<Reel 
               _class={_class}
               stepId={stepId}/>
 					</Grid>

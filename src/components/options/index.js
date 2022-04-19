@@ -27,7 +27,7 @@ const Options = () => {
       <SpeedDial
         ariaLabel="SpeedDial basic example"
         sx={{
-          position: 'absolute',
+          position: 'fixed',
           bottom: '24px',
           right: '24px'
         }}

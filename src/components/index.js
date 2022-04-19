@@ -108,10 +108,10 @@ class App extends React.Component {
         }}>
         <Box
           sx={{
-            position: 'relative',
+            height: "100%",
+            display: "initial",
             transform: 'translateZ(0px)',
             flexGrow: 1,
-            height: '100vh'
             }}>
           <Router>
             {

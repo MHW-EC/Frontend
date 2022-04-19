@@ -1,15 +1,18 @@
-import React, { useEffect, useContext, useMemo } from 'react';
+import React, { 
+  useEffect, useContext, useMemo, useState } from 'react';
 import StepsContext from '../Context';
-import MainContext from '../../Context';
+// import MainContext from '../../Context';
 import { getData } from '../../../services';
 
-import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Card from '@mui/material/Card';
-
-import CardTeorico from './TheoryClass';
-import Skeleton from '@mui/material/Skeleton';
+import {
+  Typography,
+  CardContent,
+  CardActions,
+  Card,
+  Skeleton,
+  Box
+} from '@mui/material';
+import TheoryCard from './TheoryClass';
 
 // import CustomImageList from './CustomImageList';
 
@@ -58,8 +61,8 @@ const classes = {
   },
 }
 
-export default function CardMateria(props) {
-  const { setProcess } = useContext(MainContext);
+export default (props) => {
+  // const { setProcess } = useContext(MainContext);
 
   const {
     _class: {
@@ -74,24 +77,18 @@ export default function CardMateria(props) {
     data: stepData = {}
   } = step;
   const theoryClasses = stepData[theoryClassCode];
-  console.log({ theoryClasses });
-
+  const [localLoading, setLoading] = useState(false);
   const requestControler = useMemo(() => new AbortController(), []);
-  const abortSignal = requestControler.signal;
+  
   useEffect(() => {
     return () => requestControler.abort();
   }, [requestControler]);
 
   useEffect(() => {
     (async () => {
-      if (!theoryClasses) {
+      if (theoryClassCode && !theoryClasses) {
         try {
-          setProcess({
-            isLoading: true,
-            progress: {
-              variant: 'indeterminate'
-            }
-          })
+          setLoading(true);
 
           const result = await getData({
             resourceName: "TheoryClass",
@@ -99,17 +96,17 @@ export default function CardMateria(props) {
             queryParams: {
               classCode: theoryClassCode
             }
-          }, abortSignal);
+          }, requestControler.signal);
 
           updateStep(
             stepId,
             {
               data: {
-                ...stepData,
                 [theoryClassCode]: result
               },
               error: undefined
-            }
+            },
+            'data'
           )
         } catch (error) {
           updateStep(stepId, {
@@ -119,12 +116,10 @@ export default function CardMateria(props) {
               : error
           })
         }
-        setProcess({
-          isLoading: false
-        })
+        setLoading(false);
       }
     })()
-  }, [abortSignal, setProcess, stepData, stepId, theoryClassCode, theoryClasses, updateStep]);
+  }, []);
 
   return theoryClasses ? (
     <Card
@@ -137,7 +132,9 @@ export default function CardMateria(props) {
               {`THERE IS NO INFORMATION FOR ${theoryClassName} - ${theoryClassCode}`}
             </Typography>
             : theoryClasses.map((practicalClass, index) => (
-              <CardTeorico
+              <TheoryCard
+                key={String(index)}
+                stepId={stepId}
                 paralelo={practicalClass}
                 top={index === 0 && practicalClass['score'] !== null}
               />
@@ -158,9 +155,9 @@ export default function CardMateria(props) {
         <Skeleton animation="wave" variant="rect" height={250} />
       </CardContent>
       <CardActions>
-        <div sx={{ width: '50%', marginLeft: 'auto', marginRight: 'auto' }}>
+        <Box sx={{ width: '50%', marginLeft: 'auto', marginRight: 'auto' }}>
           <Skeleton animation="wave" variant="text" height={15} />
-        </div>
+        </Box>
       </CardActions>
     </Card>
   );

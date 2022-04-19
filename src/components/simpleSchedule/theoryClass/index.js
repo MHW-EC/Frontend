@@ -28,7 +28,7 @@ export default function TheoryClassStep(props) {
     selectedValues: stepSelectedValues = [],
     data: stepData = [],
     description: stepDescription
-  } = step;
+  } = step || {};
   const [searchChecked, setSearchChecked] = useState([]);
   const [selectedChecked, setSelectedChecked] = useState([]);
   const [pagination, setPagination] = useState({
@@ -219,7 +219,6 @@ console.log({stepSelectedValues});
         </Box>
       </Grid>
       <Grid 
-        xs={12}
         container
         sx={{
           paddingTop: '16px'

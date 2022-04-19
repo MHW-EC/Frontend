@@ -116,11 +116,20 @@ class Steps extends React.Component {
     }
   }
 
-  updateStep = (stepId, newStep) => {
+  updateStep = (stepId, newStep, field) => {
 
-    this.setState({
-      steps: this.state.steps.map(step => {
+    this.setState((currentState) => ({
+      steps: currentState.steps.map(step => {
         if (step.id == stepId) {
+          if(field && step[field] && newStep[field] ){
+            return {
+              ...step,
+              [field]: {
+                ...step[field],
+                ...newStep[field]
+              }
+            }
+          }
           return {
             ...step,
             ...newStep
@@ -128,7 +137,7 @@ class Steps extends React.Component {
         }
         return step;
       })
-    })
+    }))
   }
 
   render() {
@@ -269,5 +278,5 @@ class Steps extends React.Component {
     )
   }
 }
-Steps.contextType = MainContext;
+// Steps.contextType = MainContext;
 export default Steps;
