@@ -28,17 +28,11 @@ export default (props) => {
   const { 
     onClose, 
     open, 
-    cargado, 
     teoricoid,
     teorico,
     stepId,
     ...other
   } = props;
-
-
-  const handleClose = () => {
-    onClose();
-  };
 
   return (
     <Dialog
@@ -56,19 +50,16 @@ export default (props) => {
       </DialogTitle>
       <DialogContent 
         dividers 
-        className={classes.dialogContent}>
-        {
-          cargado &&
-          <PracticalForm
+        sx={classes.dialogContent}>
+        <PracticalForm
             stepId={stepId} 
             teoricoid={teoricoid}
             teorico={teorico} />
-        }
       </DialogContent>
       <DialogActions>
         <Button 
           autoFocus 
-          onClick={handleClose} 
+          onClick={onClose} 
           color="primary">
           {
             "Accept"

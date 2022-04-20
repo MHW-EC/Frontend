@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 
 import {
   Card,
@@ -21,6 +21,8 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import PracticalDialog from './PracticalDialog';
 // import DialogStats from './dialog-stats';
+import StepsContext from './../Context';
+
 import utils from '../../../utils';
 
 // import {
@@ -83,69 +85,69 @@ export default (props) => {
     stepId,
     parentComponent
   } = props || {};
+  const { steps, updateStep } = useContext(StepsContext);
+  const step = steps[Number(stepId)];
+
   const {
+    _id: classId,
     profesor: profesorName = "",
     profesorJoined: profesorDetail = {},
+    codigo: classCode,
+    paralelo: classNumber,
+    teorico_id: theoryClassId
     // lastParaleloProfesorJoined: lastStudentFeedback
   } = paralelo || {};
-  const [open, setOpen] = useState(false);
+  const [practicalClassesDisplayed, setPracticalClassesDisplayed] = useState(false);
   const [openStats, setOpenStats] = useState(false);
-  const [cargado, setCargado] = useState(false);
-  const [isAdded, setAdded] = useState("Add"); //necesariamente numerico y no bool
-
+  const {
+    selectedValues: stepSelectedValues = {},
+    // data: stepData,
+    // description: stepDescription
+  } = step || {};
+  const isAdded = 
+    stepSelectedValues[classCode]?.[theoryClassId]?.[classId] || 
+    stepSelectedValues[classCode]?.[classId]
 
   const handleAddRemove = () => {
-    if (isAdded == 'Add') {
-      // let materiaCode = paralelo['_id'].split('_')[0];
-      // let amount = countByTeorico(seleccionados, materiaCode);
-      // if (amount >= BOUNDARIES.COURSES.THEORY_CLASS.MAX) {
-      //   return;
-      // }
-      // dispatch(addSeleccionado(paralelo['_id']));
-      setAdded("Remove");
-    } else if (isAdded == 'Remove') {
-      // dispatch(removeSeleccionado(paralelo['_id']));
-      setAdded("Add");
+    if(!stepSelectedValues[classCode]) stepSelectedValues[classCode] = {};
+    if(theoryClassId) {
+      stepSelectedValues[classCode][theoryClassId] = {
+        ...stepSelectedValues[classCode]?.[theoryClassId],
+        [classId]: !stepSelectedValues[classCode]?.[theoryClassId]?.[classId]
+      }
+    }else{
+      stepSelectedValues[classCode][classId] = !stepSelectedValues[classCode]?.[classId];
     }
-    // if (paralelo['paralelos_practicos'].length === 0) {
-    //   isAdded
-    //     ? dispatch(addPaquete([paralelo], paralelo['_id']))
-    //     : dispatch(removePaquete(paralelo['_id']));
-    // }
+    updateStep(
+      stepId, 
+      {
+        selectedValues: stepSelectedValues
+      },
+      'selectedValues'
+    ); 
   };
 
   const fabs = [
     {
       color: 'primary',
       sx: classes.fab,
+      label: false,
       icon: <AddBoxOutlinedIcon />,
-      label: 'Add',
       tooltipNode: 'Añadir teórico',
     },
     {
       color: 'secondary',
       sx: classes.fab,
+      label: true,
       icon: <DeleteOutlinedIcon />,
-      label: 'Remove',
       tooltipNode: 'Remover teórico',
     },
   ];
-
-  const handleParAsociados = () => {
-    setOpen(true);
-    setCargado(true);
-  };
-  const handleCloseDialog = () => {
-    setOpen(false);
-  };
 
   const handleStats = () => {
     setOpenStats(true);
   };
 
-  const handleCloseDialogStats = () => {
-    setOpenStats(false);
-  };
   return paralelo ? (
     <Card
       sx={
@@ -184,7 +186,7 @@ export default (props) => {
                 <Zoom
                   key={String(idx)}
                   appear={false}
-                  in={isAdded === fab.label}
+                  in={(isAdded != undefined) == fab.label}
                   mountOnEnter
                   unmountOnExit
                 >
@@ -233,7 +235,6 @@ export default (props) => {
             }
           </>
         }
-      // style={{ padding: 12 }}
       />
       <Divider />
       <CardContent sx={classes.div}>
@@ -350,7 +351,7 @@ export default (props) => {
           <CardActions>
             <Button
               size="small"
-              onClick={handleParAsociados}
+              onClick={() => setPracticalClassesDisplayed(true)}
               color="primary"
               startIcon={<AddCircleOutlineOutlinedIcon />}
             >
@@ -359,10 +360,9 @@ export default (props) => {
             {
               <PracticalDialog
                 id="practicalMenu"
-                open={open}
-                cargado={cargado}
+                open={practicalClassesDisplayed}
                 keepMounted
-                onClose={handleCloseDialog}
+                onClose={() => setPracticalClassesDisplayed(false)}
                 teoricoid={paralelo['_id']}
                 teorico={paralelo}
                 stepId={stepId}

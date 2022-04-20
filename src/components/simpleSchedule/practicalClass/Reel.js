@@ -12,7 +12,7 @@ import {
   Skeleton,
   Box
 } from '@mui/material';
-import TheoryCard from './TheoryClass';
+import ClassCard from './ClassCard';
 
 // import CustomImageList from './CustomImageList';
 
@@ -32,6 +32,7 @@ const classes = {
   },
   cardActions: {
     backgroundColor: (theme) => theme.palette.primary.main,
+    paddingLeft: "16px"
   },
   cardContent: {
     height: '300px',
@@ -132,7 +133,7 @@ export default (props) => {
               {`THERE IS NO INFORMATION FOR ${theoryClassName} - ${theoryClassCode}`}
             </Typography>
             : theoryClasses.map((practicalClass, index) => (
-              <TheoryCard
+              <ClassCard
                 key={String(index)}
                 stepId={stepId}
                 paralelo={practicalClass}
