@@ -60,7 +60,7 @@ export default (props) => {
         {
           cargado &&
           <PracticalForm
-          stepId={stepId} 
+            stepId={stepId} 
             teoricoid={teoricoid}
             teorico={teorico} />
         }

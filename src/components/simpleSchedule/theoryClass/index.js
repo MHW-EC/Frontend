@@ -37,16 +37,13 @@ export default function TheoryClassStep(props) {
     rowCount: 0,
     rowsPerPageOptions: [10, 25, 50]
   });
-console.log({stepSelectedValues});
   const {
     isLoading
   } = process;
-
   const getElementId = (element) => element._id;
   const [queryString, setQuery] = useState("");
   const requestControler = useMemo(() => new AbortController(), []);
   const abortSignal = requestControler.signal;
-
 
   const tableColumns = useMemo(() => [
     { field: 'codigo', headerName: 'Code', width: 100 },
@@ -166,10 +163,6 @@ console.log({stepSelectedValues});
   return (
     <Grid
       container={true}
-      // spacing={3}
-      sx={{
-        paddingTop: '16px'
-      }}
       justifyContent="center"
       alignItems="center">
       <Grid
@@ -182,14 +175,18 @@ console.log({stepSelectedValues});
         <Box
           component="form"
           noValidate
-          autoComplete="off"
-        >
+          autoComplete="off">
           <FormControl 
             variant="outlined" 
             sx={{
             'width': '100%'
             }}>
-            <InputLabel htmlFor="component-outlined">{stepDescription}</InputLabel>
+            <InputLabel 
+              htmlFor="component-outlined">
+                {
+                  stepDescription
+                }
+            </InputLabel>
             <OutlinedInput
               id="component-outlined"
               value={queryString}

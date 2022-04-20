@@ -71,14 +71,6 @@ const classes = {
   avatar: {
     backgroundColor: 'gray',
   },
-  root: {
-    height: 'auto',
-    marginRight: '16px'
-  },
-  rootTop: {
-    borderColor: '#D4AF37',
-    marginRight: '16px'
-  },
   avatarTop: {
     backgroundColor: '#D4AF37',
   },
@@ -88,7 +80,8 @@ export default (props) => {
   const {
     paralelo,
     top,
-    stepId
+    stepId,
+    parentComponent
   } = props || {};
   const {
     profesor: profesorName = "",
@@ -106,7 +99,6 @@ export default (props) => {
       // let materiaCode = paralelo['_id'].split('_')[0];
       // let amount = countByTeorico(seleccionados, materiaCode);
       // if (amount >= BOUNDARIES.COURSES.THEORY_CLASS.MAX) {
-      //   console.log("max reached");
       //   return;
       // }
       // dispatch(addSeleccionado(paralelo['_id']));
@@ -158,12 +150,15 @@ export default (props) => {
     <Card
       sx={
         {
-          "display": "inline-block",
-          "height": "inherit",
-          ...(top
-            ? classes.rootTop
-            : classes.root)
-        }
+          display: parentComponent == "PracticalForm" ? "block" : "inline-block",
+          height: "-webkit-fill-available",
+          width: parentComponent == "PracticalForm" ? "100%" : "unset",
+          marginRight: parentComponent == "PracticalForm" ? "100%" : "16px",
+          ...(
+            top 
+              ? { borderColor: "#D4AF37" }
+              : {}
+          )}
       }
       variant="outlined">
       <CardHeader

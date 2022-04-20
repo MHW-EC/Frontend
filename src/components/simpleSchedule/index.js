@@ -176,14 +176,9 @@ class Steps extends React.Component {
           sx={{
             width: 'auto',
             height: "100vh",
-            paddingLeft: '16px',
-            paddingRight: "16px",
-            paddingBottom: "16px"
+            padding: '16px'
           }}>
           <Stepper 
-            sx={{
-              paddingTop: "16px"
-            }}
             activeStep={activeStepId}>
             {
               steps.map((step) => {
@@ -236,7 +231,7 @@ class Steps extends React.Component {
                     sx={{
                       display: 'flex',
                       flexDirection: 'row',
-                      pt: 2,
+                      pt: '16px',
                       justifyContent: 'center'
                     }}>
                     <Button
@@ -267,9 +262,14 @@ class Steps extends React.Component {
                       }
                     </Button>
                   </Box>
-                  {
-                    getComponentByStep(activeStepId)
-                  }
+                  <Box
+                    sx={{
+                      pt: '16px',
+                    }}>
+                    {
+                      getComponentByStep(activeStepId)
+                    }    
+                  </Box>
                 </React.Fragment>
               )
           }

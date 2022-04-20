@@ -66,9 +66,6 @@ export default function CareerStep(props) {
   return (
     <Grid
       container={true}
-      sx={{
-        paddingTop: '16px'
-      }}
       justifyContent="center"
       alignItems="center">
       <Grid

@@ -76,9 +76,6 @@ class App extends React.Component {
   componentDidUpdate(_, prevState) { }
 
   render() {
-    console.log("App render");
-    
-
     const {
       sideBarIsOpen,
       lightMode,
