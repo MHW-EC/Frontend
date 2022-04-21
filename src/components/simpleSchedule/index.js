@@ -7,10 +7,10 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
-import MainContext from './../Context';
 import CareerStep from './career';
 import TheoryClassStep from './theoryClass';
 import PracticalClassStep from './practicalClass';
+import Schedule from './schedule/tableView';
 
 class Steps extends React.Component {
 
@@ -111,6 +111,8 @@ class Steps extends React.Component {
         return <TheoryClassStep stepId={String(stepId)}/>
       case 2:
         return <PracticalClassStep stepId={String(stepId)} lastStepId={String(stepId - 1)}/>
+      case 3:
+        return <Schedule stepId={String(stepId)} lastStepId={String(stepId - 1)}/>
       default:
         return (<div>DEFAULT COMPONENT</div>)
     }
