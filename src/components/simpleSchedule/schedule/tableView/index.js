@@ -2,7 +2,8 @@ import React, { useEffect, useState, useCallback, useMemo, useContext } from 're
 import {
 	Pagination,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  Box
 } from '@mui/material';
 import SwipeableViews from 'react-swipeable-views';
 import ClassTable from './ClassTable';
@@ -88,41 +89,43 @@ export default (props) => {
     return requestBody;
   }, []);
 
-  useEffect((async () => {
-    if(!isLoading && !stepData){
-      try {
-        setProcess({
-          isLoading: true,
-          progress: {
-            variant: 'indeterminate'
-          }
-        })
-        const scheduleId = await generate({
-          body: preparePayload(lastStepData, lastStepSelectedValues)
-        }, requestControler.signal)
-        updateStep(stepId, {
-          data: scheduleId,
-          error: undefined
-        })
-      } catch (error) {
-        if (!error instanceof DOMException ||
-          error?.message !== 'The user aborted a request.') {
-          updateStep(stepId, {
-            data: undefined,
-            error: error instanceof Error 
-              ? error.message 
-              : error
+  useEffect(() => {
+    (async () => {
+      if(!isLoading && !stepData){
+        try {
+          setProcess({
+            isLoading: true,
+            progress: {
+              variant: 'indeterminate'
+            }
           })
+          const scheduleId = await generate({
+            body: preparePayload(lastStepData, lastStepSelectedValues)
+          }, requestControler.signal)
+          updateStep(stepId, {
+            data: scheduleId,
+            error: undefined
+          })
+        } catch (error) {
+          if (!error instanceof DOMException ||
+            error?.message !== 'The user aborted a request.') {
+            updateStep(stepId, {
+              data: undefined,
+              error: error instanceof Error 
+                ? error.message 
+                : error
+            })
+          }
         }
+        // setProcess({
+        //   isLoading: false
+        // })
       }
-      // setProcess({
-      //   isLoading: false
-      // })
-    }
-  })(), [])
+    })()
+  }, []);
   const horariosGenerados = [];
   return !isLoading ? (
-    <div className={classes.root}>
+    <div sx={classes.root}>
       <SwipeableViews
         disabled
         axis={'x-reverse'}
@@ -147,7 +150,7 @@ export default (props) => {
     </div>
   ) : (
     <Backdrop
-      className={classes.backdrop}
+      sx={classes.backdrop}
       open={!(horariosGenerados && horariosGenerados.length > 0)}
     >
       <CircularProgress color="inherit" />

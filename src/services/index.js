@@ -40,7 +40,7 @@ export async function generate(params, abortSignal) {
   try {
     response = await fetch(apiUrl.toString(), {
       method: 'PUT',
-      body: JSON.stringify(body),
+      body: JSON.stringify({payload: body}),
       signal: abortSignal
     });
   } catch (error) {
