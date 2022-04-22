@@ -44,17 +44,20 @@ const TableWrapper = (props) => {
               ...pagination,
               loading: isLoading,
               pagination: true,
-              paginationMode: "server",
-              onPageChange: (page) => setPagination((prev) => ({ ...prev, page })),
-              onPageSizeChange: (pageSize) => setPagination((prev) => ({ ...prev, pageSize, page: 0 }))
+              paginationMode: 'server',
+              onPageChange: (page) => setPagination((prev) => ({ ...prev,
+                page })),
+              onPageSizeChange: (pageSize) => setPagination((prev) => ({ ...prev,
+                pageSize,
+                page: 0 }))
             }
             : {})
         }
         disableSelectionOnClick={true}
-        />
+      />
     </div>
-  )
-}
+  );
+};
 
 export default function TransferTable(props) {
   const {
@@ -75,16 +78,19 @@ export default function TransferTable(props) {
     pagination,
     setPagination
   } = leftExtra;
-  console.log({left, right, leftChecked, rightChecked});
+  console.log({ left,
+    right,
+    leftChecked,
+    rightChecked });
 
   const handleCheckedToRight = () => {
-    setRight(utils.Array.union(right, leftChecked, rowsEquals))
+    setRight(utils.Array.union(right, leftChecked, rowsEquals));
   };
 
   const handleCheckedToLeft = () => {
     const result = utils.Array.difference(right, rightChecked, rowsEquals);
-    setRight(result)
-    setRightChecked(result)
+    setRight(result);
+    setRightChecked(result);
   };
 
   return (
@@ -100,8 +106,8 @@ export default function TransferTable(props) {
           rowIdGetter={getRowId}
           style={tableStyle}
           columns={columns}
-          onSelectionModelChange={(items)=> {
-            setLeftChecked(items)
+          onSelectionModelChange={(items) => {
+            setLeftChecked(items);
           }}
           isLoading={isLoading}
           pagination={pagination}
@@ -147,10 +153,10 @@ export default function TransferTable(props) {
           rowIdGetter={getRowId}
           style={tableStyle}
           columns={columns}
-          onSelectionModelChange={(items)=> {
+          onSelectionModelChange={(items) => {
             setRightChecked(items);
           }}
-          />
+        />
       </Grid>
     </>
   );

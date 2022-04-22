@@ -24,6 +24,7 @@
     "webpack": "^5.71.0"
   },
   "scripts": {
+    "lint": "eslint --fix --ext .js ./",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -46,5 +47,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^8.14.0",
+    "eslint-plugin-react": "^7.29.4"
   }
 }

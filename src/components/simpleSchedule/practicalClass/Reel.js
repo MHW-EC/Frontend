@@ -22,45 +22,45 @@ const classes = {
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
   rootCard: {
     maxWidth: 400,
     alignContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   cardActions: {
     backgroundColor: (theme) => theme.palette.primary.main,
-    paddingLeft: "16px"
+    paddingLeft: '16px'
   },
   cardContent: {
     height: '300px',
     padding: 2,
-    overflow: "auto",
-    whiteSpace: "nowrap"
+    overflow: 'auto',
+    whiteSpace: 'nowrap'
   },
   palette: {
     primary: {
       light: '#757ce8',
       main: '#3f50b5',
       dark: '#002884',
-      contrastText: '#fff',
+      contrastText: '#fff'
     },
     secondary: {
       light: '#ff7961',
       main: '#f44336',
       dark: '#ba000d',
-      contrastText: '#000',
+      contrastText: '#000'
     },
     black: '#000000',
-    white: '#ffffff',
+    white: '#ffffff'
   },
   nombreMateria: {
     color: '#ffffff',
-    width: '-webkit-fill-available',
-  },
-}
+    width: '-webkit-fill-available'
+  }
+};
 
 export default (props) => {
   // const { setProcess } = useContext(MainContext);
@@ -92,8 +92,8 @@ export default (props) => {
           setLoading(true);
 
           const result = await getData({
-            resourceName: "TheoryClass",
-            query: "getStatsByCode",
+            resourceName: 'TheoryClass',
+            query: 'getStatsByCode',
             queryParams: {
               classCode: theoryClassCode
             }
@@ -108,18 +108,18 @@ export default (props) => {
               error: undefined
             },
             'data'
-          )
+          );
         } catch (error) {
           updateStep(stepId, {
             // data: undefined,
             error: error instanceof Error
               ? error.message
               : error
-          })
+          });
         }
         setLoading(false);
       }
-    })()
+    })();
   }, []);
 
   return theoryClasses ? (
@@ -156,10 +156,12 @@ export default (props) => {
         <Skeleton animation="wave" variant="rect" height={250} />
       </CardContent>
       <CardActions>
-        <Box sx={{ width: '50%', marginLeft: 'auto', marginRight: 'auto' }}>
+        <Box sx={{ width: '50%',
+          marginLeft: 'auto',
+          marginRight: 'auto' }}>
           <Skeleton animation="wave" variant="text" height={15} />
         </Box>
       </CardActions>
     </Card>
   );
-}
+};

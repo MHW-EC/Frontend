@@ -11,8 +11,12 @@ import GroupIcon from '@mui/icons-material/Group';
 import MainContext from './../Context';
 
 const ACTIONS = [
-  { icon: <EventNoteIcon />, name: 'New schedule', path: '/simple-schedule' },
-  { icon: <GroupIcon />, name: 'Multiplayer (soon)', path: '/' }
+  { icon: <EventNoteIcon />,
+    name: 'New schedule',
+    path: '/simple-schedule' },
+  { icon: <GroupIcon />,
+    name: 'Multiplayer (soon)',
+    path: '/' }
 ];
 
 const Options = () => {
@@ -39,28 +43,28 @@ const Options = () => {
         {
           ACTIONS.map((action) => (
             <SpeedDialAction
-                href={action.path}
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
-                onClick={handleClose}
-              />
+              href={action.path}
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+              onClick={handleClose}
+            />
           ))
         }
         {
           lightMode
             ? <SpeedDialAction
-              key={"Night mode"}
+              key={'Night mode'}
               icon={<NightlightRoundIcon />}
-              tooltipTitle={"Night mode"}
+              tooltipTitle={'Night mode'}
               onClick={() => {
                 handleClose();
                 toogleLightMode();
               }} />
             : <SpeedDialAction
-              key={"Day mode"}
+              key={'Day mode'}
               icon={<LightModeIcon />}
-              tooltipTitle={"Day mode"}
+              tooltipTitle={'Day mode'}
               onClick={() => {
                 handleClose();
                 toogleLightMode();
@@ -70,5 +74,5 @@ const Options = () => {
       </SpeedDial>
     </>
   );
-}
+};
 export default Options;

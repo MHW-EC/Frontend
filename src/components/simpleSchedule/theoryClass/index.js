@@ -20,7 +20,7 @@ import TransferTable from './../../../sharedComponents/TransferTable';
 import Grid from '@mui/material/Grid';
 
 export default function TheoryClassStep(props) {
-  const { stepId } = props
+  const { stepId } = props;
   const { process, setProcess } = useContext(MainContext);
   const { steps, updateStep } = useContext(StepsContext);
   const step = steps[Number(stepId)];
@@ -41,16 +41,26 @@ export default function TheoryClassStep(props) {
     isLoading
   } = process;
   const getElementId = (element) => element._id;
-  const [queryString, setQuery] = useState("");
+  const [queryString, setQuery] = useState('');
   const requestControler = useMemo(() => new AbortController(), []);
   const abortSignal = requestControler.signal;
 
   const tableColumns = useMemo(() => [
-    { field: 'codigo', headerName: 'Code', width: 100 },
-    { field: 'nombre', headerName: 'Name', width: 300 },
-    { field: 'paralelo', headerName: 'Course', width: 50 },
-    { field: 'profesor', headerName: 'Teacher', width: 300 },
-    { field: '_id', headerName: 'Id', width: 125 }
+    { field: 'codigo',
+      headerName: 'Code',
+      width: 100 },
+    { field: 'nombre',
+      headerName: 'Name',
+      width: 300 },
+    { field: 'paralelo',
+      headerName: 'Course',
+      width: 50 },
+    { field: 'profesor',
+      headerName: 'Teacher',
+      width: 300 },
+    { field: '_id',
+      headerName: 'Id',
+      width: 125 }
   ], []);
 
   useEffect(() => {
@@ -73,8 +83,8 @@ export default function TheoryClassStep(props) {
       pageSize
     } = pagination;
     return getData({
-      resourceName: "TheoryClass",
-      query: "getByQuery",
+      resourceName: 'TheoryClass',
+      query: 'getByQuery',
       queryParams: {
         target: queryString,
         pagination: {
@@ -84,7 +94,7 @@ export default function TheoryClassStep(props) {
       },
       projectedFields: tableColumns.map(tC => tC.field)
     }, abortSignal
-    )
+    );
   }, [pagination, tableColumns, queryString, abortSignal]);
 
   useEffect(() => {
@@ -104,18 +114,18 @@ export default function TheoryClassStep(props) {
               data: result,
               error: undefined
             }
-          )
+          );
         } catch (error) {
           updateStep(stepId, {
             data: undefined,
             error: error instanceof Error
               ? error.message
               : error
-          })
+          });
         }
         setProcess({
           isLoading: false
-        })
+        });
       }
     })();
   }, [pagination.page, pagination.pageSize]);
@@ -128,7 +138,7 @@ export default function TheoryClassStep(props) {
           progress: {
             variant: 'indeterminate'
           }
-        })
+        });
         const [
           result, totalMatches
         ] = await Promise.all([resultCb(), totalMatchesCb()]);
@@ -138,15 +148,15 @@ export default function TheoryClassStep(props) {
             data: result,
             error: undefined
           }
-        )
+        );
         setPagination({
           ...pagination,
           rowCount: totalMatches
-        })
+        });
         setProcess({
           isLoading: false
-        })
-      }catch(error){
+        });
+      } catch (error) {
         if (!error instanceof DOMException ||
           error?.message !== 'The user aborted a request.') {
           updateStep(stepId, {
@@ -154,7 +164,7 @@ export default function TheoryClassStep(props) {
             error: error instanceof Error 
               ? error.message 
               : error
-          })
+          });
         }
       }
     }
@@ -179,21 +189,21 @@ export default function TheoryClassStep(props) {
           <FormControl 
             variant="outlined" 
             sx={{
-            'width': '100%'
+              'width': '100%'
             }}>
             <InputLabel 
               htmlFor="component-outlined">
-                {
-                  stepDescription
-                }
+              {
+                stepDescription
+              }
             </InputLabel>
             <OutlinedInput
               id="component-outlined"
               value={queryString}
-              onChange={(event) => { setQuery(event.target.value) }}
+              onChange={(event) => { setQuery(event.target.value); }}
               label={stepDescription}
               onKeyPress={(event) => {
-                if (event.code === "Enter") {
+                if (event.code === 'Enter') {
                   event.preventDefault();
                   handleSearch();
                 }
@@ -239,12 +249,13 @@ export default function TheoryClassStep(props) {
               {
                 selectedValues: values
               }
-            )
+            );
           }}
           rightChecked={selectedChecked}
           setRightChecked={setSelectedChecked}
           columns={tableColumns}
-          tableStyle={{ height: 400, width: '100%' }}
+          tableStyle={{ height: 400,
+            width: '100%' }}
           getRowId={getElementId}
           rowsEquals={(row, anotherRow) => row._id === anotherRow._id} />
       </Grid>
