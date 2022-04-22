@@ -34,7 +34,6 @@ const SIDE_BAR_ITEMS = [
 ]
 
 const SideBar = () => {
-  console.log("SideBar render");
   const {
     sideBarIsOpen, toogleSideBar
   } = useContext(MainContext);

@@ -7,8 +7,10 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
-import MainContext from './../Context';
 import CareerStep from './career';
+import TheoryClassStep from './theoryClass';
+import PracticalClassStep from './practicalClass';
+import Schedule from './schedule/tableView';
 
 class Steps extends React.Component {
 
@@ -105,18 +107,29 @@ class Steps extends React.Component {
     switch (stepId) {
       case 0:
         return <CareerStep stepId={String(stepId)} />
+      case 1:
+        return <TheoryClassStep stepId={String(stepId)}/>
+      case 2:
+        return <PracticalClassStep stepId={String(stepId)} lastStepId={String(stepId - 1)}/>
+      case 3:
+        return <Schedule stepId={String(stepId)} lastStepId={String(stepId - 1)}/>
       default:
         return (<div>DEFAULT COMPONENT</div>)
     }
   }
 
-  updateStep = (stepId, newStep) => {
-    console.log("Old", this.state.steps[stepId]);
-    console.log("New", newStep);
-
-    this.setState({
-      steps: this.state.steps.map(step => {
+  updateStep = (stepId, newStep, field) => {
+    this.setState((currentState) => ({
+      steps: currentState.steps.map(step => {
         if (step.id == stepId) {
+          if(field &&
+             newStep[field] ){
+               const merged = Object.assign({}, step[field], newStep[field]);
+            return {
+              ...step,
+              [field]: merged
+            }
+          }
           return {
             ...step,
             ...newStep
@@ -124,7 +137,7 @@ class Steps extends React.Component {
         }
         return step;
       })
-    })
+    }))
   }
 
   render() {
@@ -134,7 +147,7 @@ class Steps extends React.Component {
         isLoading
       } = {}
     } = this.context;
-    console.log("context", this.context);
+
     const {
       steps,
       activeStepId
@@ -159,8 +172,14 @@ class Steps extends React.Component {
           updateStep,
           steps
         }}>
-        <Box m={6} mt={3} sx={{ width: 'auto' }}>
-          <Stepper activeStep={activeStepId}>
+        <Box 
+          sx={{
+            width: 'auto',
+            height: "100vh",
+            padding: '16px'
+          }}>
+          <Stepper 
+            activeStep={activeStepId}>
             {
               steps.map((step) => {
                 const { id, label, error } = step
@@ -212,7 +231,7 @@ class Steps extends React.Component {
                     sx={{
                       display: 'flex',
                       flexDirection: 'row',
-                      pt: 2,
+                      pt: '16px',
                       justifyContent: 'center'
                     }}>
                     <Button
@@ -243,9 +262,14 @@ class Steps extends React.Component {
                       }
                     </Button>
                   </Box>
-                  {
-                    getComponentByStep(activeStepId)
-                  }
+                  <Box
+                    sx={{
+                      pt: '16px',
+                    }}>
+                    {
+                      getComponentByStep(activeStepId)
+                    }    
+                  </Box>
                 </React.Fragment>
               )
           }
@@ -254,5 +278,5 @@ class Steps extends React.Component {
     )
   }
 }
-Steps.contextType = MainContext;
+// Steps.contextType = MainContext;
 export default Steps;
