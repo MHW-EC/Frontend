@@ -10,6 +10,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { getData } from './../../../services';
 
 import InputLabel from '@mui/material/InputLabel';
+import HelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -27,7 +28,8 @@ export default function TheoryClassStep(props) {
   const {
     selectedValues: stepSelectedValues = [],
     data: stepData = [],
-    description: stepDescription
+    description: stepDescription,
+    helperText: stepHelperText,
   } = step || {};
   const [searchChecked, setSearchChecked] = useState([]);
   const [selectedChecked, setSelectedChecked] = useState([]);
@@ -51,10 +53,10 @@ export default function TheoryClassStep(props) {
       width: 100 },
     { field: 'nombre',
       headerName: 'Name',
-      width: 300 },
+      width: 350 },
     { field: 'paralelo',
       headerName: 'Course',
-      width: 50 },
+      width: 100 },
     { field: 'profesor',
       headerName: 'Teacher',
       width: 300 },
@@ -222,6 +224,9 @@ export default function TheoryClassStep(props) {
                 </InputAdornment>
               }
             />
+            <HelperText>
+              {stepHelperText}
+            </HelperText>
           </FormControl>
         </Box>
       </Grid>
@@ -230,7 +235,6 @@ export default function TheoryClassStep(props) {
         sx={{
           paddingTop: '16px'
         }}
-        // spacing={2}
         justifyContent="center"
         alignItems="center">
         <TransferTable
@@ -254,8 +258,10 @@ export default function TheoryClassStep(props) {
           rightChecked={selectedChecked}
           setRightChecked={setSelectedChecked}
           columns={tableColumns}
-          tableStyle={{ height: 400,
-            width: '100%' }}
+          tableStyle={{
+            height: 400,
+            width: '100%'
+          }}
           getRowId={getElementId}
           rowsEquals={(row, anotherRow) => row._id === anotherRow._id} />
       </Grid>

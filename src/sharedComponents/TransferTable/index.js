@@ -3,8 +3,9 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import utils from './../utils';
 import { DataGrid } from '@mui/x-data-grid';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
 const TableWrapper = (props) => {
   const {
     rows,
@@ -128,7 +129,7 @@ export default function TransferTable(props) {
             disabled={leftChecked.length === 0}
             aria-label="move selected right"
           >
-            <ContentCopyIcon/>
+            <ArrowForwardIosIcon />
           </Button>
           <Button
             sx={{ my: 0.5 }}
@@ -138,7 +139,7 @@ export default function TransferTable(props) {
             disabled={rightChecked.length === 0}
             aria-label="move selected left"
           >
-            <DeleteOutlineIcon/>
+            <ArrowBackIosNewIcon />
           </Button>
         </Grid>
       </Grid>

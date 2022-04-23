@@ -30,6 +30,7 @@ class Steps extends React.Component {
         name: 'theoryClass',
         label: 'Theory class',
         description: 'Choose some theory classes',
+        helperText: '* Hit Enter to search',
         error: undefined,
         data: undefined,
         selectedValues: undefined
@@ -174,7 +175,6 @@ class Steps extends React.Component {
           sx={{
             width: 'auto',
             height: "100vh",
-            padding: '16px'
           }}>
           <Stepper 
             activeStep={activeStepId}>

@@ -3,7 +3,8 @@ import React from 'react';
 import {
   Button,
   Typography,
-  Box
+  Box,
+  Grid
 } from '@mui/material';
 import {
   Link
@@ -20,27 +21,35 @@ const Home = () => {
         justifyContent: 'center',
         alignItems: 'center'
       }}>
-      <Typography
-        variant="h1">
-        {'MHW'}
-      </Typography>
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        >
+          <Grid item>
+            <img src='/logo192.png' />
+          </Grid>
+        </Grid>
       <Link
-        style={{ textDecoration: 'none' }}
+        style={{ textDecoration: 'none', width: '250px' }}
         to={'/simple-schedule'}>
         <Button
-          sx={{ mt: 2 }}
+          sx={{ mt: 4 }}
+          fullWidth
           variant="contained"
           color="primary">
           {'Simple schedule'}
         </Button>
       </Link>
       <Link
-        style={{ textDecoration: 'none' }}
+        style={{ textDecoration: 'none', width: '250px' }}
         to={'/'}>
         <Button
           sx={{ mt: 2 }}
           variant="contained"
           color="primary"
+          fullWidth
         >
           {'Multiplayer mode (soon)'}
         </Button>
