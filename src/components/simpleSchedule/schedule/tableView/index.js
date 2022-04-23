@@ -1,8 +1,16 @@
-import React, { useEffect, useState, useCallback, useMemo, useContext } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useContext,
+} from 'react';
 import {
   Pagination,
   Backdrop,
-  CircularProgress
+  LinearProgress,
+  Grid,
+  Typography,
 } from '@mui/material';
 import SwipeableViews from 'react-swipeable-views';
 import ClassTable from './ClassTable';
@@ -12,49 +20,52 @@ import { generate } from './../../../../services';
 // import ButtonDialog from './full-dialog';
 
 import { app } from '../../../../firebase';
-import { getFirestore } from "firebase/firestore";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { getFirestore } from 'firebase/firestore';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { Box } from '@mui/system';
+import ReactTextTransition, { presets } from "react-text-transition";
 
 const db = getFirestore(app);
 
 const classes = {
   root: {
     '& > * + *': {
-      marginTop: theme => theme.spacing(2),
+      marginTop: (theme) => theme.spacing(2),
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'column',
-      display: 'flex'
-    }
+      display: 'flex',
+    },
   },
   backdrop: {
-    zIndex: theme => theme.zIndex.drawer + 1,
-    color: '#fff'
-  }
+    zIndex: (theme) => theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 };
 
+const randomText = [
+  'Mejoramiento es todo 💪🏼',
+  'La materia se repite, una fiesta no 🍻',
+  'Si te tocó baldeo, ten varias opciones de horarios 👀',
+];
+
 const TableView = (props) => {
-  
   const { stepId, lastStepId } = props;
-  const { process, setProcess } = useContext(MainContext);
   const { steps, updateStep } = useContext(StepsContext);
   const step = steps[Number(stepId)];
-  const {
-    // selectedValues: stepSelectedValues,
-    data: stepData
-    // description: stepDescription
-  } = step;
+  const { data: stepData } = step;
   const lastStep = steps[Number(lastStepId)];
   const {
     data: lastStepData = {},
-    selectedValues: lastStepSelectedValues = {}
+    selectedValues: lastStepSelectedValues = {},
   } = lastStep;
-  const {
-    isLoading
-  } = process;
-  const [open, setOpen] = useState();
+  
+  const [ isLoading, setLoading ] = useState();
+  const [dataFirebase, setDataFirebase] = useState();
+  const [textIdx, setTextIdx] = useState(0);
   const [currentTableIndex, setCurrentTable] = useState(1);
-  const requestControler = useMemo(() => new AbortController(), []);
+  const [horariosGenerados, setHorariosGenerados] = useState([]);
+  const requestController = useMemo(() => new AbortController(), []);
   const preparePayload = useCallback((lastData = {}, lastSelected = {}) => {
     const requestBody = [];
     for (const classCode in lastSelected) {
@@ -63,16 +74,23 @@ const TableView = (props) => {
           //empty array
           const classPackage = [];
           if (lastSelected[classCode][theoryClassId]) {
-            const theoryClassObject = lastData[classCode].find(_class => _class._id == theoryClassId);
+            const theoryClassObject = lastData[classCode].find(
+              (_class) => _class._id == theoryClassId
+            );
             if (theoryClassObject) classPackage.push(theoryClassObject);
             //extract theory class
             //append to empty array
           }
           if (lastSelected[classCode][theoryClassId] instanceof Object) {
-            for (const practicalClassId in lastSelected[classCode][theoryClassId]) {
+            for (const practicalClassId in lastSelected[classCode][
+              theoryClassId
+            ]) {
               if (lastSelected[classCode][theoryClassId][practicalClassId]) {
-                const practicalClassObject = lastData[theoryClassId].find(_class => _class._id == practicalClassId);
-                if (practicalClassObject) classPackage.push(practicalClassObject);
+                const practicalClassObject = lastData[theoryClassId].find(
+                  (_class) => _class._id == practicalClassId
+                );
+                if (practicalClassObject)
+                  classPackage.push(practicalClassObject);
                 //extract practical class
                 //append to empty array
               }
@@ -85,42 +103,30 @@ const TableView = (props) => {
     }
     return requestBody;
   }, []);
-  const [dataFirebase, setDataFirebase] = useState();
-  const [horariosGenerados, setHorariosGenerados] = useState([]);
   
   const getJobData = (docId) => {
-    console.log('getJobData docId: ', docId, db);
-    const q = query(collection(db, 'geneated-schedules'), where('uuid', '==', docId));
-    const unSubFunc = onSnapshot(q, (snapshot) => {
-      console.log('getJobData snapshot: ', snapshot);
-      const snapChanges = snapshot.docChanges();
-      if (snapChanges.length === 0) {
-        console.log('snapChanges.length === 0');
-        return;
-      }
-      const docData = snapChanges[0]?.doc.data();
-      console.log('docRaw: ', docData);
-      setProcess({
-        isLoading: true,
-        progress: {
-          variant: "determinate",
-          value: docData.percentage || 0,
+    const q = query(
+      collection(db, 'geneated-schedules'),
+      where('uuid', '==', docId)
+    );
+    const unSubFunc = onSnapshot(
+      q,
+      (snapshot) => {
+        const snapChanges = snapshot.docChanges();
+        if (snapChanges.length === 0) {
+          return;
         }
-      });
-      setDataFirebase(docData);
-    }, (error) => console.log('error: ', error));
-    console.log('unSubFunc: ', !!unSubFunc);	
+        const docData = snapChanges[0]?.doc.data();
+        setDataFirebase(docData);
+      },
+      (error) => console.log('error: ', error)
+    );
     window.unSubFunc = unSubFunc;
-  }
+  };
 
   useEffect(() => {
-    console.log('Effect firebase', !!window.unSubFunc);
     if (dataFirebase?.percentage === 100) {
-      setProcess({
-        value: 100,
-        isLoading: false,
-        variant: "determinate"
-      });
+      setLoading(false);
       window.unSubFunc();
       setHorariosGenerados(dataFirebase.horarios);
     }
@@ -130,45 +136,38 @@ const TableView = (props) => {
     (async () => {
       if (!isLoading && !stepData) {
         try {
-          setProcess({
-            isLoading: true,
-            progress: {
-              variant: 'indeterminate'
-            }
-          });
+          setLoading(true);
           const scheduleId = await generate(
             { body: preparePayload(lastStepData, lastStepSelectedValues) },
-            requestControler.signal
+            requestController.signal
           );
           updateStep(stepId, {
             data: scheduleId,
-            error: undefined
+            error: undefined,
           });
           getJobData(scheduleId);
         } catch (error) {
-          if (!error instanceof DOMException ||
-            error?.message !== 'The user aborted a request.') {
+          if (
+            !error instanceof DOMException ||
+            error?.message !== 'The user aborted a request.'
+          ) {
             updateStep(stepId, {
               data: undefined,
-              error: error instanceof Error 
-                ? error.message 
-                : error
+              error: error instanceof Error ? error.message : error,
             });
           }
+          setLoading(false);
         }
-        // setProcess({
-        //   isLoading: false
-        // })
       }
     })();
   }, []);
+  useEffect(
+    () => setInterval(() => setTextIdx(prev => prev + 1), 6000),
+    []
+  );
   return !isLoading ? (
     <div sx={classes.root}>
-      <SwipeableViews
-        disabled
-        axis={'x-reverse'}
-        index={currentTableIndex - 1}
-      >
+      <SwipeableViews disabled axis={'x-reverse'} index={currentTableIndex - 1}>
         {horariosGenerados.map((horario, index) => (
           <React.Fragment key={index}>
             <ClassTable numHorario={index + 1} horario={horario} />
@@ -189,9 +188,30 @@ const TableView = (props) => {
   ) : (
     <Backdrop
       sx={classes.backdrop}
-      open={!(horariosGenerados && horariosGenerados.length > 0)}
+      open={!(horariosGenerados && horariosGenerados.length > 0) || true}
     >
-      {'We are generating your schedules, progress: '} {dataFirebase?.percentage || 0}%
+      <Grid
+        container
+        spacing={5}
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item xs={6}>
+          <ReactTextTransition
+            style={{ fontSize: '32px' }}
+            text={randomText[textIdx % randomText.length]}
+            overflow
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <Box sx={{ width: "350px"}}>
+            <LinearProgress
+              variant={!!dataFirebase?.percentage ? 'determinate' : 'indeterminate'}
+              value={dataFirebase?.percentage}/>
+          </Box>
+        </Grid>
+      </Grid>
     </Backdrop>
   );
 };
