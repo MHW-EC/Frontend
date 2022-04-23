@@ -12,26 +12,26 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 import GroupIcon from '@mui/icons-material/Group';
 import {
   Link
-} from "react-router-dom";
+} from 'react-router-dom';
 
 const SIDE_BAR_ORIENTATION = 'left';
 const SIDE_BAR_ITEMS = [
   {
-    label: "Home",
+    label: 'Home',
     path: '/',
     icon: () => <HomeIcon />
   },
   {
-    label: "Simple schedule",
+    label: 'Simple schedule',
     path: '/simple-schedule',
     icon: () => <EventNoteIcon />
   },
   {
-    label: "Multiplayer (Soon)",
+    label: 'Multiplayer (Soon)',
     path: '/',
     icon: () => <GroupIcon />
   }
-]
+];
 
 const SideBar = () => {
   const {
@@ -40,37 +40,38 @@ const SideBar = () => {
  
   return (
     <Drawer
-        anchor={SIDE_BAR_ORIENTATION}
-        open={sideBarIsOpen}
-        onClose={() => toogleSideBar()}
+      anchor={SIDE_BAR_ORIENTATION}
+      open={sideBarIsOpen}
+      onClose={() => toogleSideBar()}
+    >
+      <Box
+        sx={{ width: 250 }}
+        role="presentation"
+        onClick={() => toogleSideBar()}
+        onKeyDown={() => toogleSideBar()}
       >
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={() => toogleSideBar()}
-          onKeyDown={() => toogleSideBar()}
-        >
-          <List>
-            {
-              SIDE_BAR_ITEMS.map(({ label, path, icon: Icon }, index) => (
-                <ListItem 
-                  button
-                  key={label}>
-                  <ListItemIcon>
-                    <Icon />
-                  </ListItemIcon>
-                  <Link 
-                    to={path}
-                    style={{ textDecoration: 'auto', color: 'inherit' }}>
-                    <ListItemText 
-                      primary={label} />
-                  </Link>
-                </ListItem>
+        <List>
+          {
+            SIDE_BAR_ITEMS.map(({ label, path, icon: Icon }, index) => (
+              <ListItem 
+                button
+                key={label}>
+                <ListItemIcon>
+                  <Icon />
+                </ListItemIcon>
+                <Link 
+                  to={path}
+                  style={{ textDecoration: 'auto',
+                    color: 'inherit' }}>
+                  <ListItemText 
+                    primary={label} />
+                </Link>
+              </ListItem>
             ))}
-          </List>
-        </Box>
-      </Drawer>
-  )
-}
+        </List>
+      </Box>
+    </Drawer>
+  );
+};
 
 export default SideBar;

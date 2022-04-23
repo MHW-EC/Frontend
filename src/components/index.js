@@ -129,8 +129,9 @@ class App extends React.Component {
                     key={index}
                     path={route.path}
                     exact={route.exact}
-                    children={<route.component />}
-                  />
+                  >
+                    <route.component />
+                  </Route>
                 ))
               }
             </Switch>

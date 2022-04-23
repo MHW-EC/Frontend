@@ -7,43 +7,43 @@ const defaultTheme = createMuiTheme({
       light: '#AAF1FC',
       main: '#1665A6',
       dark: '#0D4583',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     secondary: {
       light: '#FDDFAD',
       main: '#f48c32',
       dark: '#8D360F',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     error: {
       light: '#c4414b',
       main: '#8e0023',
       dark: '#5a0000',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     warning: {
       light: '#f3a34b',
       main: '#bc741b',
       dark: '#874800',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     success: {
       light: '#5ccb8c',
       main: '#21995e',
       dark: '#006a33',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     info: {
       light: '#6f9dff',
       main: '#326fcc',
       dark: '#00459a',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     background: {
       paper: '#fff',
-      default: '#fafafa',
-    },
-  },
+      default: '#fafafa'
+    }
+  }
 });
 const darkTheme = createMuiTheme({
   palette: {
@@ -52,42 +52,42 @@ const darkTheme = createMuiTheme({
       light: '#AAF1FC',
       main: '#3482C1',
       dark: '#0D4583',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     secondary: {
       light: '#FDDFAD',
       main: '#f48c32',
       dark: '#8D360F',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     error: {
       light: '#c4414b',
       main: '#8e0023',
       dark: '#5a0000',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     warning: {
       light: '#f3a34b',
       main: '#bc741b',
       dark: '#874800',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     success: {
       light: '#5ccb8c',
       main: '#21995e',
       dark: '#006a33',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     info: {
       light: '#6f9dff',
       main: '#326fcc',
       dark: '#00459a',
-      contrastText: '#ffffff',
+      contrastText: '#ffffff'
     },
     background: {
       paper: '#333333',
-      default: '#212121',
-    },
-  },
+      default: '#212121'
+    }
+  }
 });
 export { defaultTheme, darkTheme };

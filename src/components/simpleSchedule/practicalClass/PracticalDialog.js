@@ -12,16 +12,16 @@ const classes = {
   root: {
     width: '100%',
     maxWidth: 360,
-    backgroundColor: (theme) => theme.palette.primary.paper,
+    backgroundColor: (theme) => theme.palette.primary.paper
   },
   paper: {
     width: '80%',
-    maxHeight: 435,
+    maxHeight: 435
   },
   dialogContent: {
     alignItems: 'center',
-    padding: 0,
-  },
+    padding: 0
+  }
 };
 
 export default (props) => {
@@ -37,7 +37,6 @@ export default (props) => {
   return (
     <Dialog
       fullWidth={true}
-      disableBackdropClick
       disableEscapeKeyDown
       maxWidth="xs"
       aria-labelledby="confirmation-dialog-title"
@@ -46,15 +45,15 @@ export default (props) => {
     >
       <DialogTitle 
         id="confirmation-dialog-title">
-        {"Select practical class"}
+        {'Select practical class'}
       </DialogTitle>
       <DialogContent 
         dividers 
         sx={classes.dialogContent}>
         <PracticalForm
-            stepId={stepId} 
-            teoricoid={teoricoid}
-            teorico={teorico} />
+          stepId={stepId} 
+          teoricoid={teoricoid}
+          teorico={teorico} />
       </DialogContent>
       <DialogActions>
         <Button 
@@ -62,10 +61,10 @@ export default (props) => {
           onClick={onClose} 
           color="primary">
           {
-            "Accept"
+            'Accept'
           }
         </Button>
       </DialogActions>
     </Dialog>
   );
-}
+};

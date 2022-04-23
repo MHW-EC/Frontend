@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components';
 import { createBrowserHistory } from 'history';
+import './firebase';
 const history = createBrowserHistory();
 //import reportWebVitals from './reportWebVitals';
 

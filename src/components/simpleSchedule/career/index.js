@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import { getData } from './../../../services';
 
 export default function CareerStep(props) {
-  const { stepId } = props
+  const { stepId } = props;
   const { process, setProcess } = useContext(MainContext);
   const { steps, updateStep } = useContext(StepsContext);
   const [open, setOpen] = useState(false);
@@ -16,11 +16,11 @@ export default function CareerStep(props) {
   const {
     selectedValues: stepSelectedValues,
     data: stepData,
-    description: stepDescription,
+    description: stepDescription
   } = step;
   const {
     isLoading
-  } = process
+  } = process;
   const requestControler = useMemo(() => new AbortController(), []);
   const abortSignal = requestControler.signal;
 
@@ -34,18 +34,18 @@ export default function CareerStep(props) {
         setProcess({
           isLoading: true,
           progress: {
-            variant: 'indeterminate',
-          },
+            variant: 'indeterminate'
+          }
         });
         const careerOptions = await getData({
           resourceName: 'Career',
           query: 'getAll',
-          projectedFields: ["_id", "facultad", "nombre"]
-        }, abortSignal)
+          projectedFields: ['_id', 'facultad', 'nombre']
+        }, abortSignal);
         updateStep(stepId, {
           data: careerOptions,
           error: undefined
-        })
+        });
       } catch (error) {
         if (!error instanceof DOMException ||
           error?.message !== 'The user aborted a request.') {
@@ -54,11 +54,11 @@ export default function CareerStep(props) {
             error: error instanceof Error 
               ? error.message 
               : error
-          })
+          });
         }
       }
       setProcess({
-        isLoading: false,
+        isLoading: false
       });
     }
   };
@@ -81,21 +81,22 @@ export default function CareerStep(props) {
           //sx={{ width: 300 }}
           open={open}
           onOpen={() => {
-            setOpen(true)
-            fetchDataIfNeeded()
+            setOpen(true);
+            fetchDataIfNeeded();
           }}
           onClose={() => setOpen(false)}
           onChange={(_, values) => {
             updateStep(stepId, {
               selectedValues: values
-            })
+            });
           }}
-          value={stepSelectedValues || { nombre: "", facultad: "" }}
+          value={stepSelectedValues || { nombre: '',
+            facultad: '' }}
           isOptionEqualToValue={
             (option, value) => option.title === value.title
           }
           getOptionLabel={
-            ({ nombre, facultad }) => nombre ? `${nombre} - ${facultad}` : ""
+            ({ nombre, facultad }) => nombre ? `${nombre} - ${facultad}` : ''
           }
           options={stepData || []}
           loading={isLoading}
@@ -111,7 +112,7 @@ export default function CareerStep(props) {
                       params.InputProps.endAdornment
                     }
                   </React.Fragment>
-                ),
+                )
               }}
             />
           )}

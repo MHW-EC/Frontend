@@ -7,46 +7,46 @@ import {
 } from '@mui/material';
 import {
   Link
-} from "react-router-dom";
+} from 'react-router-dom';
 
-const Home = (props) => {
+const Home = () => {
   return (
     <Box
       sx={{
-        height: "100vh",
-        display: "flex",
-        margin: "auto",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center"
+        height: '100vh',
+        display: 'flex',
+        margin: 'auto',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
       }}>
       <Typography
         variant="h1">
-        {"MHW"}
+        {'MHW'}
       </Typography>
       <Link
-        style={{textDecoration: 'none'}}
+        style={{ textDecoration: 'none' }}
         to={'/simple-schedule'}>
         <Button
           sx={{ mt: 2 }}
           variant="contained"
           color="primary">
-          {"Simple schedule"}
+          {'Simple schedule'}
         </Button>
       </Link>
       <Link
-        style={{textDecoration: 'none'}}
+        style={{ textDecoration: 'none' }}
         to={'/'}>
         <Button
           sx={{ mt: 2 }}
           variant="contained"
           color="primary"
         >
-          {"Multiplayer mode (soon)"}
+          {'Multiplayer mode (soon)'}
         </Button>
       </Link>
     </Box>
-  )
-}
+  );
+};
 
 export default Home;

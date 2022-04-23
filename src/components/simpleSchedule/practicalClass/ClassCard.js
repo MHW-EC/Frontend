@@ -35,8 +35,6 @@ import utils from '../../../utils';
 // import { seleccionados as selSelector } from '../../../redux/selectors';
 // import { GetChip } from './ClassChip';
 
-import { BOUNDARIES } from '../../../utils/constants';
-
 const {
   functions: {
     formatters
@@ -44,41 +42,41 @@ const {
 } = utils;
 
 
-const countByTeorico = (teoricosIdArray, materiaCode) => {
+/* const countByTeorico = (teoricosIdArray, materiaCode) => {
   return teoricosIdArray.reduce(
     (amount, element) => amount + (element.split('_')[0] === materiaCode),
     0
   );
-};
+}; */
 const classes = {
   bullet: {
     display: 'inline-block',
     margin: '0 2px',
-    transform: 'scale(0.8)',
+    transform: 'scale(0.8)'
   },
   div: {
-    padding: "16px",
+    padding: '16px',
     alignContent: 'left',
-    alignItems: 'left',
+    alignItems: 'left'
   },
   fab: {
     position: 'absolute',
     right: '0',
-    top: '0',
+    top: '0'
   },
   ghostIcon: {
     opacity: 0,
-    padding: 10,
+    padding: 10
   },
   avatar: {
-    backgroundColor: 'gray',
+    backgroundColor: 'gray'
   },
   avatarTop: {
-    backgroundColor: '#D4AF37',
-  },
-}
+    backgroundColor: '#D4AF37'
+  }
+};
 
-export default (props) => {
+const ClassCard = (props) => {
   const {
     paralelo,
     top,
@@ -90,32 +88,32 @@ export default (props) => {
 
   const {
     _id: classId,
-    profesor: profesorName = "",
+    profesor: profesorName = '',
     profesorJoined: profesorDetail = {},
     codigo: classCode,
-    paralelo: classNumber,
+    //paralelo: classNumber,
     teorico_id: theoryClassId
     // lastParaleloProfesorJoined: lastStudentFeedback
   } = paralelo || {};
   const [practicalClassesDisplayed, setPracticalClassesDisplayed] = useState(false);
   const [openStats, setOpenStats] = useState(false);
   const {
-    selectedValues: stepSelectedValues = {},
+    selectedValues: stepSelectedValues = {}
     // data: stepData,
     // description: stepDescription
   } = step || {};
   const isAdded = 
     stepSelectedValues[classCode]?.[theoryClassId]?.[classId] || 
-    stepSelectedValues[classCode]?.[classId]
+    stepSelectedValues[classCode]?.[classId];
 
   const handleAddRemove = () => {
-    if(!stepSelectedValues[classCode]) stepSelectedValues[classCode] = {};
-    if(theoryClassId) {
+    if (!stepSelectedValues[classCode]) stepSelectedValues[classCode] = {};
+    if (theoryClassId) {
       stepSelectedValues[classCode][theoryClassId] = {
         ...stepSelectedValues[classCode]?.[theoryClassId],
         [classId]: !stepSelectedValues[classCode]?.[theoryClassId]?.[classId]
-      }
-    }else{
+      };
+    } else {
       stepSelectedValues[classCode][classId] = !stepSelectedValues[classCode]?.[classId];
     }
     updateStep(
@@ -133,15 +131,15 @@ export default (props) => {
       sx: classes.fab,
       label: false,
       icon: <AddBoxOutlinedIcon />,
-      tooltipNode: 'Añadir teórico',
+      tooltipNode: 'Añadir teórico'
     },
     {
       color: 'secondary',
       sx: classes.fab,
       label: true,
       icon: <DeleteOutlinedIcon />,
-      tooltipNode: 'Remover teórico',
-    },
+      tooltipNode: 'Remover teórico'
+    }
   ];
 
   const handleStats = () => {
@@ -152,15 +150,15 @@ export default (props) => {
     <Card
       sx={
         {
-          display: parentComponent == "PracticalForm" ? "block" : "inline-block",
-          height: "-webkit-fill-available",
-          width: parentComponent == "PracticalForm" ? "100%" : "unset",
-          marginRight: parentComponent == "PracticalForm" ? "100%" : "16px",
+          display: parentComponent == 'PracticalForm' ? 'block' : 'inline-block',
+          height: '-webkit-fill-available',
+          width: parentComponent == 'PracticalForm' ? '100%' : 'unset',
+          marginRight: parentComponent == 'PracticalForm' ? '100%' : '16px',
           ...(
             top 
-              ? { borderColor: "#D4AF37" }
+              ? { borderColor: '#D4AF37' }
               : {}
-          )}
+          ) }
       }
       variant="outlined">
       <CardHeader
@@ -179,7 +177,7 @@ export default (props) => {
           <Box sx={{
             display: 'flex',
             position: 'relative',
-            width: "60px"
+            width: '60px'
           }}>
             {
               fabs.map((fab, idx) => (
@@ -269,8 +267,8 @@ export default (props) => {
                 paralelo.eventos.examenes.parcial &&
                 <Box
                   sx={{
-                    display: "flex",
-                    justifyContent: "space-between"
+                    display: 'flex',
+                    justifyContent: 'space-between'
                   }}>
                   <Typography
                     variant="body2"
@@ -294,8 +292,8 @@ export default (props) => {
                 paralelo.eventos.examenes.final &&
                 <Box
                   sx={{
-                    display: "flex",
-                    justifyContent: "space-between"
+                    display: 'flex',
+                    justifyContent: 'space-between'
                   }}>
                   <Typography
                     variant="body2"
@@ -319,8 +317,8 @@ export default (props) => {
                 paralelo.eventos.examenes.mejoramiento &&
                 <Box
                   sx={{
-                    display: "flex",
-                    justifyContent: "space-between"
+                    display: 'flex',
+                    justifyContent: 'space-between'
                   }}>
                   <Typography
                     variant="body2"
@@ -355,7 +353,7 @@ export default (props) => {
               color="primary"
               startIcon={<AddCircleOutlineOutlinedIcon />}
             >
-              {"Practical classes"}
+              {'Practical classes'}
             </Button>
             {
               <PracticalDialog
@@ -431,4 +429,6 @@ export default (props) => {
       </CardActions>
     </Card>
   );
-}
+};
+
+export default ClassCard;
