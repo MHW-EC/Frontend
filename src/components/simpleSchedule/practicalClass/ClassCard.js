@@ -35,8 +35,6 @@ import utils from '../../../utils';
 // import { seleccionados as selSelector } from '../../../redux/selectors';
 // import { GetChip } from './ClassChip';
 
-import { BOUNDARIES } from '../../../utils/constants';
-
 const {
   functions: {
     formatters
@@ -44,12 +42,12 @@ const {
 } = utils;
 
 
-const countByTeorico = (teoricosIdArray, materiaCode) => {
+/* const countByTeorico = (teoricosIdArray, materiaCode) => {
   return teoricosIdArray.reduce(
     (amount, element) => amount + (element.split('_')[0] === materiaCode),
     0
   );
-};
+}; */
 const classes = {
   bullet: {
     display: 'inline-block',
@@ -78,7 +76,7 @@ const classes = {
   }
 };
 
-export default (props) => {
+const ClassCard = (props) => {
   const {
     paralelo,
     top,
@@ -93,7 +91,7 @@ export default (props) => {
     profesor: profesorName = '',
     profesorJoined: profesorDetail = {},
     codigo: classCode,
-    paralelo: classNumber,
+    //paralelo: classNumber,
     teorico_id: theoryClassId
     // lastParaleloProfesorJoined: lastStudentFeedback
   } = paralelo || {};
@@ -432,3 +430,5 @@ export default (props) => {
     </Card>
   );
 };
+
+export default ClassCard;

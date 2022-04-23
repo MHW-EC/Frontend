@@ -35,7 +35,9 @@ const classes = {
 
 export default (props) => {
   const {
-    horario: schedule
+    horario: {
+      materias: schedule
+    }
   } = props;
 
   return schedule ? (

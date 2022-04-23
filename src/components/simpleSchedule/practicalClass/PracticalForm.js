@@ -3,7 +3,6 @@ import React, {
   useMemo
 } from 'react';
 import {
-  Checkbox,
   Skeleton,
   ListItemButton,
   List,

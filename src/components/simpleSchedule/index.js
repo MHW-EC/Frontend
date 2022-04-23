@@ -153,8 +153,6 @@ class Steps extends React.Component {
       activeStepId
     } = this.state;
 
-    console.log({ steps });
-
     const {
       isStepOptional,
       handleNext,
