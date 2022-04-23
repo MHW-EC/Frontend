@@ -47,6 +47,7 @@ const randomText = [
   'Mejoramiento es todo 💪🏼',
   'La materia se repite, una fiesta no 🍻',
   'Si te tocó baldeo, ten varias opciones de horarios 👀',
+  'Cuanto te toca examen de Diferenciales: Diooos esta aquiii 🎸'
 ];
 
 const TableView = (props) => {
