@@ -1,6 +1,6 @@
 
 
-const API_URL = 'https://lx2hknst53.execute-api.sa-east-1.amazonaws.com/prod/';
+const API_URL = 'https://9vddyr4p34.execute-api.us-east-1.amazonaws.com/prod/';
 
 
 export async function getData(params, abortSignal) {
@@ -32,6 +32,7 @@ export async function getData(params, abortSignal) {
   const result = await response.json();
   return result || [];
 }
+
 export async function generate(params, abortSignal) {
   const {
     body
