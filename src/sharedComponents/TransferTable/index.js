@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import { Typography } from '@mui/material';
 import utils from './../utils';
 import { DataGrid } from '@mui/x-data-grid';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -9,18 +10,22 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 const TableWrapper = (props) => {
   const {
     rows,
-    rowIdGetter,
-    columns,
-    onSelectionModelChange,
     style,
+    columns,
     isLoading,
     pagination,
-    setPagination
+    rowIdGetter,
+    caption = '',
+    setPagination,
+    onSelectionModelChange,
   } = props;
   return (
-    <div
-      style={style}>
+    <div>
+      <Typography variant="caption">
+        {caption}
+      </Typography>
       <DataGrid
+        style={style}
         rows={rows}
         columns={columns}
         density={'compact'}
@@ -104,12 +109,14 @@ export default function TransferTable(props) {
         xl={10}>
         <TableWrapper
           rows={left}
+          caption={'Available classes:'}
           rowIdGetter={getRowId}
           style={tableStyle}
           columns={columns}
           onSelectionModelChange={(items) => {
             setLeftChecked(items);
           }}
+
           isLoading={isLoading}
           pagination={pagination}
           setPagination={setPagination}/>
@@ -151,6 +158,7 @@ export default function TransferTable(props) {
         xl={10}>
         <TableWrapper
           rows={right}
+          caption={'Selected classes:'}
           rowIdGetter={getRowId}
           style={tableStyle}
           columns={columns}

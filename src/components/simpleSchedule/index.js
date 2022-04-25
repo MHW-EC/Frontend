@@ -20,7 +20,7 @@ class Steps extends React.Component {
         id: 0,
         name: 'career',
         label: 'Career',
-        description: 'Select you career',
+        description: 'Type you career',
         error: undefined,
         data: undefined,
         selectedValues: undefined
@@ -28,9 +28,9 @@ class Steps extends React.Component {
       {
         id: 1,
         name: 'theoryClass',
-        label: 'Theory class',
-        description: 'Choose some theory classes',
-        helperText: '* You can type class, teacher name or class ID and then hit Enter to search',
+        label: 'Class',
+        description: 'Type class name, class code or teacher name',//'Choose some theory classes',
+        helperText: '* Hit Enter to search',
         error: undefined,
         data: undefined,
         selectedValues: undefined
@@ -38,7 +38,7 @@ class Steps extends React.Component {
       {
         id: 2,
         name: 'practicalClass',
-        label: 'Practical class',
+        label: 'Class parallel',
         description: 'Choose some practical classes',
         error: undefined,
         data: undefined,

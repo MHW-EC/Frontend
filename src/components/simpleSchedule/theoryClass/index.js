@@ -232,11 +232,11 @@ export default function TheoryClassStep(props) {
       </Grid>
       <Grid 
         container
+        spacing={1}
         sx={{
           paddingTop: '16px',
-          paddingBottom: '32px'
+          paddingBottom: '64px'
         }}
-        spacing={1}
         justifyContent="center"
         alignItems="center">
         <TransferTable
