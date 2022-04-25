@@ -30,7 +30,7 @@ class Steps extends React.Component {
         name: 'theoryClass',
         label: 'Theory class',
         description: 'Choose some theory classes',
-        helperText: '* Hit Enter to search',
+        helperText: '* You can type class, teacher name or class ID and then hit Enter to search',
         error: undefined,
         data: undefined,
         selectedValues: undefined
