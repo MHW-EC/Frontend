@@ -53,13 +53,13 @@ export default function TheoryClassStep(props) {
       width: 100 },
     { field: 'nombre',
       headerName: 'Name',
-      width: 350 },
+      width: 550 },
     { field: 'paralelo',
       headerName: 'Course',
       width: 100 },
     { field: 'profesor',
       headerName: 'Teacher',
-      width: 300 },
+      width: 400 },
     { field: '_id',
       headerName: 'Id',
       width: 125 }
@@ -233,8 +233,10 @@ export default function TheoryClassStep(props) {
       <Grid 
         container
         sx={{
-          paddingTop: '16px'
+          paddingTop: '16px',
+          paddingBottom: '32px'
         }}
+        spacing={1}
         justifyContent="center"
         alignItems="center">
         <TransferTable

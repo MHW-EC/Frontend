@@ -146,7 +146,7 @@ const TableView = (props) => {
             data: scheduleId,
             error: undefined,
           });
-          getJobData(scheduleId);
+          setTimeout(() => getJobData(scheduleId), 1000);
         } catch (error) {
           if (
             !error instanceof DOMException ||

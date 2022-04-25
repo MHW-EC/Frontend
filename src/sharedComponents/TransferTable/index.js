@@ -97,11 +97,11 @@ export default function TransferTable(props) {
   return (
     <>
       <Grid item
-        xs={12}
+        xs={10}
         sm={10}
-        md={8}
-        lg={5}
-        xl={5}>
+        md={10}
+        lg={10}
+        xl={10}>
         <TableWrapper
           rows={left}
           rowIdGetter={getRowId}
@@ -115,11 +115,11 @@ export default function TransferTable(props) {
           setPagination={setPagination}/>
       </Grid>
       <Grid item
-        xs={10}
-        sm={4}
+        xs={12}
+        sm={12}
         md={12}
-        lg={1}
-        xl={1}>
+        lg={12}
+        xl={12}>
         <Grid container direction="column" alignItems="center">
           <Button
             sx={{ my: 0.5 }}
@@ -144,11 +144,11 @@ export default function TransferTable(props) {
         </Grid>
       </Grid>
       <Grid item
-        xs={12}
+        xs={10}
         sm={10}
-        md={8}
-        lg={5}
-        xl={5}>
+        md={10}
+        lg={10}
+        xl={10}>
         <TableWrapper
           rows={right}
           rowIdGetter={getRowId}
