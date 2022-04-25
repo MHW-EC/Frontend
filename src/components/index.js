@@ -71,7 +71,11 @@ class App extends React.Component {
     })
   }
 
-  componentDidMount() { }
+  componentDidMount() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js');
+    }
+  }
 
   componentDidUpdate(_, prevState) { }
 
