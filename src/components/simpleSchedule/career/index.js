@@ -47,6 +47,7 @@ export default function CareerStep(props) {
           error: undefined
         });
       } catch (error) {
+        console.log(error);
         if (!error instanceof DOMException ||
           error?.message !== 'The user aborted a request.') {
           updateStep(stepId, {

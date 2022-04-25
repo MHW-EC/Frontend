@@ -84,10 +84,6 @@ export default function TransferTable(props) {
     pagination,
     setPagination
   } = leftExtra;
-  console.log({ left,
-    right,
-    leftChecked,
-    rightChecked });
 
   const handleCheckedToRight = () => {
     setRight(utils.Array.union(right, leftChecked, rowsEquals));

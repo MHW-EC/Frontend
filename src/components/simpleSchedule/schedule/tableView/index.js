@@ -9,39 +9,19 @@ import {
   Pagination,
   Backdrop,
   LinearProgress,
-  Grid,
-  Typography,
+  Grid
 } from '@mui/material';
 import SwipeableViews from 'react-swipeable-views';
 import ClassTable from './ClassTable';
 import StepsContext from './../../Context';
-import MainContext from './../../../Context';
 import { generate } from './../../../../services';
 // import ButtonDialog from './full-dialog';
-
 import { app } from '../../../../firebase';
 import { getFirestore } from 'firebase/firestore';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { Box } from '@mui/system';
-import ReactTextTransition, { presets } from "react-text-transition";
-
+import ReactTextTransition from "react-text-transition";
 const db = getFirestore(app);
-
-const classes = {
-  root: {
-    '& > * + *': {
-      marginTop: (theme) => theme.spacing(2),
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      display: 'flex',
-    },
-  },
-  backdrop: {
-    zIndex: (theme) => theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
-};
 
 const randomText = [
   'Mejoramiento es todo 💪🏼',
@@ -149,6 +129,7 @@ const TableView = (props) => {
           console.log('scheduleId: ', scheduleId);
           setTimeout(() => getJobData(scheduleId), 1000);
         } catch (error) {
+          console.log(error);
           if (
             !error instanceof DOMException ||
             error?.message !== 'The user aborted a request.'
@@ -168,7 +149,7 @@ const TableView = (props) => {
     []
   );
   return !isLoading ? (
-    <div sx={classes.root}>
+    <Box>
       <SwipeableViews disabled axis={'x-reverse'} index={currentTableIndex - 1}>
         {horariosGenerados.map((horario, index) => (
           <React.Fragment key={index}>
@@ -186,10 +167,13 @@ const TableView = (props) => {
           setCurrentTable(value);
         }}
       />
-    </div>
+    </Box>
   ) : (
     <Backdrop
-      sx={classes.backdrop}
+      sx={{
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        color: '#fff',
+      }}
       open={!(horariosGenerados && horariosGenerados.length > 0) || true}
     >
       <Grid

@@ -164,6 +164,7 @@ class Steps extends React.Component {
       isStepSkipped,
       updateStep
     } = this;
+    console.log({steps});
 
     return (
       <StepsContext.Provider
@@ -175,8 +176,13 @@ class Steps extends React.Component {
           sx={{
             width: 'auto',
             height: "100vh",
+            pl: "16px",
+            pr: "16px"
           }}>
           <Stepper 
+            sx={{
+              pt: "16px"
+            }}
             activeStep={activeStepId}>
             {
               steps.map((step) => {
@@ -263,6 +269,7 @@ class Steps extends React.Component {
                   <Box
                     sx={{
                       pt: '16px',
+                      pb: '16px'
                     }}>
                     {
                       getComponentByStep(activeStepId)

@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext } from 'react';
 
 import {
   Card,
@@ -22,17 +22,7 @@ import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import PracticalDialog from './PracticalDialog';
 // import DialogStats from './dialog-stats';
 import StepsContext from './../Context';
-
 import utils from '../../../utils';
-
-// import {
-//   addSeleccionado,
-//   removeSeleccionado,
-// } from '../../../redux/actions/seleccionados';
-// import { addPaquete, removePaquete } from '../../../redux/actions/paquetes';
-// import { profesorSelector } from '../../../redux/selectors';
-// import { getProfesor } from '../../../redux/actions/profesor';
-// import { seleccionados as selSelector } from '../../../redux/selectors';
 // import { GetChip } from './ClassChip';
 
 const {
@@ -40,41 +30,6 @@ const {
     formatters
   }
 } = utils;
-
-
-/* const countByTeorico = (teoricosIdArray, materiaCode) => {
-  return teoricosIdArray.reduce(
-    (amount, element) => amount + (element.split('_')[0] === materiaCode),
-    0
-  );
-}; */
-const classes = {
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
-  div: {
-    padding: '16px',
-    alignContent: 'left',
-    alignItems: 'left'
-  },
-  fab: {
-    position: 'absolute',
-    right: '0',
-    top: '0'
-  },
-  ghostIcon: {
-    opacity: 0,
-    padding: 10
-  },
-  avatar: {
-    backgroundColor: 'gray'
-  },
-  avatarTop: {
-    backgroundColor: '#D4AF37'
-  }
-};
 
 const ClassCard = (props) => {
   const {
@@ -91,7 +46,6 @@ const ClassCard = (props) => {
     profesor: profesorName = '',
     profesorJoined: profesorDetail = {},
     codigo: classCode,
-    //paralelo: classNumber,
     teorico_id: theoryClassId
     // lastParaleloProfesorJoined: lastStudentFeedback
   } = paralelo || {};
@@ -99,12 +53,10 @@ const ClassCard = (props) => {
   const [openStats, setOpenStats] = useState(false);
   const {
     selectedValues: stepSelectedValues = {}
-    // data: stepData,
-    // description: stepDescription
   } = step || {};
-  const isAdded = 
-    stepSelectedValues[classCode]?.[theoryClassId]?.[classId] || 
-    stepSelectedValues[classCode]?.[classId];
+  const isAdded = theoryClassId
+    ? stepSelectedValues[classCode]?.[theoryClassId]?.[classId]
+    : stepSelectedValues[classCode]?.[classId];
 
   const handleAddRemove = () => {
     if (!stepSelectedValues[classCode]) stepSelectedValues[classCode] = {};
@@ -117,25 +69,23 @@ const ClassCard = (props) => {
       stepSelectedValues[classCode][classId] = !stepSelectedValues[classCode]?.[classId];
     }
     updateStep(
-      stepId, 
+      stepId,
       {
         selectedValues: stepSelectedValues
       },
       'selectedValues'
-    ); 
+    );
   };
 
   const fabs = [
     {
       color: 'primary',
-      sx: classes.fab,
       label: false,
       icon: <AddBoxOutlinedIcon />,
       tooltipNode: 'Añadir teórico'
     },
     {
       color: 'secondary',
-      sx: classes.fab,
       label: true,
       icon: <DeleteOutlinedIcon />,
       tooltipNode: 'Remover teórico'
@@ -155,18 +105,21 @@ const ClassCard = (props) => {
           width: parentComponent == 'PracticalForm' ? '100%' : 'unset',
           marginRight: parentComponent == 'PracticalForm' ? '100%' : '16px',
           ...(
-            top 
+            top
               ? { borderColor: '#D4AF37' }
               : {}
-          ) }
+          )
+        }
       }
       variant="outlined">
       <CardHeader
         avatar={
           <Avatar
-            sx={
-              top ? classes.avatarTop : classes.avatar
-            }>
+            sx={{
+              backgroundColor: top
+                ? '#D4AF37'
+                :'gray'
+            }}>
             {
               paralelo['paralelo']
             }
@@ -184,7 +137,7 @@ const ClassCard = (props) => {
                 <Zoom
                   key={String(idx)}
                   appear={false}
-                  in={(isAdded != undefined) == fab.label}
+                  in={Boolean(isAdded) == fab.label}
                   mountOnEnter
                   unmountOnExit
                 >
@@ -192,7 +145,11 @@ const ClassCard = (props) => {
                     title={fab.tooltipNode}
                     placement="bottom">
                     <IconButton
-                      sx={fab.sx}
+                      sx={{
+                        position: 'absolute',
+                        right: '0',
+                        top: '0'
+                      }}
                       color={fab.color}
                       onClick={handleAddRemove}
                     >
@@ -235,7 +192,11 @@ const ClassCard = (props) => {
         }
       />
       <Divider />
-      <CardContent sx={classes.div}>
+      <CardContent sx={{
+        padding: '16px',
+        alignContent: 'left',
+        alignItems: 'left'
+      }}>
         <Typography variant="body2" component="p" aling="left">
           Clases
         </Typography>
@@ -283,7 +244,8 @@ const ClassCard = (props) => {
                     component="div"
                     color="textSecondary">
                     {
-                      `${formatters.intervalExam(paralelo.eventos.examenes.parcial['inicio'], paralelo.eventos.examenes.parcial['fin'])}`
+                      `${formatters.intervalExam(paralelo.eventos.examenes.parcial['inicio'], 
+                      paralelo.eventos.examenes.parcial['fin'])}`
                     }
                   </Typography>
                 </Box>
@@ -308,7 +270,8 @@ const ClassCard = (props) => {
                     component="div"
                     color="textSecondary">
                     {
-                      `${formatters.intervalExam(paralelo.eventos.examenes.final['inicio'], paralelo.eventos.examenes.final['fin'])}`
+                      `${formatters.intervalExam(paralelo.eventos.examenes.final['inicio'], 
+                      paralelo.eventos.examenes.final['fin'])}`
                     }
                   </Typography>
                 </Box>
@@ -333,7 +296,8 @@ const ClassCard = (props) => {
                     component="div"
                     color="textSecondary">
                     {
-                      `${formatters.intervalExam(paralelo.eventos.examenes.mejoramiento['inicio'], paralelo.eventos.examenes.mejoramiento['fin'])}`
+                      `${formatters.intervalExam(paralelo.eventos.examenes.mejoramiento['inicio'],
+                       paralelo.eventos.examenes.mejoramiento['fin'])}`
                     }
                   </Typography>
                 </Box>
@@ -356,6 +320,7 @@ const ClassCard = (props) => {
               {'Practical classes'}
             </Button>
             {
+              practicalClassesDisplayed &&
               <PracticalDialog
                 id="practicalMenu"
                 open={practicalClassesDisplayed}

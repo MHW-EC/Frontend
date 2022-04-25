@@ -11,28 +11,6 @@ import {
   Box
 } from '@mui/material';
 
-const classes = {
-  table: {
-    minWidth: 175
-  },
-  tableContainer: {
-    maxWidth: 650
-  },
-  root: {
-    padding: '10px',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    display: 'flex'
-  },
-  skeleton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    display: 'flex'
-  }
-};
-
 export default (props) => {
   const {
     horario: {
@@ -41,15 +19,25 @@ export default (props) => {
   } = props;
 
   return schedule ? (
-    <Box sx={classes.root}>
+    <Box sx={{
+      padding: '10px',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+      display: 'flex'
+    }}>
       <TableContainer
         id='schedule-table'
-        sx={classes.tableContainer}
+        sx={{
+          maxWidth: 650
+        }}
         component={Paper}
         elevation={5}
       >
         <Table
-          sx={classes.table}
+          sx={{
+            minWidth: 175
+          }}
           size='small'
           aria-label='a dense table'
         >
@@ -83,7 +71,12 @@ export default (props) => {
       </TableContainer>
     </Box>
   ) : (
-    <Box sx={classes.skeleton}>
+    <Box sx={{
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+      display: 'flex'
+    }}>
       <Skeleton variant='rect' amination='wave' width={400} height={400} />
       <br />
       <Skeleton variant='circle' amination='wave' width={40} height={40} />

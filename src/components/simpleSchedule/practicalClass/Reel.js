@@ -1,7 +1,7 @@
-import React, { 
-  useEffect, useContext, useMemo, useState } from 'react';
+import React, {
+  useEffect, useContext, useMemo
+} from 'react';
 import StepsContext from '../Context';
-// import MainContext from '../../Context';
 import { getData } from '../../../services';
 
 import {
@@ -14,57 +14,7 @@ import {
 } from '@mui/material';
 import ClassCard from './ClassCard';
 
-// import CustomImageList from './CustomImageList';
-
-const classes = {
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    backgroundColor: 'transparent'
-  },
-  rootCard: {
-    maxWidth: 400,
-    alignContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center'
-  },
-  cardActions: {
-    backgroundColor: (theme) => theme.palette.primary.main,
-    paddingLeft: '16px'
-  },
-  cardContent: {
-    height: '300px',
-    padding: 2,
-    overflow: 'auto',
-    whiteSpace: 'nowrap'
-  },
-  palette: {
-    primary: {
-      light: '#757ce8',
-      main: '#3f50b5',
-      dark: '#002884',
-      contrastText: '#fff'
-    },
-    secondary: {
-      light: '#ff7961',
-      main: '#f44336',
-      dark: '#ba000d',
-      contrastText: '#000'
-    },
-    black: '#000000',
-    white: '#ffffff'
-  },
-  nombreMateria: {
-    color: '#ffffff',
-    width: '-webkit-fill-available'
-  }
-};
-
 export default (props) => {
-  // const { setProcess } = useContext(MainContext);
-
   const {
     _class: {
       codigo: theoryClassCode,
@@ -78,9 +28,8 @@ export default (props) => {
     data: stepData = {}
   } = step;
   const theoryClasses = stepData[theoryClassCode];
-  const [localLoading, setLoading] = useState(false);
   const requestControler = useMemo(() => new AbortController(), []);
-  
+
   useEffect(() => {
     return () => requestControler.abort();
   }, [requestControler]);
@@ -89,7 +38,6 @@ export default (props) => {
     (async () => {
       if (theoryClassCode && !theoryClasses) {
         try {
-          setLoading(true);
 
           const result = await getData({
             resourceName: 'TheoryClass',
@@ -110,14 +58,13 @@ export default (props) => {
             'data'
           );
         } catch (error) {
+          console.log(error);
           updateStep(stepId, {
-            // data: undefined,
             error: error instanceof Error
               ? error.message
               : error
           });
         }
-        setLoading(false);
       }
     })();
   }, []);
@@ -126,7 +73,12 @@ export default (props) => {
     <Card
       elevation={3}>
       <CardContent
-        sx={classes.cardContent}>
+        sx={{
+          height: '300px',
+          padding: 2,
+          overflow: 'auto',
+          whiteSpace: 'nowrap'
+        }}>
         {
           theoryClasses.length === 0
             ? <Typography align="center">
@@ -134,7 +86,7 @@ export default (props) => {
             </Typography>
             : theoryClasses.map((practicalClass, index) => (
               <ClassCard
-                key={String(index)}
+                key={practicalClass._id}
                 stepId={stepId}
                 paralelo={practicalClass}
                 top={index === 0 && practicalClass['score'] !== null}
@@ -142,23 +94,31 @@ export default (props) => {
             ))
         }
       </CardContent>
-      <CardActions sx={classes.cardActions}>
+      <CardActions sx={{
+        backgroundColor: (theme) => theme.palette.primary.main,
+        paddingLeft: '16px'
+      }}>
         <Typography
           variant="body1"
-          sx={classes.nombreMateria}>
+          sx={{
+            color: '#ffffff',
+            width: '-webkit-fill-available'
+          }}>
           {`${theoryClassName} - ${theoryClassCode}`}
         </Typography>
       </CardActions>
     </Card>
   ) : (
-    <Card elevation={6}>
+    <Card elevation={3}>
       <CardContent sx={{ padding: 0 }}>
         <Skeleton animation="wave" variant="rect" height={250} />
       </CardContent>
       <CardActions>
-        <Box sx={{ width: '50%',
+        <Box sx={{
+          width: '50%',
           marginLeft: 'auto',
-          marginRight: 'auto' }}>
+          marginRight: 'auto'
+        }}>
           <Skeleton animation="wave" variant="text" height={15} />
         </Box>
       </CardActions>

@@ -1,7 +1,7 @@
 
-import React, { 
-  useContext, useState, useEffect, 
-  useMemo, useCallback 
+import React, {
+  useContext, useState, useEffect,
+  useMemo, useCallback
 } from 'react';
 
 import StepsContext from './../Context';
@@ -48,21 +48,31 @@ export default function TheoryClassStep(props) {
   const abortSignal = requestControler.signal;
 
   const tableColumns = useMemo(() => [
-    { field: 'codigo',
+    {
+      field: 'codigo',
       headerName: 'Code',
-      width: 100 },
-    { field: 'nombre',
+      width: 100
+    },
+    {
+      field: 'nombre',
       headerName: 'Name',
-      width: 550 },
-    { field: 'paralelo',
+      width: 350
+    },
+    {
+      field: 'paralelo',
       headerName: 'Course',
-      width: 100 },
-    { field: 'profesor',
+      width: 100
+    },
+    {
+      field: 'profesor',
       headerName: 'Teacher',
-      width: 400 },
-    { field: '_id',
+      width: 300
+    },
+    {
+      field: '_id',
       headerName: 'Id',
-      width: 125 }
+      width: 125
+    }
   ], []);
 
   useEffect(() => {
@@ -77,8 +87,8 @@ export default function TheoryClassStep(props) {
         target: queryString
       }
     }, abortSignal);
-  },[queryString, abortSignal]);
-  
+  }, [queryString, abortSignal]);
+
   const resultCb = useCallback(() => {
     const {
       page,
@@ -101,7 +111,7 @@ export default function TheoryClassStep(props) {
 
   useEffect(() => {
     (async () => {
-      if (!isLoading && queryString?.length ) {
+      if (!isLoading && queryString?.length) {
         try {
           setProcess({
             isLoading: true,
@@ -118,20 +128,24 @@ export default function TheoryClassStep(props) {
             }
           );
         } catch (error) {
-          updateStep(stepId, {
-            data: undefined,
-            error: error instanceof Error
-              ? error.message
-              : error
+          console.log(error);
+          if (!error instanceof DOMException ||
+            error?.message !== 'The user aborted a request.') {
+            updateStep(stepId, {
+              data: undefined,
+              error: error instanceof Error
+                ? error.message
+                : error
+            });
+          }
+          setProcess({
+            isLoading: false
           });
         }
-        setProcess({
-          isLoading: false
-        });
-      }
-    })();
+      }}
+    )();
   }, [pagination.page, pagination.pageSize]);
-  
+
   const handleSearch = async () => {
     if (!isLoading) {
       try {
@@ -159,12 +173,13 @@ export default function TheoryClassStep(props) {
           isLoading: false
         });
       } catch (error) {
+        console.log(error);
         if (!error instanceof DOMException ||
           error?.message !== 'The user aborted a request.') {
           updateStep(stepId, {
             data: undefined,
-            error: error instanceof Error 
-              ? error.message 
+            error: error instanceof Error
+              ? error.message
               : error
           });
         }
@@ -188,12 +203,12 @@ export default function TheoryClassStep(props) {
           component="form"
           noValidate
           autoComplete="off">
-          <FormControl 
-            variant="outlined" 
+          <FormControl
+            variant="outlined"
             sx={{
               'width': '100%'
             }}>
-            <InputLabel 
+            <InputLabel
               htmlFor="component-outlined">
               {
                 stepDescription
@@ -230,7 +245,7 @@ export default function TheoryClassStep(props) {
           </FormControl>
         </Box>
       </Grid>
-      <Grid 
+      <Grid
         container
         spacing={1}
         sx={{
@@ -244,8 +259,8 @@ export default function TheoryClassStep(props) {
           setLeftChecked={setSearchChecked}
           left={stepData}
           leftExtra={{
-            pagination, 
-            setPagination, 
+            pagination,
+            setPagination,
             isLoading
           }}
           right={stepSelectedValues}
