@@ -1,6 +1,7 @@
 {
   "short_name": "MHW",
-  "name": "Tu amigable generador de horarios ❤️",
+  "name": "Mi horario web",
+  "description": "Tu amigable generador de horarios ❤️",
   "icons": [
     {
       "src": "favicon.ico",
