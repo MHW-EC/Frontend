@@ -161,6 +161,10 @@ const TableView = (props) => {
       </SwipeableViews>
 
       <Pagination
+        sx={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}
         count={horariosGenerados.length}
         color={'primary'}
         onChange={(event, value) => {

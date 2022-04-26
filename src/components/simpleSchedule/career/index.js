@@ -40,7 +40,7 @@ export default function CareerStep(props) {
         const careerOptions = await getData({
           resourceName: 'Career',
           query: 'getAll',
-          projectedFields: ['_id', 'facultad', 'nombre']
+          projectedFields: ['_id', 'facultad', 'nombre', 'materias']
         }, abortSignal);
         updateStep(stepId, {
           data: careerOptions,

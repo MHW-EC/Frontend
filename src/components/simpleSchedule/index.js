@@ -109,7 +109,7 @@ class Steps extends React.Component {
       case 0:
         return <CareerStep stepId={String(stepId)} />
       case 1:
-        return <TheoryClassStep stepId={String(stepId)}/>
+        return <TheoryClassStep stepId={String(stepId)} lastStepId={String(stepId - 1)}/>
       case 2:
         return <PracticalClassStep stepId={String(stepId)} lastStepId={String(stepId - 1)}/>
       case 3:
@@ -164,7 +164,7 @@ class Steps extends React.Component {
       isStepSkipped,
       updateStep
     } = this;
-
+// console.log({steps});
     return (
       <StepsContext.Provider
         value={{
