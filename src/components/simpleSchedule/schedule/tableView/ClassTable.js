@@ -19,7 +19,7 @@ import moment from 'moment';
 
 const FORMAT = 'YYYY-MM-DD-HH-mm';
 const START_DATE = moment('2022-04-12').format('YYYY-MM-DD');
-const END_DATE = moment('2022-09-19').format('YYYY-MM-DD');
+const END_DATE = moment('2022-09-19');
 
 export default (props) => {
   const {
@@ -43,7 +43,7 @@ export default (props) => {
       clases.forEach((clase) => {
         const duration = moment(clase.fin).diff(clase.inicio, 'minutes');
         const startTime = moment(clase.inicio).format('HH-mm');
-        let currentDate = moment(`${START_DATE}-${startTime}`);
+        let currentDate = moment(`${START_DATE} ${startTime}`);
         while(currentDate.isBefore(END_DATE)) {
           matEvents.push({
             title: `${nombre} ${paralelo}`,
