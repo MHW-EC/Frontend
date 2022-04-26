@@ -107,13 +107,13 @@ class Steps extends React.Component {
   getComponentByStep = (stepId) => {
     switch (stepId) {
       case 0:
-        return <CareerStep stepId={String(stepId)} />
+        return <CareerStep stepId={'0'} />
       case 1:
-        return <TheoryClassStep stepId={String(stepId)} lastStepId={String(stepId - 1)}/>
+        return <TheoryClassStep stepId={'1'} lastStepId={'0'}/>
       case 2:
-        return <PracticalClassStep stepId={String(stepId)} lastStepId={String(stepId - 1)}/>
+        return <PracticalClassStep stepId={'2'} lastStepId={'1'}/>
       case 3:
-        return <Schedule stepId={String(stepId)} lastStepId={String(stepId - 1)}/>
+        return <Schedule stepId={'3'} lastStepId={'2'}/>
       default:
         return (<div>DEFAULT COMPONENT</div>)
     }

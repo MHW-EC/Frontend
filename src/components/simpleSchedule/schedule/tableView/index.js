@@ -40,7 +40,7 @@ const TableView = (props) => {
     data: lastStepData = {},
     selectedValues: lastStepSelectedValues = {},
   } = lastStep;
-  
+
   const [ isLoading, setLoading ] = useState();
   const [dataFirebase, setDataFirebase] = useState();
   const [textIdx, setTextIdx] = useState(0);
@@ -115,7 +115,7 @@ const TableView = (props) => {
 
   useEffect(() => {
     (async () => {
-      if (!isLoading && !stepData) {
+      if (!isLoading) {
         try {
           setLoading(true);
           const scheduleId = await generate(
@@ -144,10 +144,10 @@ const TableView = (props) => {
       }
     })();
   }, []);
-  useEffect(
-    () => setInterval(() => setTextIdx(prev => prev + 1), 6000),
-    []
-  );
+  useEffect(() => {
+    const intervalID = setInterval(() => setTextIdx(prev => prev + 1), 6000);
+    return () => clearInterval(intervalID);
+  }, []);
   return !isLoading ? (
     <Box>
       <SwipeableViews disabled axis={'x-reverse'} index={currentTableIndex - 1}>
