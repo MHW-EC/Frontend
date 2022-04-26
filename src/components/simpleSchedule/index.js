@@ -164,7 +164,7 @@ class Steps extends React.Component {
       isStepSkipped,
       updateStep
     } = this;
-// console.log({steps});
+console.log({steps});
     return (
       <StepsContext.Provider
         value={{
