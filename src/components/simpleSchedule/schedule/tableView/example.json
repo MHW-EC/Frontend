@@ -1,0 +1,68 @@
+{
+  "uuid": "2b698f0b-0d38-4f07-9f3a-0a1648296e8b",
+  "materias": [
+    {
+      "eventos": {
+        "clases": [
+          {
+            "aula": "A106",
+            "fin": "2020-03-02T15:30:00",
+            "inicio": "2020-03-02T14:00:00",
+            "detalle_aula": "9F CAMPUS GUSTAVO GALINDO"
+          },
+          {
+            "fin": "2020-03-04T14:30:00",
+            "inicio": "2020-03-04T14:00:00",
+            "detalle_aula": "9F CAMPUS GUSTAVO GALINDO",
+            "aula": "A106"
+          }
+        ],
+        "examenes": {
+          "mejoramiento": {
+            "fin": "2022-02-08T10:00:00",
+            "inicio": "2022-02-08T08:00:00"
+          },
+          "final": {
+            "inicio": "2022-01-25T08:00:00",
+            "fin": "2022-01-25T10:00:00"
+          },
+          "parcial": {
+            "inicio": "2021-11-23T08:00:00",
+            "fin": "2021-11-23T10:00:00"
+          }
+        }
+      },
+      "profesor": "CARRERA MEJÍA PAÚL ANTONIO",
+      "paralelos_practicos": [
+        "AUDG2039_1_101"
+      ],
+      "nombre": "FUNDAMENTOS DE AUDITORÍA",
+      "score": null,
+      "codigo": "AUDG2039",
+      "paralelo": "1",
+      "_id": "AUDG2039_1",
+      "profesorJoined": {
+        "nombre": "CARRERA MEJÍA PAÚL ANTONIO",
+        "_id": "0921487187"
+      }
+    },
+    {
+      "profesor": "CARRERA MEJÍA PAÚL ANTONIO",
+      "paralelo": "101",
+      "_id": "AUDG2039_1_101",
+      "codigo": "AUDG2039",
+      "eventos": {
+        "clases": [
+          {
+            "detalle_aula": "9F CAMPUS GUSTAVO GALINDO",
+            "fin": "2020-03-04T15:30:00",
+            "aula": "A106",
+            "inicio": "2020-03-04T14:30:00"
+          }
+        ]
+      },
+      "teorico_id": "AUDG2039_1",
+      "nombre": "FUNDAMENTOS DE AUDITORÍA"
+    }
+  ]
+}
