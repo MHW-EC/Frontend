@@ -21,7 +21,7 @@ import TransferTable from './../../../sharedComponents/TransferTable';
 import Grid from '@mui/material/Grid';
 
 export default function TheoryClassStep(props) {
-  const { stepId } = props;
+  const { stepId, lastStepId } = props;
   const { process, setProcess } = useContext(MainContext);
   const { steps, updateStep } = useContext(StepsContext);
   const step = steps[Number(stepId)];
@@ -31,6 +31,14 @@ export default function TheoryClassStep(props) {
     description: stepDescription,
     helperText: stepHelperText,
   } = step || {};
+  const lastStep = steps[Number(lastStepId)];
+  const {
+    selectedValues: lastStepSelectedValue = {}
+  } = lastStep;
+  const {
+    materias: lastStepClasses = []
+  } = lastStepSelectedValue;
+
   const [searchChecked, setSearchChecked] = useState([]);
   const [selectedChecked, setSelectedChecked] = useState([]);
   const [pagination, setPagination] = useState({
@@ -59,21 +67,21 @@ export default function TheoryClassStep(props) {
       width: 350
     },
     {
-      field: 'paralelo',
-      headerName: 'Course',
-      width: 100
-    },
-    {
-      field: 'profesor',
-      headerName: 'Teacher',
-      width: 300
-    },
-    {
       field: '_id',
       headerName: 'Id',
       width: 125
     }
   ], []);
+
+  useEffect(() => {// this will be replaced for a _id -> classCode
+    updateStep(
+      stepId,
+      {
+        data: lastStepClasses.map((l, idx) => ({...l, _id: `${l.codigo}_${idx}`})),
+        error: undefined
+      }
+    );
+  }, []);
 
   useEffect(() => {
     return () => requestControler.abort();

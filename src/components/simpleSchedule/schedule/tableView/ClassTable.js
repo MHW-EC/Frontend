@@ -46,7 +46,7 @@ export default (props) => {
               <TableCell>{'Code'}</TableCell>
               <TableCell align='left'>{'Name'}</TableCell>
               <TableCell align='left'>{'Course'}</TableCell>
-              <TableCell align='left'>{'Profesor'}</TableCell>
+              <TableCell align='left'>{'Teacher'}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
