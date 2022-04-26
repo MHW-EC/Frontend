@@ -34,25 +34,17 @@ export default (props) => {
   const {
     teoricoid,
     stepId
-    // teorico
   } = props;
   const { steps, updateStep } = useContext(StepsContext);
   const step = steps[Number(stepId)];
   const {
-    selectedValues: stepSelectedValues = [],
-    data: stepData = [],
-    description: stepDescription
+    data: stepData = []
   } = step || {};
   const [localLoading, setLoading] = useState(false);
   const requestControler = useMemo(() => new AbortController(), []);
   const practicalClasses = stepData[teoricoid];
   const [collapsableState, setCollapsable] = useState({});
 
-  // const [open, setOpen] = React.useState(true);
-
-  // const handleClick = () => {
-  // 	setOpen(!open);
-  // };
   useEffect(() => {
     if (practicalClasses?.length) {
       setCollapsable(practicalClasses.reduce(
@@ -90,8 +82,8 @@ export default (props) => {
             'data'
           );
         } catch (error) {
+          console.log(error);
           updateStep(stepId, {
-            // data: undefined,
             error: error instanceof Error
               ? error.message
               : error
@@ -101,13 +93,6 @@ export default (props) => {
       }
     })();
   }, []);
-
-  // const handleChecking = (evento, teorico, practico) => {
-  // 	let checked = evento.target.checked;
-  // 	checked
-  // 		? dispatch(addPaquete([teorico, practico], teoricoid, practico['_id']))
-  // 		: dispatch(removePaquete(teoricoid, practico['_id']));
-  // };
 
   return <List
     sx={{
@@ -120,9 +105,9 @@ export default (props) => {
       !localLoading &&
 				practicalClasses &&
 				practicalClasses.length ?
-        practicalClasses.map((par, idx) => (
-          <>
-            <ListItem key={`t-${idx}`}>
+        practicalClasses.map((par) => (
+          <React.Fragment key={par._id}>
+            <ListItem>
               <ListItemIcon sx={{
                 display: 'flex',
                 width: '100%',
@@ -161,7 +146,7 @@ export default (props) => {
                   stepId={stepId} />
               </Box>
             </Collapse>
-          </>
+          </React.Fragment>
         ))
         : [1, 2].map((_, idx) => (
           <ListItem key={`t-2-${idx}`}>

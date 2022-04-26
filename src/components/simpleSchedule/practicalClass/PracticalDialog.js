@@ -8,22 +8,6 @@ import {
 } from '@mui/material';
 import PracticalForm from './PracticalForm';
 
-const classes = {
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: (theme) => theme.palette.primary.paper
-  },
-  paper: {
-    width: '80%',
-    maxHeight: 435
-  },
-  dialogContent: {
-    alignItems: 'center',
-    padding: 0
-  }
-};
-
 export default (props) => {
   const { 
     onClose, 
@@ -49,7 +33,10 @@ export default (props) => {
       </DialogTitle>
       <DialogContent 
         dividers 
-        sx={classes.dialogContent}>
+        sx={{
+          alignItems: 'center',
+          padding: 0
+        }}>
         <PracticalForm
           stepId={stepId} 
           teoricoid={teoricoid}

@@ -115,8 +115,10 @@ class App extends React.Component {
               isLoading &&
               <LinearProgress
                 sx={{
-                  position: "absolute",
-                  width: '100%'
+                  height: "4px",
+                  zIndex: "999",
+                  position: "fixed",
+                  width: "100%"
                 }}
                 variant={progress.variant}
                 value={progress.value}
