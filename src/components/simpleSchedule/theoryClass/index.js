@@ -58,17 +58,17 @@ export default function TheoryClassStep(props) {
   const tableColumns = useMemo(() => [
     {
       field: 'codigo',
-      headerName: 'Code',
+      headerName: 'CODE',
       width: 100
     },
     {
       field: 'nombre',
-      headerName: 'Name',
+      headerName: 'NAME',
       width: 350
     },
     {
       field: '_id',
-      headerName: 'Id',
+      headerName: 'ID',
       width: 125
     }
   ], []);
@@ -77,7 +77,7 @@ export default function TheoryClassStep(props) {
     updateStep(
       stepId,
       {
-        data: lastStepClasses.map((l, idx) => ({...l, _id: `${l.codigo}_${idx}`})),
+        data: lastStepClasses.map((l, idx) => ({...l, _id: `${l.codigo}_00${idx}`})),
         error: undefined
       }
     );
@@ -92,7 +92,8 @@ export default function TheoryClassStep(props) {
       resourceName: 'TheoryClass',
       query: 'getTotalOfRecords',
       queryParams: {
-        target: queryString
+        target: queryString,
+        distinctField: "codigo"
       }
     }, abortSignal);
   }, [queryString, abortSignal]);
@@ -110,7 +111,8 @@ export default function TheoryClassStep(props) {
         pagination: {
           from: page * pageSize,
           pageSize: pageSize
-        }
+        },
+        distinctField: "codigo"
       },
       projectedFields: tableColumns.map(tC => tC.field)
     }, abortSignal

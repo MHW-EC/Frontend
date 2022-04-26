@@ -13,11 +13,11 @@ import {
   Box,
   IconButton
 } from '@mui/material';
-import { getData } from '../../../services';
+import { getData } from '../../../../../services';
 import { styled } from '@mui/material/styles';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
-import ClassCard from './ClassCard';
-import StepsContext from './../Context';
+import ClassCard from './..';
+import StepsContext from './../../../Context';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;

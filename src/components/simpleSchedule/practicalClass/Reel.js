@@ -74,16 +74,19 @@ export default (props) => {
       elevation={3}>
       <CardContent
         sx={{
-          height: '300px',
+          height: '325px',
           padding: 2,
           overflow: 'auto',
           whiteSpace: 'nowrap'
         }}>
         {
           theoryClasses.length === 0
-            ? <Typography align="center">
+            ? <Box sx={{
+              height: "100%",
+              display: "flex",
+              alignItems: "center"}}><Typography align="center">
               {`THERE IS NO INFORMATION FOR ${theoryClassName} - ${theoryClassCode}`}
-            </Typography>
+            </Typography></Box>
             : theoryClasses.map((practicalClass, index) => (
               <ClassCard
                 key={practicalClass._id}

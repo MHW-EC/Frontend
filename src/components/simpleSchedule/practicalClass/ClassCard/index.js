@@ -19,11 +19,11 @@ import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import PracticalDialog from './PracticalDialog';
-// import DialogStats from './dialog-stats';
-import StepsContext from './../Context';
-import utils from '../../../utils';
-// import { GetChip } from './ClassChip';
+import PracticalDialog from './Dialogs/PracticalDialog';
+import FeedbackDialog from './Dialogs/FeedbackDialog';
+import StepsContext from '../../Context';
+import utils from '../../../../utils';
+import { getChip } from './Chip';
 
 const {
   functions: {
@@ -46,11 +46,11 @@ const ClassCard = (props) => {
     profesor: profesorName = '',
     profesorJoined: profesorDetail = {},
     codigo: classCode,
-    teorico_id: theoryClassId
-    // lastParaleloProfesorJoined: lastStudentFeedback
+    teorico_id: theoryClassId,
+    lastParaleloProfesorJoined: lastStudentFeedback = {}
   } = paralelo || {};
   const [practicalClassesDisplayed, setPracticalClassesDisplayed] = useState(false);
-  const [openStats, setOpenStats] = useState(false);
+  const [feedbackIsOpen, setFeedback] = useState(false);
   const {
     selectedValues: stepSelectedValues = {}
   } = step || {};
@@ -92,9 +92,6 @@ const ClassCard = (props) => {
     }
   ];
 
-  const handleStats = () => {
-    setOpenStats(true);
-  };
 
   return paralelo ? (
     <Card
@@ -164,12 +161,15 @@ const ClassCard = (props) => {
         title={profesorName || 'SIN NOMBRE'}
         subheader={
           <>
-            {/* {GetChip(lastStudentFeedback.promedio, top)} */}
             {
-              profesorDetail.stats && (
+              lastStudentFeedback.promedio != undefined &&
+              getChip(lastStudentFeedback.promedio, top)
+            }
+            {
+              Object.keys(profesorDetail?.stats || {}).length > 0 && (
                 <>
                   <Button
-                    onClick={handleStats}
+                    onClick={() => setFeedback(true)}
                     size="small"
                     variant="text"
                     color="primary"
@@ -177,14 +177,18 @@ const ClassCard = (props) => {
                   >
                     Check feedback
                   </Button>
-                  {/* <DialogStats
+                  {
+                    feedbackIsOpen &&
+                    <FeedbackDialog
                     id="stats-profesor"
-                    open={openStats}
+                    open={feedbackIsOpen}
                     keepMounted
-                    onClose={handleCloseDialogStats}
-                    data={profesor.stats}
-                    profesor={paralelo['profesor']}
-                  /> */}
+                    onClose={() => setFeedback(!feedbackIsOpen) }
+                    data={profesorDetail.stats}
+                    profesor={profesorName}
+                  />
+                  }
+                  
                 </>
               )
             }
