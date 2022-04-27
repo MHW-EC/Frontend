@@ -161,7 +161,6 @@ class App extends React.Component {
 
 const withTheme = (Component) => (props) => {
   const matches = useMediaQuery('(prefers-color-scheme: dark)');
-  console.log('matches', matches);
   return <Component {...props} useDark={matches} />;
 }
 

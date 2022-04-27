@@ -157,7 +157,7 @@ export default (props) => {
         </Table>
       </TableContainer>
       <Link
-        sx={{ marginTop: '12px' }}
+        sx={{ marginTop: '12px', textDecoration: 'none' }}
         href={link?.href}
         download={link?.download}
       >
