@@ -23,10 +23,7 @@ const TableWrapper = (props) => {
     onSelectionModelChange,
   } = props;
   return (
-    <Box
-      sx={{
-        textAlign: "center"
-      }}>
+    <Box sx={style}>
       <Typography variant="caption">
         {caption}
       </Typography>
@@ -108,7 +105,7 @@ export default function TransferTable(props) {
         sm={10}
         md={10}
         lg={10}
-        xl={10}>
+        xl={5}>
         <TableWrapper
           rows={left}
           caption={'Available classes:'}
@@ -128,7 +125,7 @@ export default function TransferTable(props) {
         sm={12}
         md={12}
         lg={12}
-        xl={12}>
+        xl={1}>
         <Grid container direction="column" alignItems="center">
           <Button
             sx={{ my: 0.5 }}
@@ -157,7 +154,7 @@ export default function TransferTable(props) {
         sm={10}
         md={10}
         lg={10}
-        xl={10}>
+        xl={5}>
         <TableWrapper
           rows={right}
           caption={'Selected classes:'}

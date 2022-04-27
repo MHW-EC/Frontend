@@ -6,6 +6,7 @@ import Home from './home';
 import SimpleSchedule from './simpleSchedule';
 import { ThemeProvider } from '@mui/material/styles';
 import LinearProgress from '@mui/material/LinearProgress';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Paper from '@mui/material/Paper';
 import Themes from './../themes';
 import {
@@ -33,7 +34,7 @@ const ROUTES = [
 class App extends React.Component {
   state = {
     sideBarIsOpen: false,
-    theme: 'dark',
+    theme: this.props.useDark ? 'dark' : 'default',
     process: {
       isLoading: false,
       error: undefined,
@@ -75,7 +76,13 @@ class App extends React.Component {
 
   componentDidMount() { }
 
-  componentDidUpdate(_, prevState) { }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.useDark !== this.props.useDark) {
+      this.setState({
+        theme: this.props.useDark ? 'dark' : 'default'
+      });
+    }
+  }
 
   render() {
     const {
@@ -151,4 +158,11 @@ class App extends React.Component {
     )
   }
 }
-export default App;
+
+const withTheme = (Component) => (props) => {
+  const matches = useMediaQuery('(prefers-color-scheme: dark)');
+  console.log('matches', matches);
+  return <Component {...props} useDark={matches} />;
+}
+
+export default withTheme(App);
