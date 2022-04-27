@@ -1,93 +1,94 @@
-import { createMuiTheme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
-const defaultTheme = createMuiTheme({
+const defaultTheme = createTheme({
   palette: {
     type: 'light',
     primary: {
-      light: '#AAF1FC',
-      main: '#1665A6',
-      dark: '#0D4583',
-      contrastText: '#ffffff'
+      light: '#0097a7',
+      main: '#006064',
     },
     secondary: {
-      light: '#FDDFAD',
-      main: '#f48c32',
-      dark: '#8D360F',
-      contrastText: '#ffffff'
+      main: '#f50057',
     },
     error: {
       light: '#c4414b',
       main: '#8e0023',
       dark: '#5a0000',
-      contrastText: '#ffffff'
+      contrastText: '#ffffff',
     },
     warning: {
       light: '#f3a34b',
       main: '#bc741b',
       dark: '#874800',
-      contrastText: '#ffffff'
+      contrastText: '#ffffff',
     },
     success: {
       light: '#5ccb8c',
       main: '#21995e',
       dark: '#006a33',
-      contrastText: '#ffffff'
+      contrastText: '#ffffff',
     },
     info: {
       light: '#6f9dff',
       main: '#326fcc',
       dark: '#00459a',
-      contrastText: '#ffffff'
+      contrastText: '#ffffff',
     },
-    background: {
-      paper: '#fff',
-      default: '#fafafa'
-    }
-  }
+  },
 });
-const darkTheme = createMuiTheme({
+const darkTheme = createTheme({
   palette: {
     type: 'dark',
     primary: {
-      light: '#AAF1FC',
-      main: '#3482C1',
-      dark: '#0D4583',
-      contrastText: '#ffffff'
+      light: '#0097a7',
+      main: '#006064',
+      dark: 'rgb(0, 67, 70)',
+      contrastText: '#fff',
     },
     secondary: {
-      light: '#FDDFAD',
-      main: '#f48c32',
-      dark: '#8D360F',
-      contrastText: '#ffffff'
+      main: '#640400',
+      contrastText: '#fff',
+      light: 'rgb(131, 54, 51)',
+      dark: 'rgb(70, 2, 0)',
     },
     error: {
       light: '#c4414b',
       main: '#8e0023',
       dark: '#5a0000',
-      contrastText: '#ffffff'
+      contrastText: '#ffffff',
     },
     warning: {
       light: '#f3a34b',
       main: '#bc741b',
       dark: '#874800',
-      contrastText: '#ffffff'
+      contrastText: '#ffffff',
     },
     success: {
       light: '#5ccb8c',
       main: '#21995e',
       dark: '#006a33',
-      contrastText: '#ffffff'
+      contrastText: '#ffffff',
     },
     info: {
       light: '#6f9dff',
       main: '#326fcc',
       dark: '#00459a',
-      contrastText: '#ffffff'
+      contrastText: '#ffffff',
     },
     background: {
-      paper: '#333333',
-      default: '#212121'
-    }
-  }
+      paper: '#263238',
+      default: '#424242',
+    },
+    text: {
+      primary: '#fff',
+      secondary: 'rgba(255, 255, 255, 0.7)',
+      disabled: 'rgba(255, 255, 255, 0.5)',
+      hint: 'rgba(255, 255, 255, 0.5)',
+    },
+  },
 });
-export { defaultTheme, darkTheme };
+const Themes = { 
+  default: defaultTheme, 
+  dark: darkTheme 
+}
+export default Themes;

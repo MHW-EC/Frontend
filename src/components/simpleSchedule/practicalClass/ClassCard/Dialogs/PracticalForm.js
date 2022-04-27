@@ -11,7 +11,8 @@ import {
   Collapse,
   ListItem,
   Box,
-  IconButton
+  IconButton,
+  Typography
 } from '@mui/material';
 import { getData } from '../../../../../services';
 import { styled } from '@mui/material/styles';
@@ -123,7 +124,7 @@ export default (props) => {
                   )
                 );
               }}>
-                <ListItemText primary={`Paralelo ${par['paralelo']}`} />
+                <ListItemText children={`Paralelo ${par['paralelo']}`} />
                 <ListItemIcon sx={{ minWidth: 'unset' }}>
                   <ExpandMore
                     expand={collapsableState[par._id]}

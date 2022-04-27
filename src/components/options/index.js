@@ -5,10 +5,12 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import Backdrop from '@mui/material/Backdrop';
 
 import NightlightRoundIcon from '@mui/icons-material/NightlightRound';
-import LightModeIcon from '@mui/icons-material/LightMode';
+import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import GroupIcon from '@mui/icons-material/Group';
 import MainContext from './../Context';
+
+import { styled } from '@mui/material/styles';
 
 const ACTIONS = [
   { icon: <EventNoteIcon />,
@@ -19,12 +21,14 @@ const ACTIONS = [
     path: '/' }
 ];
 
+
+
 const Options = () => {
-  const { lightMode, toogleLightMode } = React.useContext(MainContext);
+  const { theme, setTheme } = React.useContext(MainContext);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  
   return (
     <>
       <Backdrop open={open} />
@@ -52,22 +56,25 @@ const Options = () => {
           ))
         }
         {
-          lightMode
-            ? <SpeedDialAction
+          theme === 'default' &&
+            <SpeedDialAction
               key={'Night mode'}
               icon={<NightlightRoundIcon />}
               tooltipTitle={'Night mode'}
               onClick={() => {
                 handleClose();
-                toogleLightMode();
+                setTheme('dark');
               }} />
-            : <SpeedDialAction
+        }
+        {
+          theme === 'dark' && 
+            <SpeedDialAction
               key={'Day mode'}
-              icon={<LightModeIcon />}
+              icon={<LightModeRoundedIcon />}
               tooltipTitle={'Day mode'}
               onClick={() => {
                 handleClose();
-                toogleLightMode();
+                setTheme('default');
               }}
             />
         }

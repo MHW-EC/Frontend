@@ -2,8 +2,7 @@
 import React from 'react';
 import {
   Button,
-  Typography,
-  Box,
+  Paper,
   Grid
 } from '@mui/material';
 import {
@@ -12,9 +11,11 @@ import {
 
 const Home = () => {
   return (
-    <Box
+    <Paper
+      square
       sx={{
-        height: '100vh',
+        minHeight: '100vh',
+        maxHeight: '100%',
         display: 'flex',
         margin: 'auto',
         flexDirection: 'column',
@@ -54,7 +55,7 @@ const Home = () => {
           {'Multiplayer mode (soon)'}
         </Button>
       </Link>
-    </Box>
+    </Paper>
   );
 };
 

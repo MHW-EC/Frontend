@@ -1,5 +1,8 @@
 
 import React, { useContext, useState, useEffect, useMemo } from 'react';
+import {
+  Typography
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import StepsContext from './../Context';
@@ -79,7 +82,6 @@ export default function CareerStep(props) {
         <Autocomplete
           autoComplete
           clearOnEscape
-          //sx={{ width: 300 }}
           open={open}
           onOpen={() => {
             setOpen(true);
@@ -96,14 +98,20 @@ export default function CareerStep(props) {
           isOptionEqualToValue={
             (option, value) => option.title === value.title
           }
+          // renderOption={
+          //   (_, { nombre, facultad }) => <Typography>{`${nombre} - ${facultad}`}</Typography> 
+          // }
           getOptionLabel={
-            ({ nombre, facultad }) => nombre ? `${nombre} - ${facultad}` : ''
+            ({ nombre, facultad }) => nombre 
+              ? `${nombre} - ${facultad}` 
+              : ''
           }
           options={stepData || []}
           loading={isLoading}
           renderInput={(params) => (
             <TextField
               {...params}
+              // label={<Typography>{`${stepDescription}`}</Typography>}
               label={stepDescription}
               InputProps={{
                 ...params.InputProps,

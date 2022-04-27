@@ -1,4 +1,7 @@
 import React from 'react';
+import {
+  Box
+} from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
@@ -20,7 +23,10 @@ const TableWrapper = (props) => {
     onSelectionModelChange,
   } = props;
   return (
-    <div>
+    <Box
+      sx={{
+        textAlign: "center"
+      }}>
       <Typography variant="caption">
         {caption}
       </Typography>
@@ -61,7 +67,7 @@ const TableWrapper = (props) => {
         }
         disableSelectionOnClick={true}
       />
-    </div>
+    </Box>
   );
 };
 

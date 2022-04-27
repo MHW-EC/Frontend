@@ -287,7 +287,8 @@ export default function TheoryClassStep(props) {
           columns={tableColumns}
           tableStyle={{
             height: 400,
-            width: '100%'
+            width: '650px',
+            margin: 'auto'
           }}
           getRowId={getElementId}
           rowsEquals={(row, anotherRow) => row._id === anotherRow._id} />

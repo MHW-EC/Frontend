@@ -1,6 +1,7 @@
 
 import React from 'react';
 import StepsContext from './Context';
+import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stepper from '@mui/material/Stepper';
@@ -164,17 +165,18 @@ class Steps extends React.Component {
       isStepSkipped,
       updateStep
     } = this;
-console.log({steps});
+// console.log({steps});
     return (
       <StepsContext.Provider
         value={{
           updateStep,
           steps
         }}>
-        <Box 
+        <Paper 
+          square
           sx={{
             width: 'auto',
-            height: "100vh",
+            minHeight: "100vh",
             pl: "16px",
             pr: "16px"
           }}>
@@ -204,11 +206,8 @@ console.log({steps});
                   <Step
                     key={String(id)}
                     {...stepProps}>
-                    <StepLabel
-                      {...labelProps}>
-                      {
-                        label
-                      }
+                    <StepLabel {...labelProps}>
+                      { label }
                     </StepLabel>
                   </Step>
                 );
@@ -220,11 +219,11 @@ console.log({steps});
               ? (
                 <React.Fragment>
                   <Typography sx={{ mt: 2, mb: 1 }}>
-                    All steps completed - you&apos;re finished
+                    {"All steps completed - you&apos;re finished"}
                   </Typography>
                   <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                     <Box sx={{ flex: '1 1 auto' }} />
-                    <Button onClick={handleReset}>Reset</Button>
+                    <Button onClick={handleReset}>{"Reset"}</Button>
                   </Box>
                 </React.Fragment>
               )
@@ -238,20 +237,20 @@ console.log({steps});
                       justifyContent: 'center'
                     }}>
                     <Button
-                      color="info"
+                      color="secondary"
                       variant="contained"
                       disabled={activeStepId === 0}
                       onClick={handleBack}
                       sx={{ mr: 5 }}
                     >
-                      Back
+                      {"Back"}
                     </Button>
                     <Button
                       disabled={!isStepOptional(activeStepId)}
                       variant="outlined"
                       onClick={handleSkip}
                       sx={{ mr: 1 }}>
-                      Skip
+                      {"Skip"}
                     </Button>
                     <Button
                       disabled={
@@ -277,10 +276,9 @@ console.log({steps});
                 </React.Fragment>
               )
           }
-        </Box>
+        </Paper>
       </StepsContext.Provider>
     )
   }
 }
-// Steps.contextType = MainContext;
 export default Steps;
