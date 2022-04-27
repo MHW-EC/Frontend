@@ -18,7 +18,7 @@ export default function ConfirmationDialogRaw(props) {
     value: valueProp, open, 
     ...other 
   } = props;
-  console.log({props});
+  
 
   const handleClose = () => {
     onClose();
@@ -126,7 +126,7 @@ export default function ConfirmationDialogRaw(props) {
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={handleClose} color="primary">
-          {"Acept"}
+          {"Accept"}
         </Button>
       </DialogActions>
     </Dialog>
