@@ -17,6 +17,7 @@ import { LoadingButton } from '@mui/lab';
 import { createEvents } from 'ics';
 import moment from 'moment';
 
+const UTC = moment().format('Z');
 const FORMAT = 'YYYY-MM-DD-HH-mm';
 const START_DATE = moment('2022-04-12').format('YYYY-MM-DD');
 const END_DATE = moment('2022-09-19');
@@ -28,7 +29,6 @@ export default (props) => {
       materias: schedule = []
     }
   } = props;
-
   const [link, setLink] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,8 +42,8 @@ export default (props) => {
       const matEvents = [];
       clases.forEach((clase) => {
         const duration = moment(clase.fin).diff(clase.inicio, 'minutes');
-        const startTime = moment(clase.inicio).format('HH-mm');
-        let currentDate = moment(`${START_DATE} ${startTime}`);
+        const startTime = moment(clase.inicio).format('HH:mm');
+        let currentDate = moment(`${START_DATE} ${startTime}`).utcOffset(UTC);
         while(currentDate.isBefore(END_DATE)) {
           matEvents.push({
             title: `${nombre} ${paralelo}`,
@@ -60,7 +60,7 @@ export default (props) => {
         matEvents.push({
           title: `Examen Parcial ${nombre}`,
           description: `${codigo} - ${profesor}`,
-          start: parseDate(moment(examenes.parcial.inicio)),
+          start: parseDate(moment(examenes.parcial.inicio).utcOffset(UTC)),
           duration: {
             minutes: moment(examenes.parcial.fin).diff(examenes.parcial.inicio, 'minutes')
           }
@@ -70,7 +70,7 @@ export default (props) => {
         matEvents.push({
           title: `Examen Final ${nombre}`,
           description: `${codigo} - ${profesor}`,
-          start: parseDate(moment(examenes.final.inicio)),
+          start: parseDate(moment(examenes.final.inicio).utcOffset(UTC)),
           duration: {
             minutes: moment(examenes.final.fin).diff(examenes.final.inicio, 'minutes')
           }
@@ -80,7 +80,7 @@ export default (props) => {
         matEvents.push({
           title: `Examen Mejoramiento ${nombre}`,
           description: `${codigo} - ${profesor}`,
-          start: parseDate(moment(examenes.mejoramiento.inicio)),
+          start: parseDate(moment(examenes.mejoramiento.inicio).utcOffset(UTC)),
           duration: {
             minutes: moment(examenes.mejoramiento.fin).diff(examenes.mejoramiento.inicio, 'minutes')
           }
