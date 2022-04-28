@@ -19,7 +19,7 @@ import moment from 'moment';
 
 const UTC = moment().format('Z');
 const END_DATE = moment('2022-09-19');
-const START_DATE = moment('2022-04-12').format('YYYY-MM-DD');
+const START_DATE = moment('2022-05-16');
 
 const ClassTable = (props) => {
   const {
@@ -68,10 +68,20 @@ const ClassTable = (props) => {
         exclude.push(dateExam.format('YYYY-MM-DD'));
       }
       clases.forEach((clase) => {
+        console.log(clase);
         const statTime = moment(clase.inicio).format('HH:mm');
-        const startDate = moment(`${START_DATE} ${statTime}`).utcOffset(UTC);
+        const startDay = moment(clase.inicio).format('dddd');
+
+        let startDate = moment(`${startDay} ${statTime}`, 'dddd HH:mm');
+        while (startDate.diff(START_DATE, 'week') !== 0) {
+          if (startDate.isBefore(START_DATE)) {
+            startDate = startDate.add(1, 'week');
+          } else {
+            startDate = startDate.subtract(1, 'week');
+          }
+        }
         const endTime = moment(clase.fin).format('HH:mm');
-        const endDate = moment(`${START_DATE} ${endTime}`).utcOffset(UTC);
+        const endDate = moment(`${startDate.format('YYYY-MM-DD')} ${endTime}`).utcOffset(UTC);
         calendar.createEvent({
           start: startDate,
           end: endDate,
