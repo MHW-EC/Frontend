@@ -287,7 +287,7 @@ export default function TheoryClassStep(props) {
           columns={tableColumns}
           tableStyle={{
             height: 400,
-            width: '600px',
+            maxWidth: '650px',
             margin: 'auto'
           }}
           getRowId={getElementId}

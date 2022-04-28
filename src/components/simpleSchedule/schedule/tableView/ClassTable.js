@@ -23,8 +23,9 @@ const START_DATE = moment('2022-04-12').format('YYYY-MM-DD');
 
 const ClassTable = (props) => {
   const {
-    numHorario,
-    horario: { materias: schedule = [] },
+    scheduleInfo: {
+      materias: schedule = []
+    }
   } = props;
   const [link, setLink] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -97,15 +98,12 @@ const ClassTable = (props) => {
     });
   };
   return schedule ? (
-    <Box
-      sx={{
-        padding: '10px',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        display: 'flex',
-      }}
-    >
+    <Box sx={{
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+      display: 'flex'
+    }}>
       <TableContainer
         id="schedule-table"
         sx={{ maxWidth: 650 }}
@@ -121,10 +119,10 @@ const ClassTable = (props) => {
         >
           <TableHead>
             <TableRow>
-              <TableCell>{'Code'}</TableCell>
-              <TableCell align="left">{'Name'}</TableCell>
-              <TableCell align="left">{'Course'}</TableCell>
-              <TableCell align="left">{'Teacher'}</TableCell>
+              <TableCell>{'CODE'}</TableCell>
+              <TableCell align='left'>{'NAME'}</TableCell>
+              <TableCell align='left'>{'COURSE'}</TableCell>
+              <TableCell align='left'>{'TEACHER'}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
