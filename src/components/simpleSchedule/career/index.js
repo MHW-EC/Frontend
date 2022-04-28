@@ -1,8 +1,5 @@
 
 import React, { useContext, useState, useEffect, useMemo } from 'react';
-import {
-  Typography
-} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import StepsContext from './../Context';

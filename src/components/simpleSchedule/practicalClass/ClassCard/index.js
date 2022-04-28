@@ -97,10 +97,10 @@ const ClassCard = (props) => {
     <Card
       sx={
         {
-          display: parentComponent == 'PracticalForm' ? 'block' : 'inline-block',
+          display: parentComponent === 'PracticalForm' ? 'block' : 'inline-block',
           height: '-webkit-fill-available',
-          width: parentComponent == 'PracticalForm' ? '100%' : 'unset',
-          marginRight: parentComponent == 'PracticalForm' ? '100%' : '16px',
+          width: parentComponent === 'PracticalForm' ? '100%' : 'unset',
+          marginRight: parentComponent === 'PracticalForm' ? '100%' : '16px',
           ...(
             top
               ? { borderColor: '#D4AF37' }
@@ -134,7 +134,7 @@ const ClassCard = (props) => {
                 <Zoom
                   key={String(idx)}
                   appear={false}
-                  in={Boolean(isAdded) == fab.label}
+                  in={Boolean(isAdded) === fab.label}
                   mountOnEnter
                   unmountOnExit
                 >
@@ -162,7 +162,7 @@ const ClassCard = (props) => {
         subheader={
           <>
             {
-              lastStudentFeedback.promedio != undefined &&
+              lastStudentFeedback.promedio !== undefined &&
               getChip(lastStudentFeedback.promedio, top)
             }
             {

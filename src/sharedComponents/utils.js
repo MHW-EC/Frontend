@@ -6,7 +6,7 @@ const difference = (array, anotherArray, equals) => {
   if (!(array instanceof Array) || !(anotherArray instanceof Array)) {
     throw notArrayError;
   }
-  if (array.length == 0 || anotherArray.length == 0) return array;
+  if (array.length === 0 || anotherArray.length === 0) return array;
   for (let i = 0; i < array.length; i++) {
     const arrayValue = array[i];
     let valueFound = false;
@@ -24,7 +24,7 @@ const intersection = (array, anotherArray, equals) => {
   if (!(array instanceof Array) || !(anotherArray instanceof Array)) {
     throw notArrayError;
   }
-  if (array.length == 0 || anotherArray.length == 0) return result;
+  if (array.length === 0 || anotherArray.length === 0) return result;
   for (let i = 0; i < array.length; i++) {
     const arrayValue = array[i];
     let valueFound = false;

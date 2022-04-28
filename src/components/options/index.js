@@ -10,8 +10,6 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 import GroupIcon from '@mui/icons-material/Group';
 import MainContext from './../Context';
 
-import { styled } from '@mui/material/styles';
-
 const ACTIONS = [
   { icon: <EventNoteIcon />,
     name: 'New schedule',

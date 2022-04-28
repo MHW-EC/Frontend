@@ -9,148 +9,133 @@ import {
   Paper,
   Skeleton,
   Box,
-  Link
+  Link,
 } from '@mui/material';
 
 import { LoadingButton } from '@mui/lab';
 
-import { createEvents } from 'ics';
+import ical from 'ical-generator';
 import moment from 'moment';
 
 const UTC = moment().format('Z');
-const FORMAT = 'YYYY-MM-DD-HH-mm';
-const START_DATE = moment('2022-04-12').format('YYYY-MM-DD');
 const END_DATE = moment('2022-09-19');
+const START_DATE = moment('2022-04-12').format('YYYY-MM-DD');
 
-export default (props) => {
+const ClassTable = (props) => {
   const {
     numHorario,
-    horario: {
-      materias: schedule = []
-    }
+    horario: { materias: schedule = [] },
   } = props;
   const [link, setLink] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
-
-  const parseDate = (date) => date.format(FORMAT).split('-').map(Number);
-
   const parseSchedule = () => {
-    const allEvents = schedule.reduce((acc, materia) => {
+    const calendar = ical();
+    schedule.forEach((materia) => {
       const { nombre, profesor, codigo, paralelo } = materia;
       const { clases, examenes } = materia.eventos;
-      const matEvents = [];
+      const exclude = [];
+      if (examenes?.parcial) {
+        const dateExam = moment(examenes.parcial.inicio).utcOffset(UTC);
+        calendar.createEvent({
+          description: `${profesor} - ${codigo}`,
+          summary: `Examen Parcial ${paralelo}`,
+          start: dateExam,
+          end: moment(examenes.parcial.fin).utcOffset(UTC),
+        });
+        exclude.push(dateExam.format('YYYY-MM-DD'));
+      }
+      if (examenes?.final) {
+        const dateExam = moment(examenes.final.inicio).utcOffset(UTC);
+        calendar.createEvent({
+          description: `${profesor} - ${codigo}`,
+          summary: `Examen Final ${paralelo}`,
+          start: dateExam,
+          end: moment(examenes.final.fin).utcOffset(UTC),
+        });
+        exclude.push(dateExam.format('YYYY-MM-DD'));
+      }
+      if (examenes?.mejoramiento) {
+        const dateExam = moment(examenes.mejoramiento.inicio).utcOffset(UTC);
+        calendar.createEvent({
+          description: `${profesor} - ${codigo}`,
+          summary: `Examen Mejoramiento ${paralelo}`,
+          start: dateExam,
+          end: moment(examenes.mejoramiento.fin).utcOffset(UTC),
+        });
+        exclude.push(dateExam.format('YYYY-MM-DD'));
+      }
       clases.forEach((clase) => {
-        const duration = moment(clase.fin).diff(clase.inicio, 'minutes');
-        const startTime = moment(clase.inicio).format('HH:mm');
-        let currentDate = moment(`${START_DATE} ${startTime}`).utcOffset(UTC);
-        while(currentDate.isBefore(END_DATE)) {
-          matEvents.push({
-            title: `${nombre} ${paralelo}`,
-            description: `${codigo} - ${profesor}`,
-            start: parseDate(currentDate),
-            duration: {
-              minutes: duration
-            }
-          });
-          currentDate = currentDate.add(1, 'week');
-        }
-      });
-      if (examenes.parcial) {
-        matEvents.push({
-          title: `Examen Parcial ${nombre}`,
-          description: `${codigo} - ${profesor}`,
-          start: parseDate(moment(examenes.parcial.inicio).utcOffset(UTC)),
-          duration: {
-            minutes: moment(examenes.parcial.fin).diff(examenes.parcial.inicio, 'minutes')
-          }
+        const statTime = moment(clase.inicio).format('HH:mm');
+        const startDate = moment(`${START_DATE} ${statTime}`).utcOffset(UTC);
+        const endTime = moment(clase.fin).format('HH:mm');
+        const endDate = moment(`${START_DATE} ${endTime}`).utcOffset(UTC);
+        calendar.createEvent({
+          start: startDate,
+          end: endDate,
+          description: `${profesor} - ${codigo}`,
+          summary: `${nombre} ${paralelo}`,
+          repeating: {
+            freq: 'WEEKLY',
+            until: END_DATE,
+            exclude: exclude.length ? exclude : undefined,
+          },
         });
-      }
-      if (examenes.final) {
-        matEvents.push({
-          title: `Examen Final ${nombre}`,
-          description: `${codigo} - ${profesor}`,
-          start: parseDate(moment(examenes.final.inicio).utcOffset(UTC)),
-          duration: {
-            minutes: moment(examenes.final.fin).diff(examenes.final.inicio, 'minutes')
-          }
-        });
-      }
-      if (examenes.mejoramiento) {
-        matEvents.push({
-          title: `Examen Mejoramiento ${nombre}`,
-          description: `${codigo} - ${profesor}`,
-          start: parseDate(moment(examenes.mejoramiento.inicio).utcOffset(UTC)),
-          duration: {
-            minutes: moment(examenes.mejoramiento.fin).diff(examenes.mejoramiento.inicio, 'minutes')
-          }
-        });
-      }
-      return [...acc, ...matEvents];
-    }, []);
-    return allEvents;
-  }
-  const createICSFile = () => {
-    setIsLoading(true);
-    const events = parseSchedule();
-    createEvents(events, (error, calendar) => {
-      if (error) {
-        console.log('ERROR CREATING ICS FILE: ', error);
-        return;
-      }
-      const filename = `Horario ${numHorario}.ics`; 
-      const blob = new Blob([calendar], { type: 'text/calendar;charset=utf-8' });
-      setIsLoading(false);
-      setLink({
-        download: filename,
-        href: window.URL.createObjectURL(blob)
       });
     });
-  }
+    return calendar;
+  };
+  const createICSFile = () => {
+    setIsLoading(true);
+    const calendar = parseSchedule().toString();
+    const filename = `Horario ${numHorario}.ics`;
+    const blob = new Blob([calendar], { type: 'text/calendar;charset=utf-8' });
+    setIsLoading(false);
+    setLink({
+      download: filename,
+      href: window.URL.createObjectURL(blob),
+    });
+  };
   return schedule ? (
-    <Box sx={{
-      padding: '10px',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      display: 'flex'
-    }}>
+    <Box
+      sx={{
+        padding: '10px',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        display: 'flex',
+      }}
+    >
       <TableContainer
-        id='schedule-table'
+        id="schedule-table"
         sx={{ maxWidth: 650 }}
         component={Paper}
         elevation={5}
       >
         <Table
           sx={{
-            minWidth: 175
+            minWidth: 175,
           }}
-          size='small'
-          aria-label='a dense table'
+          size="small"
+          aria-label="a dense table"
         >
           <TableHead>
             <TableRow>
               <TableCell>{'Code'}</TableCell>
-              <TableCell align='left'>{'Name'}</TableCell>
-              <TableCell align='left'>{'Course'}</TableCell>
-              <TableCell align='left'>{'Teacher'}</TableCell>
+              <TableCell align="left">{'Name'}</TableCell>
+              <TableCell align="left">{'Course'}</TableCell>
+              <TableCell align="left">{'Teacher'}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {schedule.map((row) => (
               <TableRow key={row['_id']}>
-                <TableCell component='th' scope='row'>
+                <TableCell component="th" scope="row">
                   {row.codigo}
                 </TableCell>
-                <TableCell align='left'>
-                  {row.nombre}
-                </TableCell>
-                <TableCell align='left'>
-                  {row.paralelo}
-                </TableCell>
-                <TableCell align='left'>
-                  {row.profesor}
-                </TableCell>
+                <TableCell align="left">{row.nombre}</TableCell>
+                <TableCell align="left">{row.paralelo}</TableCell>
+                <TableCell align="left">{row.profesor}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -164,22 +149,26 @@ export default (props) => {
         <LoadingButton
           onClick={createICSFile}
           loading={isLoading}
-          variant='contained'
+          variant="contained"
         >
           {'Download ICS File'}
         </LoadingButton>
       </Link>
     </Box>
   ) : (
-    <Box sx={{
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      display: 'flex'
-    }}>
-      <Skeleton variant='rect' amination='wave' width={400} height={400} />
+    <Box
+      sx={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        display: 'flex',
+      }}
+    >
+      <Skeleton variant="rect" amination="wave" width={400} height={400} />
       <br />
-      <Skeleton variant='circle' amination='wave' width={40} height={40} />
+      <Skeleton variant="circle" amination="wave" width={40} height={40} />
     </Box>
   );
 };
+
+export default ClassTable;

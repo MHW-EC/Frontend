@@ -123,7 +123,7 @@ class Steps extends React.Component {
   updateStep = (stepId, newStep, field) => {
     this.setState((currentState) => ({
       steps: currentState.steps.map(step => {
-        if (step.id == stepId) {
+        if (step.id === Number(stepId)) {
           if(field &&
              newStep[field] ){
                const merged = Object.assign({}, step[field], newStep[field]);

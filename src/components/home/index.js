@@ -29,7 +29,7 @@ const Home = () => {
         justifyContent="center"
         >
           <Grid item>
-            <img src='/logo192.png' />
+            <img src='/logo192.png' alt='' />
           </Grid>
         </Grid>
       <Link
