@@ -153,7 +153,7 @@ const TableView = (props) => {
       <SwipeableViews disabled axis={'x-reverse'} index={currentTableIndex - 1}>
         {horariosGenerados.map((horario, index) => (
           <React.Fragment key={index}>
-            <ClassTable scheduleInfo={horario} />
+            <ClassTable scheduleInfo={horario} numHorario={index + 1} />
             <ScheduleDialog numHorario={index + 1} scheduleInfo={horario} />
           </React.Fragment>
         ))}

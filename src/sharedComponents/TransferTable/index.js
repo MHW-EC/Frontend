@@ -24,7 +24,9 @@ const TableWrapper = (props) => {
     onSelectionModelChange,
   } = props;
   return (
-    <Box sx={style}>
+    <Box sx={{
+      textAlign: "center"
+    }}>
       <Typography variant="caption">
         {caption}
       </Typography>

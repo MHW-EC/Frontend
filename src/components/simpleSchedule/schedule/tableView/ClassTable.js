@@ -23,6 +23,7 @@ const START_DATE = moment('2022-04-12').format('YYYY-MM-DD');
 
 const ClassTable = (props) => {
   const {
+    numHorario,
     scheduleInfo: {
       materias: schedule = []
     }
