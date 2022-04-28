@@ -68,7 +68,6 @@ const ClassTable = (props) => {
         exclude.push(dateExam.format('YYYY-MM-DD'));
       }
       clases.forEach((clase) => {
-        console.log(clase);
         const statTime = moment(clase.inicio).format('HH:mm');
         const startDay = moment(clase.inicio).format('dddd');
 
