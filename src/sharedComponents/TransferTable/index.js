@@ -5,8 +5,9 @@ import {
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
-import utils from './../utils';
+import Utils from './../../utils/functions';
 import { DataGrid } from '@mui/x-data-grid';
+
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -23,7 +24,9 @@ const TableWrapper = (props) => {
     onSelectionModelChange,
   } = props;
   return (
-    <Box sx={style}>
+    <Box sx={{
+      textAlign: "center"
+    }}>
       <Typography variant="caption">
         {caption}
       </Typography>
@@ -89,11 +92,11 @@ export default function TransferTable(props) {
   } = leftExtra;
 
   const handleCheckedToRight = () => {
-    setRight(utils.Array.union(right, leftChecked, rowsEquals));
+    setRight(Utils.sets.union(right, leftChecked, rowsEquals));
   };
 
   const handleCheckedToLeft = () => {
-    const result = utils.Array.difference(right, rightChecked, rowsEquals);
+    const result = Utils.sets.difference(right, rightChecked, rowsEquals);
     setRight(result);
     setRightChecked(result);
   };

@@ -124,7 +124,7 @@ export default (props) => {
                   )
                 );
               }}>
-                <ListItemText children={`Paralelo ${par['paralelo']}`} />
+                <ListItemText children={<Typography>{`Paralelo ${par['paralelo']}`}</Typography>} />
                 <ListItemIcon sx={{ minWidth: 'unset' }}>
                   <ExpandMore
                     expand={collapsableState[par._id]}
