@@ -15,7 +15,7 @@ import SwipeableViews from 'react-swipeable-views';
 import ClassTable from './ClassTable';
 import StepsContext from './../../Context';
 import { generate } from './../../../../services';
-// import ButtonDialog from './full-dialog';
+import ScheduleDialog from '../scheduleView';
 import { app } from '../../../../firebase';
 import { getFirestore } from 'firebase/firestore';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
@@ -153,15 +153,15 @@ const TableView = (props) => {
       <SwipeableViews disabled axis={'x-reverse'} index={currentTableIndex - 1}>
         {horariosGenerados.map((horario, index) => (
           <React.Fragment key={index}>
-            <ClassTable numHorario={index + 1} horario={horario} />
-            <br />
-            {/* <ButtonDialog numHorario={index + 1} horario={horario} /> */}
+            <ClassTable scheduleInfo={horario} numHorario={index + 1} />
+            <ScheduleDialog numHorario={index + 1} scheduleInfo={horario} />
           </React.Fragment>
         ))}
       </SwipeableViews>
 
       <Pagination
         sx={{
+          paddingTop: '16px',
           display: 'flex',
           justifyContent: 'center'
         }}

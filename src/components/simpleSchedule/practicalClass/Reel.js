@@ -89,7 +89,7 @@ export default (props) => {
             </Typography></Box>
             : theoryClasses.map((practicalClass, index) => (
               <ClassCard
-                key={practicalClass._id}
+                key={`${practicalClass._id}_${index}`}
                 stepId={stepId}
                 paralelo={practicalClass}
                 top={index === 0 && practicalClass['score'] !== null}

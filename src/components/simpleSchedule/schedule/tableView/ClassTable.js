@@ -19,12 +19,14 @@ import moment from 'moment';
 
 const UTC = moment().format('Z');
 const END_DATE = moment('2022-09-19');
-const START_DATE = moment('2022-04-12').format('YYYY-MM-DD');
+const START_DATE = moment('2022-05-16');
 
 const ClassTable = (props) => {
   const {
     numHorario,
-    horario: { materias: schedule = [] },
+    scheduleInfo: {
+      materias: schedule = []
+    }
   } = props;
   const [link, setLink] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -67,9 +69,18 @@ const ClassTable = (props) => {
       }
       clases.forEach((clase) => {
         const statTime = moment(clase.inicio).format('HH:mm');
-        const startDate = moment(`${START_DATE} ${statTime}`).utcOffset(UTC);
+        const startDay = moment(clase.inicio).format('dddd');
+
+        let startDate = moment(`${startDay} ${statTime}`, 'dddd HH:mm');
+        while (startDate.diff(START_DATE, 'week') !== 0) {
+          if (startDate.isBefore(START_DATE)) {
+            startDate = startDate.add(1, 'week');
+          } else {
+            startDate = startDate.subtract(1, 'week');
+          }
+        }
         const endTime = moment(clase.fin).format('HH:mm');
-        const endDate = moment(`${START_DATE} ${endTime}`).utcOffset(UTC);
+        const endDate = moment(`${startDate.format('YYYY-MM-DD')} ${endTime}`).utcOffset(UTC);
         calendar.createEvent({
           start: startDate,
           end: endDate,
@@ -97,15 +108,12 @@ const ClassTable = (props) => {
     });
   };
   return schedule ? (
-    <Box
-      sx={{
-        padding: '10px',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        display: 'flex',
-      }}
-    >
+    <Box sx={{
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+      display: 'flex'
+    }}>
       <TableContainer
         id="schedule-table"
         sx={{ maxWidth: 650 }}
@@ -121,10 +129,10 @@ const ClassTable = (props) => {
         >
           <TableHead>
             <TableRow>
-              <TableCell>{'Code'}</TableCell>
-              <TableCell align="left">{'Name'}</TableCell>
-              <TableCell align="left">{'Course'}</TableCell>
-              <TableCell align="left">{'Teacher'}</TableCell>
+              <TableCell>{'CODE'}</TableCell>
+              <TableCell align='left'>{'NAME'}</TableCell>
+              <TableCell align='left'>{'COURSE'}</TableCell>
+              <TableCell align='left'>{'TEACHER'}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
