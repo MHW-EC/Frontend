@@ -21,12 +21,7 @@ const TableWrapper = (props) => {
     onSelectionModelChange,
   } = props;
   return (
-    <Box sx={{
-      textAlign: "center"
-    }}>
-      <Typography variant="caption">
-        {caption}
-      </Typography>
+    <Box sx={style}>
       <DataGrid
         rows={rows}
         editMode={'row'}
