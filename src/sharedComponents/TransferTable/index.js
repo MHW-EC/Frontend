@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Box
-} from '@mui/material';
+import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
@@ -18,50 +16,38 @@ const TableWrapper = (props) => {
     isLoading,
     pagination,
     rowIdGetter,
-    caption = '',
     setPagination,
     onSelectionModelChange,
   } = props;
   return (
     <Box sx={style}>
-      <Typography variant="caption">
-        {caption}
-      </Typography>
       <DataGrid
-        style={style}
         rows={rows}
+        editMode={'row'}
         columns={columns}
         density={'compact'}
-        editMode={'row'}
-        onSelectionModelChange={
-          (selectedRowsIds) => (
-            onSelectionModelChange(
-              selectedRowsIds.map(
-                selectedId => rows.find(
-                  row => rowIdGetter(row) === selectedId
-                )
-              )
+        onSelectionModelChange={(selectedRowsIds) =>
+          onSelectionModelChange(
+            selectedRowsIds.map((selectedId) =>
+              rows.find((row) => rowIdGetter(row) === selectedId)
             )
           )
         }
         disableColumnMenu={true}
         checkboxSelection={true}
-        getRowId={rowIdGetter} 
-        {
-          ...(pagination 
-            ? {
+        getRowId={rowIdGetter}
+        {...(pagination
+          ? {
               ...pagination,
               loading: isLoading,
               pagination: true,
               paginationMode: 'server',
-              onPageChange: (page) => setPagination((prev) => ({ ...prev,
-                page })),
-              onPageSizeChange: (pageSize) => setPagination((prev) => ({ ...prev,
-                pageSize,
-                page: 0 }))
+              onPageChange: (page) =>
+                setPagination((prev) => ({ ...prev, page })),
+              onPageSizeChange: (pageSize) =>
+                setPagination((prev) => ({ ...prev, pageSize, page: 0 })),
             }
-            : {})
-        }
+          : {})}
         disableSelectionOnClick={true}
       />
     </Box>
@@ -69,24 +55,18 @@ const TableWrapper = (props) => {
 };
 
 export default function TransferTable(props) {
+  const { getRowId, tableStyle, columns, rowsEquals } = props;
   const {
-    getRowId,
-    tableStyle,
-    columns,
-    rowsEquals
-  } = props;
-  const {
-    leftChecked, setLeftChecked,
+    leftChecked,
+    setLeftChecked,
     left,
-    right, setRight,
-    rightChecked, setRightChecked,
-    leftExtra
+    right,
+    setRight,
+    rightChecked,
+    setRightChecked,
+    leftExtra,
   } = props;
-  const {
-    isLoading,
-    pagination,
-    setPagination
-  } = leftExtra;
+  const { isLoading, pagination, setPagination } = leftExtra;
 
   const handleCheckedToRight = () => {
     setRight(utils.Array.union(right, leftChecked, rowsEquals));
@@ -100,12 +80,10 @@ export default function TransferTable(props) {
 
   return (
     <>
-      <Grid item
-        xs={10}
-        sm={10}
-        md={10}
-        lg={10}
-        xl={5}>
+      <Grid item xs={10} sm={10} md={10} lg={10} xl={5}>
+        <Box sx={{ width: tableStyle.width, margin: 'auto' }}>
+          <Typography variant="caption">{'Available classes:'}</Typography>
+        </Box>
         <TableWrapper
           rows={left}
           caption={'Available classes:'}
@@ -115,17 +93,12 @@ export default function TransferTable(props) {
           onSelectionModelChange={(items) => {
             setLeftChecked(items);
           }}
-
           isLoading={isLoading}
           pagination={pagination}
-          setPagination={setPagination}/>
+          setPagination={setPagination}
+        />
       </Grid>
-      <Grid item
-        xs={12}
-        sm={12}
-        md={12}
-        lg={12}
-        xl={1}>
+      <Grid item xs={12} sm={12} md={12} lg={12} xl={1}>
         <Grid container direction="column" alignItems="center">
           <Button
             sx={{ my: 0.5 }}
@@ -149,12 +122,10 @@ export default function TransferTable(props) {
           </Button>
         </Grid>
       </Grid>
-      <Grid item
-        xs={10}
-        sm={10}
-        md={10}
-        lg={10}
-        xl={5}>
+      <Grid item xs={10} sm={10} md={10} lg={10} xl={5}>
+        <Box sx={{ width: tableStyle.width, margin: 'auto' }}>
+          <Typography variant="caption">{'Selected classes:'}</Typography>
+        </Box>
         <TableWrapper
           rows={right}
           caption={'Selected classes:'}

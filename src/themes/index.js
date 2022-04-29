@@ -41,7 +41,7 @@ const darkTheme = createTheme({
     type: 'dark',
     primary: {
       light: '#0097a7',
-      main: '#006064',
+      main: '#00a7ae',
       dark: 'rgb(0, 67, 70)',
       contrastText: '#fff',
     },
@@ -76,8 +76,8 @@ const darkTheme = createTheme({
       contrastText: '#ffffff',
     },
     background: {
-      paper: '#263238',
-      default: '#424242',
+      paper: '#363636',
+      default: '#212121',
     },
     text: {
       primary: '#fff',
@@ -85,6 +85,11 @@ const darkTheme = createTheme({
       disabled: 'rgba(255, 255, 255, 0.5)',
       hint: 'rgba(255, 255, 255, 0.5)',
     },
+    action: {
+      disabledBackground: '#ffffff1f',
+      disabled: '#b9b9b9',
+    },
+    
   },
 });
 const Themes = { 
