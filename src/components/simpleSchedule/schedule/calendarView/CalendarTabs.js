@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import * as Colors from '@mui/material/colors';
 import Utils from '../../../../utils/functions';
-import EventSchedule from './EventSchedule';
+import Calendar from './Calendar';
 
 
 const TabPanel = (props) => {
@@ -153,19 +153,19 @@ export default (props) => {
         onChangeIndex={(index) => setTabIdx(index)}
       >
         <TabPanel value={currentTabIdx} index={0}>
-          <EventSchedule appointments={events[0]} instances={eventInstances} />
+          <Calendar appointments={events[0]} instances={eventInstances} />
         </TabPanel>
 
         <TabPanel value={currentTabIdx} index={1}>
-          <EventSchedule appointments={events[1]} instances={eventInstances} />
+          <Calendar appointments={events[1]} instances={eventInstances} />
         </TabPanel>
 
         <TabPanel value={currentTabIdx} index={2}>
-          <EventSchedule appointments={events[2]} instances={eventInstances} />
+          <Calendar appointments={events[2]} instances={eventInstances} />
         </TabPanel>
 
         <TabPanel value={currentTabIdx} index={3}>
-          <EventSchedule appointments={events[3]} instances={eventInstances} />
+          <Calendar appointments={events[3]} instances={eventInstances} />
         </TabPanel>
       </SwipeableViews>
 

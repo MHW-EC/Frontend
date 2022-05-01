@@ -4,26 +4,28 @@ import React, {
   useMemo, useCallback
 } from 'react';
 
-import StepsContext from './../Context';
-import MainContext from './../../Context';
+import StepsContext from '../Context';
+import MainContext from '../../Context';
 import SearchIcon from '@mui/icons-material/Search';
-import { getData } from './../../../services';
+import { getData } from '../../../services';
+import { 
+  InputLabel,
+  FormHelperText,
+  FormControl,
+  Box,
+  IconButton,
+  OutlinedInput,
+  InputAdornment,
+  Grid
+} from '@mui/material';
+import { MESSAGES, BOUNDARIES } from '../../../utils/constants';
 
-import InputLabel from '@mui/material/InputLabel';
-import HelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
-
-import TransferTable from './../../../sharedComponents/TransferTable';
-import Grid from '@mui/material/Grid';
+import TransferTable from '../../../sharedComponents/TransferTable';
 
 export default function TheoryClassStep(props) {
   const { stepId, lastStepId } = props;
   const { process, setProcess } = useContext(MainContext);
-  const { steps, updateStep } = useContext(StepsContext);
+  const { steps, updateStep, enqueueSnackbar } = useContext(StepsContext);
   const step = steps[Number(stepId)];
   const {
     selectedValues: stepSelectedValues = [],
@@ -74,13 +76,16 @@ export default function TheoryClassStep(props) {
   ], []);
 
   useEffect(() => {// this will be replaced for a _id -> classCode
-    updateStep(
-      stepId,
-      {
-        data: lastStepClasses.map((l, idx) => ({...l, _id: `${l.codigo}_00${idx}`})),
-        error: undefined
-      }
-    );
+    if(lastStepClasses?.length){
+      updateStep(
+        stepId,
+        {
+          data: lastStepClasses.map((l, idx) => ({...l, _id: `${l.codigo}_00${idx}`})),
+          error: undefined
+        }
+      );
+      setPagination({});
+    }
   }, []);
 
   useEffect(() => {
@@ -137,6 +142,11 @@ export default function TheoryClassStep(props) {
               error: undefined
             }
           );
+          const {
+            message,
+            ...otherProps
+          } = MESSAGES.SUCCESSFUL_REQUEST
+          enqueueSnackbar(message, otherProps);
         } catch (error) {
           console.log(error);
           if (!error instanceof DOMException ||
@@ -148,10 +158,15 @@ export default function TheoryClassStep(props) {
                 : error
             });
           }
-          setProcess({
-            isLoading: false
-          });
+          const {
+            message,
+            ...otherProps
+          } = MESSAGES.FAILED_REQUEST
+          enqueueSnackbar(message, otherProps);
         }
+        setProcess({
+          isLoading: false
+        });
       }}
     )();
   }, [pagination.page, pagination.pageSize]);
@@ -182,6 +197,11 @@ export default function TheoryClassStep(props) {
         setProcess({
           isLoading: false
         });
+        const {
+          message,
+          ...otherProps
+        } = MESSAGES.SUCCESSFUL_REQUEST
+        enqueueSnackbar(message, otherProps);
       } catch (error) {
         console.log(error);
         if (!error instanceof DOMException ||
@@ -193,6 +213,11 @@ export default function TheoryClassStep(props) {
               : error
           });
         }
+        const {
+          message,
+          ...otherProps
+        } = MESSAGES.FAILED_REQUEST
+        enqueueSnackbar(message, otherProps);
       }
     }
   };
@@ -249,9 +274,9 @@ export default function TheoryClassStep(props) {
                 </InputAdornment>
               }
             />
-            <HelperText>
+            <FormHelperText>
               {stepHelperText}
-            </HelperText>
+            </FormHelperText>
           </FormControl>
         </Box>
       </Grid>

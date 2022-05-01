@@ -11,11 +11,13 @@ import {
   LinearProgress,
   Grid
 } from '@mui/material';
+import HelperText from '@mui/material/FormHelperText';
+
 import SwipeableViews from 'react-swipeable-views';
 import ClassTable from './ClassTable';
 import StepsContext from './../../Context';
 import { generate } from './../../../../services';
-import ScheduleDialog from '../scheduleView';
+import CalendarView from '../calendarView';
 import { app } from '../../../../firebase';
 import { getFirestore } from 'firebase/firestore';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
@@ -34,7 +36,7 @@ const TableView = (props) => {
   const { stepId, lastStepId } = props;
   const { steps, updateStep } = useContext(StepsContext);
   const step = steps[Number(stepId)];
-  const { data: stepData } = step;
+  const { helperText: stepHelperText } = step;
   const lastStep = steps[Number(lastStepId)];
   const {
     data: lastStepData = {},
@@ -52,36 +54,27 @@ const TableView = (props) => {
     for (const classCode in lastSelected) {
       if (lastSelected[classCode] instanceof Object) {
         for (const theoryClassId in lastSelected[classCode]) {
-          //empty array
-          const classPackage = [];
-          if (lastSelected[classCode][theoryClassId]) {
-            const theoryClassObject = lastData[classCode].find(
-              (_class) => _class._id == theoryClassId
-            );
-            if (theoryClassObject) classPackage.push(theoryClassObject);
-            //extract theory class
-            //append to empty array
-          }
+          const theoryClassObject = lastData[classCode].find(
+            (_class) => _class._id == theoryClassId
+          );
+          console.log({theoryClassObject});
           if (lastSelected[classCode][theoryClassId] instanceof Object) {
-            for (const practicalClassId in lastSelected[classCode][
-              theoryClassId
-            ]) {
+            for (const practicalClassId in lastSelected[classCode][theoryClassId]) {
               if (lastSelected[classCode][theoryClassId][practicalClassId]) {
-                const practicalClassObject = lastData[theoryClassId].find(
+                const practicalClassObject = lastData[theoryClassId]?.find(
                   (_class) => _class._id == practicalClassId
                 );
-                if (practicalClassObject)
-                  classPackage.push(practicalClassObject);
-                //extract practical class
-                //append to empty array
+                console.log({practicalClassObject});
+                if (practicalClassObject) requestBody.push([theoryClassObject, practicalClassObject]);
               }
             }
+          }else if (lastSelected[classCode][theoryClassId]) {
+            if (theoryClassObject) requestBody.push([theoryClassObject]);
           }
-          requestBody.push(classPackage);
-          //append array to request
         }
       }
     }
+    console.log({requestBody});
     return requestBody;
   }, []);
   
@@ -150,11 +143,19 @@ const TableView = (props) => {
   }, []);
   return !isLoading ? (
     <Box>
+      <Box>
+      <HelperText
+          sx={{
+            textAlign: 'center'
+          }}>
+          {stepHelperText}
+        </HelperText>
+      </Box>
       <SwipeableViews disabled axis={'x-reverse'} index={currentTableIndex - 1}>
         {horariosGenerados.map((horario, index) => (
           <React.Fragment key={index}>
             <ClassTable scheduleInfo={horario} numHorario={index + 1} />
-            <ScheduleDialog numHorario={index + 1} scheduleInfo={horario} />
+            <CalendarView numHorario={index + 1} scheduleInfo={horario} />
           </React.Fragment>
         ))}
       </SwipeableViews>

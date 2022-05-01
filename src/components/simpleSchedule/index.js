@@ -1,7 +1,6 @@
 
 import React from 'react';
 import StepsContext from './Context';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stepper from '@mui/material/Stepper';
@@ -9,9 +8,12 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import CareerStep from './career';
-import TheoryClassStep from './theoryClass';
-import PracticalClassStep from './practicalClass';
+import SubjectStep from './subject';
+import CourseStep from './course';
 import Schedule from './schedule/tableView';
+import { withSnackbar } from 'notistack';
+import VALIDATIONS from './../../utils/validations';
+import {BOUNDARIES} from './../../utils/constants';
 
 class Steps extends React.Component {
 
@@ -22,15 +24,16 @@ class Steps extends React.Component {
         name: 'career',
         label: 'Career',
         description: 'Type you career',
+        helperText: '* Select a career to get all your subjects quickly',
         error: undefined,
         data: undefined,
         selectedValues: undefined
       },
       {
         id: 1,
-        name: 'theoryClass',
-        label: 'Class',
-        description: 'Type class name, class code or teacher name',//'Choose some theory classes',
+        name: 'subject',
+        label: 'Subject',
+        description: 'Type subject name, subject code or teacher name',//'Choose some theory classes',
         helperText: '* Hit Enter to search',
         error: undefined,
         data: undefined,
@@ -38,9 +41,9 @@ class Steps extends React.Component {
       },
       {
         id: 2,
-        name: 'practicalClass',
-        label: 'Class parallel',
-        description: 'Choose some practical classes',
+        name: 'courses',
+        label: 'Courses',
+        helperText: '* Select theorical and practical classes (if this is the case)',
         error: undefined,
         data: undefined,
         selectedValues: undefined
@@ -50,6 +53,7 @@ class Steps extends React.Component {
         name: 'schedule',
         label: 'Schedule',
         description: 'Review your schedules',
+        helperText: '* Not all options have all selected classes',
         error: undefined,
         data: undefined,
         selectedValues: undefined
@@ -67,17 +71,93 @@ class Steps extends React.Component {
     return this.state.skipped.has(step);
   };
 
+  shouldContinue = () => {
+    const {
+      steps,
+      activeStepId
+    } = this.state;
+    const {
+      enqueueSnackbar
+    } = this.props;
+    const activeStepData = steps[activeStepId];
+    const {
+      selectedValues
+    } = activeStepData;
+    switch (activeStepId) {
+      case 1:
+        if (selectedValues.length < BOUNDARIES.SUBJECT.MIN) {
+          const {
+            message,
+            ...otherOptions
+          } = VALIDATIONS.STEPS.MIN_SUBJECTS_NO_REACHED
+          enqueueSnackbar(message, otherOptions)
+          return false;
+        }
+        if (selectedValues.length > BOUNDARIES.SUBJECT.MAX) {
+          const {
+            message,
+            ...otherOptions
+          } = VALIDATIONS.STEPS.MAX_SUBJECTS_REACHED
+          enqueueSnackbar(message, otherOptions);
+          return false;
+        }
+      case 2:
+        if(Object.values(selectedValues).every(
+          val => Object.keys(val).length < BOUNDARIES.THEORY_CLASS.MIN)){
+            const {
+              message,
+              ...otherOptions
+            } = VALIDATIONS.STEPS.MIN_CLASSES_NO_REACHED
+            enqueueSnackbar(message, otherOptions);
+            return false;
+          }
+        if(Object.values(selectedValues).some(
+          val => Object.keys(val).length > BOUNDARIES.THEORY_CLASS.MAX)){
+            const {
+              message,
+              ...otherOptions
+            } = VALIDATIONS.STEPS.MAX_CLASSES_REACHED
+            enqueueSnackbar(message, otherOptions);
+            return false;
+          }
+        if(Object.values(selectedValues).every(
+          val => Object.values(val).reduce(
+            (total, current) => total + current, 0) < BOUNDARIES.PRACTICAL_CLASS.MIN)){
+              const {
+                message,
+                ...otherOptions
+              } = VALIDATIONS.STEPS.MIN_COURSES_NO_REACHED 
+              enqueueSnackbar(message, otherOptions);
+            return false;
+          }
+        if(Object.values(selectedValues).some(
+          val => Object.values(val).reduce(
+            (total, current) => total + current, 0) > BOUNDARIES.PRACTICAL_CLASS.MAX)){
+              const {
+                message,
+                ...otherOptions
+              } = VALIDATIONS.STEPS.MAX_COURSES_REACHED;
+              enqueueSnackbar(message, otherOptions);
+            return false;
+          }
+      default:
+        return true;
+    }
+  }
+
   handleNext = () => {
     let newSkipped = this.state.skipped;
     if (this.isStepSkipped(this.state.activeStepId)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(this.state.activeStepId);
     }
-
-    this.setState({
-      activeStepId: this.state.activeStepId + 1,
-      skipped: newSkipped
-    });
+    const shouldContinue = this.shouldContinue();
+    if(shouldContinue){
+      this.setState({
+        activeStepId: this.state.activeStepId + 1,
+        skipped: newSkipped
+      });
+    };
   };
 
   handleBack = () => {
@@ -110,11 +190,11 @@ class Steps extends React.Component {
       case 0:
         return <CareerStep stepId={'0'} />
       case 1:
-        return <TheoryClassStep stepId={'1'} lastStepId={'0'}/>
+        return <SubjectStep stepId={'1'} lastStepId={'0'} />
       case 2:
-        return <PracticalClassStep stepId={'2'} lastStepId={'1'}/>
+        return <CourseStep stepId={'2'} lastStepId={'1'} />
       case 3:
-        return <Schedule stepId={'3'} lastStepId={'2'}/>
+        return <Schedule stepId={'3'} lastStepId={'2'} />
       default:
         return (<div>DEFAULT COMPONENT</div>)
     }
@@ -124,9 +204,9 @@ class Steps extends React.Component {
     this.setState((currentState) => ({
       steps: currentState.steps.map(step => {
         if (step.id === Number(stepId)) {
-          if(field &&
-             newStep[field] ){
-               const merged = Object.assign({}, step[field], newStep[field]);
+          if (field &&
+            newStep[field]) {
+            const merged = Object.assign({}, step[field], newStep[field]);
             return {
               ...step,
               [field]: merged
@@ -154,7 +234,7 @@ class Steps extends React.Component {
       steps,
       activeStepId
     } = this.state;
-
+console.log({steps});
     const {
       isStepOptional,
       handleNext,
@@ -163,23 +243,31 @@ class Steps extends React.Component {
       handleSkip,
       getComponentByStep,
       isStepSkipped,
-      updateStep
+      updateStep,
+      props
     } = this;
+
+    const {
+      enqueueSnackbar
+    } = props;
+
     return (
       <StepsContext.Provider
         value={{
           updateStep,
-          steps
+          steps,
+          enqueueSnackbar
         }}>
-        <Paper 
+        <Box
           square
           sx={{
+            backgroundColor: (theme) => theme.palette.background.default,
             width: 'auto',
             minHeight: "100vh",
             pl: "16px",
             pr: "16px"
           }}>
-          <Stepper 
+          <Stepper
             sx={{
               pt: "16px"
             }}
@@ -206,7 +294,7 @@ class Steps extends React.Component {
                     key={String(id)}
                     {...stepProps}>
                     <StepLabel {...labelProps}>
-                      { label }
+                      {label}
                     </StepLabel>
                   </Step>
                 );
@@ -253,7 +341,7 @@ class Steps extends React.Component {
                     </Button>
                     <Button
                       disabled={
-                        isLoading || 
+                        isLoading ||
                         (!steps[activeStepId].selectedValues)
                       }
                       variant="contained"
@@ -270,14 +358,16 @@ class Steps extends React.Component {
                     }}>
                     {
                       getComponentByStep(activeStepId)
-                    }    
+                    }
                   </Box>
                 </React.Fragment>
               )
           }
-        </Paper>
+        </Box>
       </StepsContext.Provider>
+
     )
   }
 }
-export default Steps;
+
+export default withSnackbar(Steps);

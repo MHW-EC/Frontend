@@ -9,6 +9,8 @@ import LinearProgress from '@mui/material/LinearProgress';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Paper from '@mui/material/Paper';
 import Themes from './../themes';
+import { SnackbarProvider } from 'notistack';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -115,6 +117,7 @@ class App extends React.Component {
           theme
         }}>
         <ThemeProvider theme={Themes[theme]}>
+        <SnackbarProvider preventDuplicate maxSnack={3}>
           <Paper
             square
             sx={{
@@ -153,6 +156,7 @@ class App extends React.Component {
               <Options />
             </Router>
           </Paper>
+          </SnackbarProvider>
         </ThemeProvider>
       </MainContext.Provider>
     )

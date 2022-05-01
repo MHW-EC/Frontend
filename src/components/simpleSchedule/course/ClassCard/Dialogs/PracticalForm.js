@@ -17,8 +17,8 @@ import {
 import { getData } from '../../../../../services';
 import { styled } from '@mui/material/styles';
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
-import ClassCard from './..';
-import StepsContext from './../../../Context';
+import ClassCard from '..';
+import StepsContext from '../../../Context';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -109,7 +109,7 @@ export default (props) => {
         practicalClasses.map((par) => (
           <React.Fragment key={par._id}>
             <ListItem>
-              <ListItemIcon sx={{
+              <ListItemButton sx={{
                 display: 'flex',
                 width: '100%',
                 padding: '8px',
@@ -125,15 +125,13 @@ export default (props) => {
                 );
               }}>
                 <ListItemText children={<Typography>{`Paralelo ${par['paralelo']}`}</Typography>} />
-                <ListItemIcon sx={{ minWidth: 'unset' }}>
-                  <ExpandMore
+                <ExpandMore
                     expand={collapsableState[par._id]}
                     aria-expanded={collapsableState[par._id]}
                     aria-label="show more">
                     <ExpandMoreOutlinedIcon />
                   </ExpandMore>
-                </ListItemIcon>
-              </ListItemIcon>
+              </ListItemButton>
             </ListItem>
             <Collapse in={collapsableState[par._id]} timeout="auto" unmountOnExit>
               <Box sx={{ pl: '16px',

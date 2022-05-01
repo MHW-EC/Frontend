@@ -10,7 +10,7 @@ import {
   Box
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import ScheduleTabs from './ScheduleTabs';
+import CalendarTabs from './CalendarTabs';
 
 const Transition = forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -70,7 +70,7 @@ export default (props) => {
           </AppBar>
           {
           scheduleInfo && 
-          <ScheduleTabs
+          <CalendarTabs
               id="root-visor"
               numHorario={numHorario}
               scheduleInfo={scheduleInfo}
