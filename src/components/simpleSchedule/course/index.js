@@ -1,15 +1,20 @@
 
 import React, { useContext } from 'react';
 
-import StepsContext from './../Context';
+import StepsContext from '../Context';
 import Grid from '@mui/material/Grid';
 import Reel from './Reel';
+import HelperText from '@mui/material/FormHelperText';
 
 export default function PracticalClassStep(props) {
   const { stepId, lastStepId } = props;
   const { steps } = useContext(StepsContext);
   const lastStep = steps[Number(lastStepId)];
+  const step = steps[Number(stepId)];
 
+  const {
+    helperText: stepHelperText,
+  } = step || {};
   const {
     selectedValues: lastStepSelectedValues = []
   } = lastStep;
@@ -25,6 +30,16 @@ export default function PracticalClassStep(props) {
       spacing={3}
       justifyContent="center"
       alignItems="flex-start">
+      <Grid
+        item
+        xs={12}>
+        <HelperText
+          sx={{
+            textAlign: 'center'
+          }}>
+          {stepHelperText}
+        </HelperText>
+      </Grid>
       {
         uniqueTheoryClassByCodes.map((_class) => (
           <Grid
@@ -35,9 +50,9 @@ export default function PracticalClassStep(props) {
             sm={9}
             md={7}
             lg={7}>
-            <Reel 
+            <Reel
               _class={_class}
-              stepId={stepId}/>
+              stepId={stepId} />
           </Grid>
         ))
       }

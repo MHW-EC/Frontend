@@ -35,7 +35,8 @@ const Options = () => {
         sx={{
           position: 'fixed',
           bottom: '24px',
-          right: '24px'
+          right: '24px',
+          zIndex: "9999"
         }}
         icon={<SpeedDialIcon />}
         onClose={handleClose}

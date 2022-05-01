@@ -21,6 +21,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import PracticalDialog from './Dialogs/PracticalDialog';
 import FeedbackDialog from './Dialogs/FeedbackDialog';
+import MainContext from '../../../Context';
 import StepsContext from '../../Context';
 import utils from '../../../../utils';
 import { getChip } from './Chip';
@@ -39,6 +40,7 @@ const ClassCard = (props) => {
     parentComponent
   } = props || {};
   const { steps, updateStep } = useContext(StepsContext);
+  const { theme } = useContext(MainContext);
   const step = steps[Number(stepId)];
 
   const {
@@ -52,7 +54,8 @@ const ClassCard = (props) => {
   const [practicalClassesDisplayed, setPracticalClassesDisplayed] = useState(false);
   const [feedbackIsOpen, setFeedback] = useState(false);
   const {
-    selectedValues: stepSelectedValues = {}
+    selectedValues: stepSelectedValues = {},
+    helperText: stepHelperText,
   } = step || {};
   const isAdded = theoryClassId
     ? stepSelectedValues[classCode]?.[theoryClassId]?.[classId]
@@ -98,7 +101,7 @@ const ClassCard = (props) => {
       sx={
         {
           display: parentComponent === 'PracticalForm' ? 'block' : 'inline-block',
-          height: '-webkit-fill-available',
+          height: parentComponent === 'PracticalForm' ? '200px': '325px',
           width: parentComponent === 'PracticalForm' ? '100%' : 'unset',
           marginRight: parentComponent === 'PracticalForm' ? '100%' : '16px',
           ...(
@@ -186,6 +189,7 @@ const ClassCard = (props) => {
                     onClose={() => setFeedback(!feedbackIsOpen) }
                     data={profesorDetail.stats}
                     profesor={profesorName}
+                    theme={theme}
                   />
                   }
                   
@@ -341,7 +345,8 @@ const ClassCard = (props) => {
     </Card>
   ) : (
     <Card
-      variant="outlined">
+      variant="outlined"
+      sx={{height: '300px'}}>
       <CardHeader
         avatar={
           <Skeleton

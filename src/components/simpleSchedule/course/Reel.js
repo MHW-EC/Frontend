@@ -72,9 +72,22 @@ export default (props) => {
   return theoryClasses ? (
     <Card
       elevation={3}>
+        <CardActions sx={{
+        backgroundColor: (theme) => theme.palette.primary.main,
+        paddingLeft: '16px'
+      }}>
+        <Typography
+          variant="body1"
+          sx={{
+            color: '#ffffff',
+            width: '-webkit-fill-available'
+          }}>
+          {`${theoryClassName} - ${theoryClassCode}`}
+        </Typography>
+      </CardActions>
+    
       <CardContent
         sx={{
-          height: '325px',
           padding: 2,
           overflow: 'auto',
           whiteSpace: 'nowrap'
@@ -92,39 +105,29 @@ export default (props) => {
                 key={`${practicalClass._id}_${index}`}
                 stepId={stepId}
                 paralelo={practicalClass}
-                top={index === 0 && practicalClass['score'] !== null}
+                top={index === 0 && 
+                  practicalClass?.lastParaleloProfesorJoined?.promedio !== null &&
+                  practicalClass?.lastParaleloProfesorJoined?.promedio > 80}
               />
             ))
         }
       </CardContent>
-      <CardActions sx={{
-        backgroundColor: (theme) => theme.palette.primary.main,
-        paddingLeft: '16px'
-      }}>
-        <Typography
-          variant="body1"
-          sx={{
-            color: '#ffffff',
-            width: '-webkit-fill-available'
-          }}>
-          {`${theoryClassName} - ${theoryClassCode}`}
-        </Typography>
-      </CardActions>
-    </Card>
+      </Card>
   ) : (
     <Card elevation={3}>
-      <CardContent sx={{ padding: 0 }}>
-        <Skeleton animation="wave" variant="rect" height={250} />
-      </CardContent>
       <CardActions>
         <Box sx={{
           width: '50%',
-          marginLeft: 'auto',
+          marginLeft: '16px',
           marginRight: 'auto'
         }}>
           <Skeleton animation="wave" variant="text" height={15} />
         </Box>
       </CardActions>
-    </Card>
+    
+      <CardContent sx={{ padding: 0 }}>
+        <Skeleton animation="wave" variant="rect" height={250} />
+      </CardContent>
+      </Card>
   );
 };

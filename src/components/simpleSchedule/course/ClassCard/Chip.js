@@ -62,7 +62,7 @@ export function getChip(valor, top) {
         }}
         variant="outlined"
         size="small"
-        icon={<SentimentSatisfiedAltIcon />}
+        icon={<SentimentVerySatisfiedIcon/>}
         label={valor}
       /></Tooltip>
   } else if (valor < 70 && valor > 0) {
@@ -79,7 +79,7 @@ export function getChip(valor, top) {
         }}
         variant="outlined"
         size="small"
-        icon={<SentimentVerySatisfiedIcon />}
+        icon={<SentimentSatisfiedAltIcon/>}
         label={valor}
       /></Tooltip>
   } else {

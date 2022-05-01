@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   DialogTitle,
   DialogContent,
@@ -9,13 +9,15 @@ import {
 } from '@mui/material';
 
 import Highcharts from 'highcharts';
-import Light from 'highcharts/themes/grid-light';
+import Dark from 'highcharts/themes/dark-unica';
+import Light from 'highcharts/themes/brand-light';
 import HighchartsReact from 'highcharts-react-official';
 
-export default function ConfirmationDialogRaw(props) {
+export default (props) => {
   const { 
     profesor, data, onClose, 
     value: valueProp, open, 
+    theme,
     ...other 
   } = props;
   
@@ -91,8 +93,11 @@ export default function ConfirmationDialogRaw(props) {
     };
   };
 
-  require('highcharts/highcharts-more')(Highcharts);
-  // Light(Highcharts);
+  useEffect(()=>{
+    require('highcharts/highcharts-more')(Highcharts);
+    if(theme == 'dark') Dark(Highcharts);
+    if(theme == 'default') Light(Highcharts);
+  },)
 
   return data ? (
     <Dialog
@@ -126,7 +131,7 @@ export default function ConfirmationDialogRaw(props) {
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={handleClose} color="primary">
-          {"Accept"}
+          {"Close"}
         </Button>
       </DialogActions>
     </Dialog>

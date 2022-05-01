@@ -48,7 +48,7 @@ export default (props) => {
           onClick={onClose} 
           color="primary">
           {
-            'Accept'
+            'Close'
           }
         </Button>
       </DialogActions>

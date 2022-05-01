@@ -1,7 +1,6 @@
 
 import React from 'react';
 import StepsContext from './Context';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stepper from '@mui/material/Stepper';
@@ -9,9 +8,10 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import CareerStep from './career';
-import TheoryClassStep from './theoryClass';
-import PracticalClassStep from './practicalClass';
+import SubjectStep from './subject';
+import CourseStep from './course';
 import Schedule from './schedule/tableView';
+import { withSnackbar } from 'notistack';
 
 class Steps extends React.Component {
 
@@ -22,15 +22,16 @@ class Steps extends React.Component {
         name: 'career',
         label: 'Career',
         description: 'Type you career',
+        helperText: '* Select a career to get all your subjects quickly',
         error: undefined,
         data: undefined,
         selectedValues: undefined
       },
       {
         id: 1,
-        name: 'theoryClass',
-        label: 'Class',
-        description: 'Type class name, class code or teacher name',//'Choose some theory classes',
+        name: 'subject',
+        label: 'Subject',
+        description: 'Type subject name, subject code or teacher name',//'Choose some theory classes',
         helperText: '* Hit Enter to search',
         error: undefined,
         data: undefined,
@@ -38,9 +39,9 @@ class Steps extends React.Component {
       },
       {
         id: 2,
-        name: 'practicalClass',
-        label: 'Class parallel',
-        description: 'Choose some practical classes',
+        name: 'courses',
+        label: 'Courses',
+        helperText: '* Select theorical and practical classes (if this is the case)',
         error: undefined,
         data: undefined,
         selectedValues: undefined
@@ -50,6 +51,7 @@ class Steps extends React.Component {
         name: 'schedule',
         label: 'Schedule',
         description: 'Review your schedules',
+        helperText: '* Not all options have all selected classes',
         error: undefined,
         data: undefined,
         selectedValues: undefined
@@ -110,9 +112,9 @@ class Steps extends React.Component {
       case 0:
         return <CareerStep stepId={'0'} />
       case 1:
-        return <TheoryClassStep stepId={'1'} lastStepId={'0'}/>
+        return <SubjectStep stepId={'1'} lastStepId={'0'}/>
       case 2:
-        return <PracticalClassStep stepId={'2'} lastStepId={'1'}/>
+        return <CourseStep stepId={'2'} lastStepId={'1'}/>
       case 3:
         return <Schedule stepId={'3'} lastStepId={'2'}/>
       default:
@@ -163,17 +165,25 @@ class Steps extends React.Component {
       handleSkip,
       getComponentByStep,
       isStepSkipped,
-      updateStep
+      updateStep,
+      props
     } = this;
+
+    const {
+      enqueueSnackbar
+    } = props;
+
     return (
       <StepsContext.Provider
         value={{
           updateStep,
-          steps
+          steps,
+          enqueueSnackbar
         }}>
-        <Paper 
+        <Box 
           square
           sx={{
+            backgroundColor: (theme) => theme.palette.background.default,
             width: 'auto',
             minHeight: "100vh",
             pl: "16px",
@@ -275,9 +285,11 @@ class Steps extends React.Component {
                 </React.Fragment>
               )
           }
-        </Paper>
+        </Box>
       </StepsContext.Provider>
+      
     )
   }
 }
-export default Steps;
+
+export default withSnackbar(Steps);

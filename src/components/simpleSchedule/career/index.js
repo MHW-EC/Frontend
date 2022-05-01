@@ -6,17 +6,20 @@ import StepsContext from './../Context';
 import MainContext from './../../Context';
 import Grid from '@mui/material/Grid';
 import { getData } from './../../../services';
+import HelperText from '@mui/material/FormHelperText';
+import { MESSAGES } from '../../../utils/constants';
 
 export default function CareerStep(props) {
   const { stepId } = props;
   const { process, setProcess } = useContext(MainContext);
-  const { steps, updateStep } = useContext(StepsContext);
+  const { steps, updateStep, enqueueSnackbar } = useContext(StepsContext);
   const [open, setOpen] = useState(false);
   const step = steps[Number(stepId)];
   const {
     selectedValues: stepSelectedValues,
     data: stepData,
-    description: stepDescription
+    description: stepDescription,
+    helperText: stepHelperText,
   } = step;
   const {
     isLoading
@@ -46,17 +49,27 @@ export default function CareerStep(props) {
           data: careerOptions,
           error: undefined
         });
+        const {
+          message,
+          ...otherProps
+        } = MESSAGES.SUCCESSFUL_REQUEST
+        enqueueSnackbar(message, otherProps);
       } catch (error) {
         console.log(error);
         if (!error instanceof DOMException ||
           error?.message !== 'The user aborted a request.') {
           updateStep(stepId, {
             data: undefined,
-            error: error instanceof Error 
-              ? error.message 
+            error: error instanceof Error
+              ? error.message
               : error
           });
         }
+        const {
+          message,
+          ...otherProps
+        } = MESSAGES.FAILED_REQUEST
+        enqueueSnackbar(message, otherProps);
       }
       setProcess({
         isLoading: false
@@ -90,8 +103,10 @@ export default function CareerStep(props) {
               selectedValues: values
             });
           }}
-          value={stepSelectedValues || { nombre: '',
-            facultad: '' }}
+          value={stepSelectedValues || {
+            nombre: '',
+            facultad: ''
+          }}
           isOptionEqualToValue={
             (option, value) => option.title === value.title
           }
@@ -99,8 +114,8 @@ export default function CareerStep(props) {
           //   (_, { nombre, facultad }) => <Typography>{`${nombre} - ${facultad}`}</Typography> 
           // }
           getOptionLabel={
-            ({ nombre, facultad }) => nombre 
-              ? `${nombre} - ${facultad}` 
+            ({ nombre, facultad }) => nombre
+              ? `${nombre} - ${facultad}`
               : ''
           }
           options={stepData || []}
@@ -123,6 +138,9 @@ export default function CareerStep(props) {
             />
           )}
         />
+        <HelperText>
+          {stepHelperText}
+        </HelperText>
       </Grid>
     </Grid>
   );

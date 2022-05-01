@@ -11,11 +11,13 @@ import {
   LinearProgress,
   Grid
 } from '@mui/material';
+import HelperText from '@mui/material/FormHelperText';
+
 import SwipeableViews from 'react-swipeable-views';
 import ClassTable from './ClassTable';
 import StepsContext from './../../Context';
 import { generate } from './../../../../services';
-import ScheduleDialog from '../scheduleView';
+import CalendarView from '../calendarView';
 import { app } from '../../../../firebase';
 import { getFirestore } from 'firebase/firestore';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
@@ -34,7 +36,7 @@ const TableView = (props) => {
   const { stepId, lastStepId } = props;
   const { steps, updateStep } = useContext(StepsContext);
   const step = steps[Number(stepId)];
-  const { data: stepData } = step;
+  const { helperText: stepHelperText } = step;
   const lastStep = steps[Number(lastStepId)];
   const {
     data: lastStepData = {},
@@ -150,11 +152,16 @@ const TableView = (props) => {
   }, []);
   return !isLoading ? (
     <Box>
+      <Box>
+        <HelperText>
+          {stepHelperText}
+        </HelperText>
+      </Box>
       <SwipeableViews disabled axis={'x-reverse'} index={currentTableIndex - 1}>
         {horariosGenerados.map((horario, index) => (
           <React.Fragment key={index}>
             <ClassTable scheduleInfo={horario} numHorario={index + 1} />
-            <ScheduleDialog numHorario={index + 1} scheduleInfo={horario} />
+            <CalendarView numHorario={index + 1} scheduleInfo={horario} />
           </React.Fragment>
         ))}
       </SwipeableViews>

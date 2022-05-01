@@ -23,6 +23,9 @@ const TableWrapper = (props) => {
   return (
     <Box sx={style}>
       <DataGrid
+        sx={{
+          backgroundColor: (theme) => theme.palette.background.paper
+        }}
         rows={rows}
         editMode={'row'}
         columns={columns}
@@ -34,6 +37,7 @@ const TableWrapper = (props) => {
             )
           )
         }
+        hideFooterPagination={!Object.keys(pagination || {}).length}
         disableColumnMenu={true}
         checkboxSelection={true}
         getRowId={rowIdGetter}
@@ -82,7 +86,7 @@ export default function TransferTable(props) {
   return (
     <>
       <Grid item xs={10} sm={10} md={10} lg={10} xl={5}>
-        <Box sx={{ width: tableStyle.width, margin: 'auto' }}>
+        <Box sx={{ width: tableStyle.width, margin: 'auto', textAlign: 'center' }}>
           <Typography variant="caption">{'Available classes:'}</Typography>
         </Box>
         <TableWrapper
@@ -124,7 +128,7 @@ export default function TransferTable(props) {
         </Grid>
       </Grid>
       <Grid item xs={10} sm={10} md={10} lg={10} xl={5}>
-        <Box sx={{ width: tableStyle.width, margin: 'auto' }}>
+        <Box sx={{ width: tableStyle.width, margin: 'auto', textAlign: 'center' }}>
           <Typography variant="caption">{'Selected classes:'}</Typography>
         </Box>
         <TableWrapper
