@@ -83,7 +83,6 @@ class Steps extends React.Component {
     const {
       selectedValues
     } = activeStepData;
-    console.log(`${activeStepId} ${JSON.stringify(activeStepData)}`);
     switch (activeStepId) {
       case 1:
         if (selectedValues.length < BOUNDARIES.SUBJECT.MIN) {
@@ -153,7 +152,6 @@ class Steps extends React.Component {
       newSkipped.delete(this.state.activeStepId);
     }
     const shouldContinue = this.shouldContinue();
-    console.log(`${shouldContinue}`);
     if(shouldContinue){
       this.setState({
         activeStepId: this.state.activeStepId + 1,
@@ -236,7 +234,7 @@ class Steps extends React.Component {
       steps,
       activeStepId
     } = this.state;
-
+console.log({steps});
     const {
       isStepOptional,
       handleNext,

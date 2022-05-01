@@ -70,8 +70,8 @@ const ClassCard = (props) => {
       };
     } else {
       stepSelectedValues[classCode][classId] = !stepSelectedValues[classCode]?.[classId];
-      if(practicalCourses?.length){
-        console.log({practicalCourses});
+      if(practicalCourses?.length &&
+        stepSelectedValues[classCode][classId]){
         stepSelectedValues[classCode][classId] = {
           ...stepSelectedValues[classCode][classId],
           [practicalCourses[0]]: !stepSelectedValues[classCode]?.[classId]?.[practicalCourses[0]]

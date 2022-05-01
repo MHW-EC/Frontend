@@ -11,22 +11,25 @@ export default (props) => {
       if (lastSelected[classCode] instanceof Object) {
         for (const theoryClassId in lastSelected[classCode]) {
           if (lastSelected[classCode][theoryClassId] instanceof Object) {
-            for (const practicalClassId in lastSelected[classCode][
-              theoryClassId
-            ]) {
+            for (const practicalClassId in lastSelected[classCode][theoryClassId]) {
               if (lastSelected[classCode][theoryClassId][practicalClassId]) {
                 requestBody.push([theoryClassId, practicalClassId]);
               }
             }
+          }else if (lastSelected[classCode][theoryClassId]){
+            requestBody.push([theoryClassId]);
           }
         }
       }
     }
     return requestBody;
   }, []);
-  console.log({ total: preparePayload(selectedClasses) });
+  const preparedPayload = preparePayload(selectedClasses)
+  console.log({ total: preparedPayload});
 
   return (
+    preparedPayload &&
+    preparedPayload.length > 0 ?
     <Grid
       item
       xs={12}>
@@ -36,17 +39,19 @@ export default (props) => {
         }}>
         {
           `You have been selected: ${
-            preparePayload(selectedClasses).map(classes => {
+            preparedPayload.map(classes => {
               const [
                 subjectCode, theoricalCode, practicalcode
-              ] = classes[1].split('_');
+              ] = (classes[1] || classes[0]).split('_');
               if(!subjectCode && !theoricalCode && !practicalcode) return undefined;
-              return `${subjectCode} with parallel ${theoricalCode} and ${practicalcode}`
+              if(subjectCode && theoricalCode && practicalcode) return `${subjectCode} with parallel ${theoricalCode} and ${practicalcode}`
+              return `${subjectCode} with parallel ${theoricalCode}`
             }).filter(a => a).join('; ')
           }.`
         }
       </HelperText>
     </Grid>
+    : <></>
   );
 }
 

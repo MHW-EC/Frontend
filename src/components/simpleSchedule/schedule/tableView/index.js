@@ -54,36 +54,27 @@ const TableView = (props) => {
     for (const classCode in lastSelected) {
       if (lastSelected[classCode] instanceof Object) {
         for (const theoryClassId in lastSelected[classCode]) {
-          //empty array
-          const classPackage = [];
-          if (lastSelected[classCode][theoryClassId]) {
-            const theoryClassObject = lastData[classCode].find(
-              (_class) => _class._id == theoryClassId
-            );
-            if (theoryClassObject) classPackage.push(theoryClassObject);
-            //extract theory class
-            //append to empty array
-          }
+          const theoryClassObject = lastData[classCode].find(
+            (_class) => _class._id == theoryClassId
+          );
+          console.log({theoryClassObject});
           if (lastSelected[classCode][theoryClassId] instanceof Object) {
-            for (const practicalClassId in lastSelected[classCode][
-              theoryClassId
-            ]) {
+            for (const practicalClassId in lastSelected[classCode][theoryClassId]) {
               if (lastSelected[classCode][theoryClassId][practicalClassId]) {
-                const practicalClassObject = lastData[theoryClassId].find(
+                const practicalClassObject = lastData[theoryClassId]?.find(
                   (_class) => _class._id == practicalClassId
                 );
-                if (practicalClassObject)
-                  classPackage.push(practicalClassObject);
-                //extract practical class
-                //append to empty array
+                console.log({practicalClassObject});
+                if (practicalClassObject) requestBody.push([theoryClassObject, practicalClassObject]);
               }
             }
+          }else if (lastSelected[classCode][theoryClassId]) {
+            if (theoryClassObject) requestBody.push([theoryClassObject]);
           }
-          requestBody.push(classPackage);
-          //append array to request
         }
       }
     }
+    console.log({requestBody});
     return requestBody;
   }, []);
   
