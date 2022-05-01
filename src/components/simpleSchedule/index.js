@@ -12,6 +12,8 @@ import SubjectStep from './subject';
 import CourseStep from './course';
 import Schedule from './schedule/tableView';
 import { withSnackbar } from 'notistack';
+import VALIDATIONS from './../../utils/validations';
+import {BOUNDARIES} from './../../utils/constants';
 
 class Steps extends React.Component {
 
@@ -69,17 +71,95 @@ class Steps extends React.Component {
     return this.state.skipped.has(step);
   };
 
+  shouldContinue = () => {
+    const {
+      steps,
+      activeStepId
+    } = this.state;
+    const {
+      enqueueSnackbar
+    } = this.props;
+    const activeStepData = steps[activeStepId];
+    const {
+      selectedValues
+    } = activeStepData;
+    console.log(`${activeStepId} ${JSON.stringify(activeStepData)}`);
+    switch (activeStepId) {
+      case 1:
+        if (selectedValues.length < BOUNDARIES.SUBJECT.MIN) {
+          const {
+            message,
+            ...otherOptions
+          } = VALIDATIONS.STEPS.MIN_SUBJECTS_NO_REACHED
+          enqueueSnackbar(message, otherOptions)
+          return false;
+        }
+        if (selectedValues.length > BOUNDARIES.SUBJECT.MAX) {
+          const {
+            message,
+            ...otherOptions
+          } = VALIDATIONS.STEPS.MAX_SUBJECTS_REACHED
+          enqueueSnackbar(message, otherOptions);
+          return false;
+        }
+      case 2:
+        if(Object.values(selectedValues).every(
+          val => Object.keys(val).length < BOUNDARIES.THEORY_CLASS.MIN)){
+            const {
+              message,
+              ...otherOptions
+            } = VALIDATIONS.STEPS.MIN_CLASSES_NO_REACHED
+            enqueueSnackbar(message, otherOptions);
+            return false;
+          }
+        if(Object.values(selectedValues).some(
+          val => Object.keys(val).length > BOUNDARIES.THEORY_CLASS.MAX)){
+            const {
+              message,
+              ...otherOptions
+            } = VALIDATIONS.STEPS.MAX_CLASSES_REACHED
+            enqueueSnackbar(message, otherOptions);
+            return false;
+          }
+        if(Object.values(selectedValues).every(
+          val => Object.values(val).reduce(
+            (total, current) => total + current, 0) < BOUNDARIES.PRACTICAL_CLASS.MIN)){
+              const {
+                message,
+                ...otherOptions
+              } = VALIDATIONS.STEPS.MIN_COURSES_NO_REACHED 
+              enqueueSnackbar(message, otherOptions);
+            return false;
+          }
+        if(Object.values(selectedValues).some(
+          val => Object.values(val).reduce(
+            (total, current) => total + current, 0) > BOUNDARIES.PRACTICAL_CLASS.MAX)){
+              const {
+                message,
+                ...otherOptions
+              } = VALIDATIONS.STEPS.MAX_COURSES_REACHED;
+              enqueueSnackbar(message, otherOptions);
+            return false;
+          }
+      default:
+        return true;
+    }
+  }
+
   handleNext = () => {
     let newSkipped = this.state.skipped;
     if (this.isStepSkipped(this.state.activeStepId)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(this.state.activeStepId);
     }
-
-    this.setState({
-      activeStepId: this.state.activeStepId + 1,
-      skipped: newSkipped
-    });
+    const shouldContinue = this.shouldContinue();
+    console.log(`${shouldContinue}`);
+    if(shouldContinue){
+      this.setState({
+        activeStepId: this.state.activeStepId + 1,
+        skipped: newSkipped
+      });
+    };
   };
 
   handleBack = () => {
@@ -112,11 +192,11 @@ class Steps extends React.Component {
       case 0:
         return <CareerStep stepId={'0'} />
       case 1:
-        return <SubjectStep stepId={'1'} lastStepId={'0'}/>
+        return <SubjectStep stepId={'1'} lastStepId={'0'} />
       case 2:
-        return <CourseStep stepId={'2'} lastStepId={'1'}/>
+        return <CourseStep stepId={'2'} lastStepId={'1'} />
       case 3:
-        return <Schedule stepId={'3'} lastStepId={'2'}/>
+        return <Schedule stepId={'3'} lastStepId={'2'} />
       default:
         return (<div>DEFAULT COMPONENT</div>)
     }
@@ -126,9 +206,9 @@ class Steps extends React.Component {
     this.setState((currentState) => ({
       steps: currentState.steps.map(step => {
         if (step.id === Number(stepId)) {
-          if(field &&
-             newStep[field] ){
-               const merged = Object.assign({}, step[field], newStep[field]);
+          if (field &&
+            newStep[field]) {
+            const merged = Object.assign({}, step[field], newStep[field]);
             return {
               ...step,
               [field]: merged
@@ -180,7 +260,7 @@ class Steps extends React.Component {
           steps,
           enqueueSnackbar
         }}>
-        <Box 
+        <Box
           square
           sx={{
             backgroundColor: (theme) => theme.palette.background.default,
@@ -189,7 +269,7 @@ class Steps extends React.Component {
             pl: "16px",
             pr: "16px"
           }}>
-          <Stepper 
+          <Stepper
             sx={{
               pt: "16px"
             }}
@@ -216,7 +296,7 @@ class Steps extends React.Component {
                     key={String(id)}
                     {...stepProps}>
                     <StepLabel {...labelProps}>
-                      { label }
+                      {label}
                     </StepLabel>
                   </Step>
                 );
@@ -263,7 +343,7 @@ class Steps extends React.Component {
                     </Button>
                     <Button
                       disabled={
-                        isLoading || 
+                        isLoading ||
                         (!steps[activeStepId].selectedValues)
                       }
                       variant="contained"
@@ -280,14 +360,14 @@ class Steps extends React.Component {
                     }}>
                     {
                       getComponentByStep(activeStepId)
-                    }    
+                    }
                   </Box>
                 </React.Fragment>
               )
           }
         </Box>
       </StepsContext.Provider>
-      
+
     )
   }
 }

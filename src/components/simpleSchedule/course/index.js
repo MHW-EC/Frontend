@@ -5,6 +5,7 @@ import StepsContext from '../Context';
 import Grid from '@mui/material/Grid';
 import Reel from './Reel';
 import HelperText from '@mui/material/FormHelperText';
+import Resume from './Resume';
 
 export default function PracticalClassStep(props) {
   const { stepId, lastStepId } = props;
@@ -14,6 +15,7 @@ export default function PracticalClassStep(props) {
 
   const {
     helperText: stepHelperText,
+    selectedValues: stepSelectedValues = {}
   } = step || {};
   const {
     selectedValues: lastStepSelectedValues = []
@@ -40,6 +42,7 @@ export default function PracticalClassStep(props) {
           {stepHelperText}
         </HelperText>
       </Grid>
+      <Resume selectedClasses={stepSelectedValues}/>
       {
         uniqueTheoryClassByCodes.map((_class) => (
           <Grid

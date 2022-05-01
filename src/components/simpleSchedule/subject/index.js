@@ -18,7 +18,7 @@ import {
   InputAdornment,
   Grid
 } from '@mui/material';
-import { MESSAGES } from '../../../utils/constants';
+import { MESSAGES, BOUNDARIES } from '../../../utils/constants';
 
 import TransferTable from '../../../sharedComponents/TransferTable';
 

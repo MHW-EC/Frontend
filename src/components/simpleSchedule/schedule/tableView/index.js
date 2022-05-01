@@ -153,7 +153,10 @@ const TableView = (props) => {
   return !isLoading ? (
     <Box>
       <Box>
-        <HelperText>
+      <HelperText
+          sx={{
+            textAlign: 'center'
+          }}>
           {stepHelperText}
         </HelperText>
       </Box>

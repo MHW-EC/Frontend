@@ -9,15 +9,15 @@ module.exports = {
       variant: "warning"
     },
     MIN_CLASSES_NO_REACHED: {
-      message: "Select at least 2 theory class",
+      message: "Select at least 1 theory class",
       variant: "warning"
     },
     MAX_CLASSES_REACHED: {
-      message: "Select 5 theory class at most",
+      message: "Select 3 theory class by subject at most",
       variant: "warning"
     },
     MIN_COURSES_NO_REACHED: {
-      message: "Select at least 0 practical class",
+      message: "Select at least 1 practical class",
       variant: "warning"
     },
     MAX_COURSES_REACHED: {

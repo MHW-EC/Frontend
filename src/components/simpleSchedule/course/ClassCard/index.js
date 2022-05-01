@@ -49,13 +49,13 @@ const ClassCard = (props) => {
     profesorJoined: profesorDetail = {},
     codigo: classCode,
     teorico_id: theoryClassId,
+    paralelos_practicos: practicalCourses,
     lastParaleloProfesorJoined: lastStudentFeedback = {}
   } = paralelo || {};
   const [practicalClassesDisplayed, setPracticalClassesDisplayed] = useState(false);
   const [feedbackIsOpen, setFeedback] = useState(false);
   const {
-    selectedValues: stepSelectedValues = {},
-    helperText: stepHelperText,
+    selectedValues: stepSelectedValues = {}
   } = step || {};
   const isAdded = theoryClassId
     ? stepSelectedValues[classCode]?.[theoryClassId]?.[classId]
@@ -70,6 +70,13 @@ const ClassCard = (props) => {
       };
     } else {
       stepSelectedValues[classCode][classId] = !stepSelectedValues[classCode]?.[classId];
+      if(practicalCourses?.length){
+        console.log({practicalCourses});
+        stepSelectedValues[classCode][classId] = {
+          ...stepSelectedValues[classCode][classId],
+          [practicalCourses[0]]: !stepSelectedValues[classCode]?.[classId]?.[practicalCourses[0]]
+        }
+      }
     }
     updateStep(
       stepId,

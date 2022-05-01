@@ -17,8 +17,8 @@ module.exports = {
       MAX: 7
     },
     THEORY_CLASS: {
-      MIN: 2,
-      MAX: 5
+      MIN: 1,
+      MAX: 3
     },
     PRACTICAL_CLASS: {
       MIN: 0,
