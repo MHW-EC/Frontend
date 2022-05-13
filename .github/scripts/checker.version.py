@@ -12,11 +12,14 @@ except subprocess.CalledProcessError as e:
 
 version_master = output.decode('utf-8')
 version_master = json.loads(version_master)
+print("Version master:", version_master)
 last_version_master = int(version_master[-1].replace('.', ''))
 
 path_version_local = os.path.join(os.getcwd(), 'documentation', 'versions.json')
 with open(path_version_local, 'r') as f:
-  last_version_local = int(json.load(f)[-1].replace('.', ''))
+  version_local = json.load(f)
+  print("Version local:", version_local)
+  last_version_local = int(version_local[-1].replace('.', ''))
 
 if (last_version_local > last_version_master):
   print("Local version is greater than master version")
