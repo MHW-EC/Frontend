@@ -1,6 +1,7 @@
 #execute a command and return the output
 import subprocess
 import json
+import sys
 import os
 
 command = 'git show origin/master:documentation/versions.json'
@@ -20,7 +21,7 @@ print("Last version local:", last_version_local)
 
 if (last_version_local > last_version_master):
   print("Local version is greater than master version")
-  exit(0)
+  sys.exit(0)
 else:
   print("Local version is equal or less than master version")
-  exit(1)
+  sys.exit(1)
