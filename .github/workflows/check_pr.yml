@@ -27,6 +27,7 @@ jobs:
           node-version: '14.17.4'
       - name: Check version docs
         run: |
+          npm i node-os-utils
           cd "${GITHUB_WORKSPACE}/"
           node .github/scripts/checker.version.js
           status=$?
