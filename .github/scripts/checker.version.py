@@ -5,13 +5,10 @@ import os
 
 command = 'git show origin/master:documentation/versions.json'
 
-try:
-  output = subprocess.check_output(command, shell=True)
-except subprocess.CalledProcessError as e:
-  print("Error:", e.output)
-
+output = subprocess.check_output(command, shell=True)
 version_master = output.decode('utf-8')
 version_master = json.loads(version_master)
+
 print("Version master:", version_master)
 last_version_master = int(version_master[-1].replace('.', ''))
 
