@@ -25,14 +25,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14.17.4'
-      - name: Install dependencies
-        run: |
-          cd "${GITHUB_WORKSPACE}/"
-          npm ci
       - name: Check version docs
         run: |
           cd "${GITHUB_WORKSPACE}/"
-          node ../scripts/checker.version.js
+          node .github/scripts/checker.version.js
           status=$?
           [ $status -eq 0 ] && echo "Version checker passed" || exit 1
           exit 0
