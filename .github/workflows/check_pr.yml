@@ -27,5 +27,9 @@ jobs:
           cd "${GITHUB_WORKSPACE}/"
           python .github/scripts/checker.version.py
           status=$?
-          [ $status -eq 0 ] && echo "Version checker passed" || exit 1
+          if [ $status -ne 0 ]; then
+            echo "Version check failed"
+            exit $status
+          fi
+          echo "Version check passed"
           exit 0
