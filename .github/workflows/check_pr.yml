@@ -1,0 +1,35 @@
+
+name: PR Checker
+
+on:
+  - pull_request
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Doc version checker
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Config action
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Check version docs
+        run: |
+          cd "${GITHUB_WORKSPACE}/"
+          python .github/scripts/checker.version.py
+          status=$?
+          if [ $status -eq 0 ]; then
+            echo "Version checker passed"
+          else
+            echo "Version checker failed"
+            exit $status
+          fi
