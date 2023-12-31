@@ -20,22 +20,7 @@ code {
   height: 60px;
 }
 
-.cd-ads-top iframe {
+.cd-ads-google iframe {
   width: 100%;
-  position: fixed !important;
-  top: 0 !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  border: none !important;
-  z-index: 999999 !important;
-}
-
-.cd-ads-bottom iframe {
-  position: fixed !important;
-  width: 100% !important;
-  bottom: 0 !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  border: none !important;
-  z-index: 999999 !important;
+  margin: auto;
 }

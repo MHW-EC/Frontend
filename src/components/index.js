@@ -112,7 +112,7 @@ class App extends React.Component {
               }}
             >
               <ins
-                className="adsbygoogle cd-ads-top"
+                className="adsbygoogle cd-ads-google"
                 style={{ display: 'block' }}
                 data-ad-client="ca-pub-6316061427279046"
                 data-ad-slot="6079638243"
@@ -144,7 +144,7 @@ class App extends React.Component {
                 <Options />
               </Router>
               <ins
-                className="adsbygoogle cd-ads-bottom"
+                className="adsbygoogle cd-ads-google"
                 style={{ display: 'block' }}
                 data-ad-client="ca-pub-6316061427279046"
                 data-ad-slot="5121779799"
