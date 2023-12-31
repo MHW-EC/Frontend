@@ -112,14 +112,17 @@ class App extends React.Component {
               }}
             >
               <div className="cd-ads-google" align="center">
-                <ins
-                  className="adsbygoogle"
-                  style={{ display: 'block' }}
+                <amp-ad
+                  width="100vw"
+                  height="320"
+                  type="adsense"
                   data-ad-client="ca-pub-6316061427279046"
                   data-ad-slot="6079638243"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"
-                ></ins>
+                  data-auto-format="rspv"
+                  data-full-width=""
+                >
+                  <div overflow=""></div>
+                </amp-ad>
               </div>
 
               <Router>
@@ -146,14 +149,17 @@ class App extends React.Component {
                 <Options />
               </Router>
               <div className="cd-ads-google" align="center">
-                <ins
-                  className="adsbygoogle"
-                  style={{ display: 'block' }}
+                <amp-ad
+                  width="100vw"
+                  height="320"
+                  type="adsense"
                   data-ad-client="ca-pub-6316061427279046"
                   data-ad-slot="5121779799"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"
-                ></ins>
+                  data-auto-format="rspv"
+                  data-full-width=""
+                >
+                  <div overflow=""></div>
+                </amp-ad>
               </div>
             </Paper>
           </SnackbarProvider>
