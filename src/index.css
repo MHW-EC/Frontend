@@ -20,6 +20,12 @@ code {
   height: 60px;
 }
 
+.cd-ads-google {
+  width: 100%;
+  min-width: 100px;
+  margin: auto;
+}
+
 .cd-ads-google iframe {
   width: 100%;
   margin: auto;
