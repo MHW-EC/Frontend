@@ -111,7 +111,7 @@ class App extends React.Component {
                 flexGrow: 1,
               }}
             >
-              <div className="cd-ads-google">
+              <div className="cd-ads-google" align="center">
                 <ins
                   className="adsbygoogle"
                   style={{ display: 'block' }}
@@ -145,7 +145,7 @@ class App extends React.Component {
                 </Switch>
                 <Options />
               </Router>
-              <div className="cd-ads-google">
+              <div className="cd-ads-google" align="center">
                 <ins
                   className="adsbygoogle"
                   style={{ display: 'block' }}
