@@ -71,8 +71,10 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-      (adsbygoogle = window.adsbygoogle || []).push({});
+      if (adsbygoogle && !adsbygoogle.loaded) {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      }
     </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
