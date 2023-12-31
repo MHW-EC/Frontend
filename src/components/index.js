@@ -147,7 +147,7 @@ class App extends React.Component {
               </Router>
               <div className="cd-ads-google">
                 <ins
-                  className="adsbygoogle cd-ads-google"
+                  className="adsbygoogle"
                   style={{ display: 'block' }}
                   data-ad-client="ca-pub-6316061427279046"
                   data-ad-slot="5121779799"
