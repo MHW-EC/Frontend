@@ -146,7 +146,7 @@ class App extends React.Component {
                 </Switch>
                 <Options />
               </Router>
-              <div align="center" className="cd-ads-google">
+              <div align="center" className="cd-ads-google cd-ads-response">
                 <ins
                   className="adsbygoogle"
                   style={{ display: 'block' }}

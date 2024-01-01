@@ -25,3 +25,7 @@ code {
   border-color: rgb(54, 54, 54) !important;
   background-color: rgb(54, 54, 54) !important;
 }
+
+.cd-ads-response {
+  min-width: 100%;
+}
