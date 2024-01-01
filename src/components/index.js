@@ -114,7 +114,7 @@ class App extends React.Component {
               <div align="center" className="cd-ads-google">
                 <ins
                   className="adsbygoogle"
-                  style={{ display: 'block' }}
+                  style={{ display: 'block', width: '1000px', height: '120px' }}
                   data-ad-client="ca-pub-6316061427279046"
                   data-ad-slot="5121779799"
                   data-ad-format="auto"
