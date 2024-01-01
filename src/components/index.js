@@ -111,14 +111,10 @@ class App extends React.Component {
                 flexGrow: 1,
               }}
             >
-              <div align="center">
+              <div align="center" className="cd-ads-google">
                 <ins
                   className="adsbygoogle"
-                  style={{
-                    display: 'inline-block',
-                    width: '728px',
-                    height: '90px',
-                  }}
+                  style={{ display: 'block' }}
                   data-ad-client="ca-pub-6316061427279046"
                   data-ad-slot="5121779799"
                   data-ad-format="auto"
@@ -149,14 +145,10 @@ class App extends React.Component {
                 </Switch>
                 <Options />
               </Router>
-              <div align="center">
+              <div align="center" className="cd-ads-google">
                 <ins
                   className="adsbygoogle"
-                  style={{
-                    display: 'inline-block',
-                    width: '728px',
-                    height: '90px',
-                  }}
+                  style={{ display: 'block' }}
                   data-ad-client="ca-pub-6316061427279046"
                   data-ad-slot="6079638243"
                   data-ad-format="auto"
