@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(54, 54, 54) !important;
+  background-color: rgb(33, 33, 33) !important;
 }
 
 code {
@@ -22,8 +22,8 @@ code {
 }
 
 .cd-ads-google {
-  border-color: rgb(54, 54, 54) !important;
-  background-color: rgb(54, 54, 54) !important;
+  border-color: rgb(33, 33, 33) !important;
+  background-color: rgb(33, 33, 33) !important;
 }
 
 .cd-ads-response {

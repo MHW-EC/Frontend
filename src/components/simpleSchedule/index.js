@@ -250,7 +250,8 @@ class Steps extends React.Component {
           square
           sx={{
             backgroundColor: (theme) => theme.palette.background.default,
-            width: 'auto',
+            width: '100%',
+            height: '80vh',
             pl: '16px',
             pr: '16px',
           }}
