@@ -111,19 +111,17 @@ class App extends React.Component {
                 flexGrow: 1,
               }}
             >
-              <div className="cd-ads-google" align="center">
-                <amp-ad
-                  width="100vw"
-                  height="320"
-                  type="adsense"
-                  data-ad-client="ca-pub-6316061427279046"
-                  data-ad-slot="6079638243"
-                  data-auto-format="rspv"
-                  data-full-width=""
-                >
-                  <div overflow=""></div>
-                </amp-ad>
-              </div>
+              <amp-ad
+                width="100vw"
+                height="320"
+                type="adsense"
+                data-ad-client="ca-pub-6316061427279046"
+                data-ad-slot="6079638243"
+                data-auto-format="rspv"
+                data-full-width=""
+              >
+                <div overflow=""></div>
+              </amp-ad>
 
               <Router>
                 {isLoading && (
@@ -148,19 +146,17 @@ class App extends React.Component {
                 </Switch>
                 <Options />
               </Router>
-              <div className="cd-ads-google" align="center">
-                <amp-ad
-                  width="100vw"
-                  height="320"
-                  type="adsense"
-                  data-ad-client="ca-pub-6316061427279046"
-                  data-ad-slot="5121779799"
-                  data-auto-format="rspv"
-                  data-full-width=""
-                >
-                  <div overflow=""></div>
-                </amp-ad>
-              </div>
+              <amp-ad
+                width="100vw"
+                height="320"
+                type="adsense"
+                data-ad-client="ca-pub-6316061427279046"
+                data-ad-slot="5121779799"
+                data-auto-format="rspv"
+                data-full-width=""
+              >
+                <div overflow=""></div>
+              </amp-ad>
             </Paper>
           </SnackbarProvider>
         </ThemeProvider>
