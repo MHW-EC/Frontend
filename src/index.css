@@ -21,15 +21,14 @@ code {
   height: 60px;
 }
 
-.cd-ads-google {
-  border-color: rgb(33, 33, 33) !important;
-  background-color: rgb(33, 33, 33) !important;
-}
-
 .cd-ads-response {
   min-width: 100%;
 }
 
 .root {
   height: 100% !important;
+}
+
+.root .MuiPaper-root {
+  background-color: rgb(33, 33, 33) !important;
 }
