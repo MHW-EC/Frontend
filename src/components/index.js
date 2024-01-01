@@ -119,8 +119,6 @@ class App extends React.Component {
                   style={{ display: 'block', width: '1000px', height: '120px' }}
                   data-ad-client="ca-pub-6316061427279046"
                   data-ad-slot="5121779799"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"
                 ></ins>
               </div>
 
