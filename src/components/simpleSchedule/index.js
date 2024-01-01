@@ -223,7 +223,6 @@ class Steps extends React.Component {
     const { process: { isLoading } = {} } = this.context;
 
     const { steps, activeStepId } = this.state;
-    console.log({ steps });
     const {
       isStepOptional,
       handleNext,

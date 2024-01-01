@@ -9,6 +9,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Paper from '@mui/material/Paper';
 import Themes from './../themes';
 import { SnackbarProvider } from 'notistack';
+import GoogleAd from './ads';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -82,8 +83,6 @@ class App extends React.Component {
   }
 
   render() {
-    const { path } = this.props;
-
     const { sideBarIsOpen, lightMode, process, theme } = this.state;
 
     const { toogleSideBar, setTheme, setProcess } = this;
@@ -116,17 +115,6 @@ class App extends React.Component {
                 backgroundColor: 'rgb(33, 33, 33)',
               }}
             >
-              {path === '/' && (
-                <div align="center" className="cd-ads-google">
-                  <ins
-                    className="adsbygoogle"
-                    style={{ display: 'block', width: '728px', height: '90px' }}
-                    data-ad-client="ca-pub-6316061427279046"
-                    data-ad-slot="5121779799"
-                  ></ins>
-                </div>
-              )}
-
               <Router>
                 {isLoading && (
                   <LinearProgress
@@ -141,6 +129,11 @@ class App extends React.Component {
                     color={progress.color}
                   />
                 )}
+                <GoogleAd
+                  style={{ display: 'block', width: '728px', height: '90px' }}
+                  adSlot="5121779799"
+                  justOnHome={true}
+                />
                 <Switch>
                   {ROUTES.map((route, index) => (
                     <Route key={index} path={route.path} exact={route.exact}>
@@ -149,17 +142,13 @@ class App extends React.Component {
                   ))}
                 </Switch>
                 <Options />
-              </Router>
-              <div align="center" className="cd-ads-google cd-ads-response">
-                <ins
-                  className="adsbygoogle"
+                <GoogleAd
+                  adFormat="auto"
+                  responsive={true}
+                  adSlot="6079638243"
                   style={{ display: 'block' }}
-                  data-ad-client="ca-pub-6316061427279046"
-                  data-ad-slot="6079638243"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"
-                ></ins>
-              </div>
+                />
+              </Router>
             </Paper>
           </SnackbarProvider>
         </ThemeProvider>
@@ -170,14 +159,7 @@ class App extends React.Component {
 
 const withTheme = (Component) => (props) => {
   const matches = useMediaQuery('(prefers-color-scheme: dark)');
-  const [path, setPath] = React.useState(window.location.pathname);
-  React.useEffect(() => {
-    if (path !== window.location.pathname) {
-      setPath(window.location.pathname);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.location.pathname]);
-  return <Component {...props} useDark={matches} path={path} />;
+  return <Component {...props} useDark={matches} />;
 };
 
 export default withTheme(App);

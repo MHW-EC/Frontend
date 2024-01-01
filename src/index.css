@@ -25,10 +25,10 @@ code {
   min-width: 100%;
 }
 
-.root {
+div#root {
   height: 100% !important;
 }
 
-.root .MuiPaper-root {
+#root .MuiPaper-root {
   background-color: rgb(33, 33, 33) !important;
 }

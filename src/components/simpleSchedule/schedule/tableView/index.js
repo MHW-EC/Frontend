@@ -5,12 +5,7 @@ import React, {
   useMemo,
   useContext,
 } from 'react';
-import {
-  Pagination,
-  Backdrop,
-  LinearProgress,
-  Grid
-} from '@mui/material';
+import { Pagination, Backdrop, LinearProgress, Grid } from '@mui/material';
 import HelperText from '@mui/material/FormHelperText';
 
 import SwipeableViews from 'react-swipeable-views';
@@ -22,14 +17,14 @@ import { app } from '../../../../firebase';
 import { getFirestore } from 'firebase/firestore';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { Box } from '@mui/system';
-import ReactTextTransition from "react-text-transition";
+import ReactTextTransition from 'react-text-transition';
 const db = getFirestore(app);
 
 const randomText = [
   'Mejoramiento es todo 💪🏼',
   'La materia se repite, una fiesta no 🍻',
   'Si te tocó baldeo, ten varias opciones de horarios 👀',
-  'Cuanto te toca examen de Diferenciales: Diooos esta aquiii 🎸'
+  'Cuanto te toca examen de Diferenciales: Diooos esta aquiii 🎸',
 ];
 
 const TableView = (props) => {
@@ -43,7 +38,7 @@ const TableView = (props) => {
     selectedValues: lastStepSelectedValues = {},
   } = lastStep;
 
-  const [ isLoading, setLoading ] = useState();
+  const [isLoading, setLoading] = useState();
   const [dataFirebase, setDataFirebase] = useState();
   const [textIdx, setTextIdx] = useState(0);
   const [currentTableIndex, setCurrentTable] = useState(1);
@@ -57,27 +52,27 @@ const TableView = (props) => {
           const theoryClassObject = lastData[classCode].find(
             (_class) => _class._id == theoryClassId
           );
-          console.log({theoryClassObject});
           if (lastSelected[classCode][theoryClassId] instanceof Object) {
-            for (const practicalClassId in lastSelected[classCode][theoryClassId]) {
+            for (const practicalClassId in lastSelected[classCode][
+              theoryClassId
+            ]) {
               if (lastSelected[classCode][theoryClassId][practicalClassId]) {
                 const practicalClassObject = lastData[theoryClassId]?.find(
                   (_class) => _class._id == practicalClassId
                 );
-                console.log({practicalClassObject});
-                if (practicalClassObject) requestBody.push([theoryClassObject, practicalClassObject]);
+                if (practicalClassObject)
+                  requestBody.push([theoryClassObject, practicalClassObject]);
               }
             }
-          }else if (lastSelected[classCode][theoryClassId]) {
+          } else if (lastSelected[classCode][theoryClassId]) {
             if (theoryClassObject) requestBody.push([theoryClassObject]);
           }
         }
       }
     }
-    console.log({requestBody});
     return requestBody;
   }, []);
-  
+
   const getJobData = (docId) => {
     const q = query(
       collection(db, 'geneated-schedules'),
@@ -119,7 +114,6 @@ const TableView = (props) => {
             data: scheduleId,
             error: undefined,
           });
-          console.log('scheduleId: ', scheduleId);
           setTimeout(() => getJobData(scheduleId), 1000);
         } catch (error) {
           console.log(error);
@@ -138,16 +132,17 @@ const TableView = (props) => {
     })();
   }, []);
   useEffect(() => {
-    const intervalID = setInterval(() => setTextIdx(prev => prev + 1), 6000);
+    const intervalID = setInterval(() => setTextIdx((prev) => prev + 1), 6000);
     return () => clearInterval(intervalID);
   }, []);
   return !isLoading ? (
     <Box>
       <Box>
-      <HelperText
+        <HelperText
           sx={{
-            textAlign: 'center'
-          }}>
+            textAlign: 'center',
+          }}
+        >
           {stepHelperText}
         </HelperText>
       </Box>
@@ -164,7 +159,7 @@ const TableView = (props) => {
         sx={{
           paddingTop: '16px',
           display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
         count={horariosGenerados.length}
         color={'primary'}
@@ -196,10 +191,13 @@ const TableView = (props) => {
           />
         </Grid>
         <Grid item xs={6}>
-          <Box sx={{ width: "350px"}}>
+          <Box sx={{ width: '350px' }}>
             <LinearProgress
-              variant={!!dataFirebase?.percentage ? 'determinate' : 'indeterminate'}
-              value={dataFirebase?.percentage}/>
+              variant={
+                !!dataFirebase?.percentage ? 'determinate' : 'indeterminate'
+              }
+              value={dataFirebase?.percentage}
+            />
           </Box>
         </Grid>
       </Grid>

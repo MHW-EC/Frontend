@@ -12,7 +12,9 @@ const Home = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'rgb(33, 33, 33)',
       }}
+      elevation={0}
     >
       <Grid
         container
