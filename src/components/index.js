@@ -114,7 +114,11 @@ class App extends React.Component {
               <div align="center">
                 <ins
                   className="adsbygoogle"
-                  style={{ display: 'block' }}
+                  style={{
+                    display: 'inline-block',
+                    width: '728px',
+                    height: '90px',
+                  }}
                   data-ad-client="ca-pub-6316061427279046"
                   data-ad-slot="5121779799"
                   data-ad-format="auto"
@@ -148,7 +152,11 @@ class App extends React.Component {
               <div align="center">
                 <ins
                   className="adsbygoogle"
-                  style={{ display: 'block' }}
+                  style={{
+                    display: 'inline-block',
+                    width: '728px',
+                    height: '90px',
+                  }}
                   data-ad-client="ca-pub-6316061427279046"
                   data-ad-slot="6079638243"
                   data-ad-format="auto"
