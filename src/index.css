@@ -29,3 +29,7 @@ code {
 .cd-ads-response {
   min-width: 100%;
 }
+
+.root {
+  height: 100% !important;
+}
