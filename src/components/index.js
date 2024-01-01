@@ -106,9 +106,10 @@ class App extends React.Component {
               square
               sx={{
                 minHeight: '100%',
-                display: 'initial',
-                transform: 'translateZ(0px)',
-                flexGrow: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <div align="center" className="cd-ads-google">
