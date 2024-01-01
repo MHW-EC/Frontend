@@ -111,17 +111,16 @@ class App extends React.Component {
                 flexGrow: 1,
               }}
             >
-              <amp-ad
-                width="100vw"
-                height="320"
-                type="adsense"
-                data-ad-client="ca-pub-6316061427279046"
-                data-ad-slot="6079638243"
-                data-auto-format="rspv"
-                data-full-width=""
-              >
-                <div overflow=""></div>
-              </amp-ad>
+              <div align="center">
+                <ins
+                  className="adsbygoogle"
+                  style={{ display: 'block' }}
+                  data-ad-client="ca-pub-6316061427279046"
+                  data-ad-slot="5121779799"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"
+                ></ins>
+              </div>
 
               <Router>
                 {isLoading && (
@@ -146,17 +145,16 @@ class App extends React.Component {
                 </Switch>
                 <Options />
               </Router>
-              <amp-ad
-                width="100vw"
-                height="320"
-                type="adsense"
-                data-ad-client="ca-pub-6316061427279046"
-                data-ad-slot="5121779799"
-                data-auto-format="rspv"
-                data-full-width=""
-              >
-                <div overflow=""></div>
-              </amp-ad>
+              <div align="center">
+                <ins
+                  className="adsbygoogle"
+                  style={{ display: 'block' }}
+                  data-ad-client="ca-pub-6316061427279046"
+                  data-ad-slot="6079638243"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"
+                ></ins>
+              </div>
             </Paper>
           </SnackbarProvider>
         </ThemeProvider>

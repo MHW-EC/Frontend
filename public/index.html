@@ -12,11 +12,6 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <script
-      async
-      custom-element="amp-ad"
-      src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"
-    ></script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -83,6 +78,18 @@
         (adsbygoogle = window.adsbygoogle || []).push({});
       }
     </script> -->
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6316061427279046"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      adsbygoogle = window.adsbygoogle || [];
+      if (adsbygoogle && !adsbygoogle.loaded) {
+        adsbygoogle.push({});
+        adsbygoogle.push({});
+      }
+    </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
