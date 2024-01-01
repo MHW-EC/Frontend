@@ -10,7 +10,12 @@ import Paper from '@mui/material/Paper';
 import Themes from './../themes';
 import { SnackbarProvider } from 'notistack';
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useLocation,
+} from 'react-router-dom';
 
 const ROUTES = [
   {
@@ -82,6 +87,7 @@ class App extends React.Component {
   }
 
   render() {
+    const { pathname } = this.props;
     const { sideBarIsOpen, lightMode, process, theme } = this.state;
 
     const { toogleSideBar, setTheme, setProcess } = this;
@@ -113,14 +119,16 @@ class App extends React.Component {
                 alignItems: 'center',
               }}
             >
-              <div align="center" className="cd-ads-google">
-                <ins
-                  className="adsbygoogle"
-                  style={{ display: 'block', width: '728px', height: '90px' }}
-                  data-ad-client="ca-pub-6316061427279046"
-                  data-ad-slot="5121779799"
-                ></ins>
-              </div>
+              {pathname === '/' && (
+                <div align="center" className="cd-ads-google">
+                  <ins
+                    className="adsbygoogle"
+                    style={{ display: 'block', width: '728px', height: '90px' }}
+                    data-ad-client="ca-pub-6316061427279046"
+                    data-ad-slot="5121779799"
+                  ></ins>
+                </div>
+              )}
 
               <Router>
                 {isLoading && (
@@ -165,7 +173,9 @@ class App extends React.Component {
 
 const withTheme = (Component) => (props) => {
   const matches = useMediaQuery('(prefers-color-scheme: dark)');
-  return <Component {...props} useDark={matches} />;
+  //get current path with hook react
+  const { pathname } = useLocation();
+  return <Component {...props} useDark={matches} pathname={pathname} />;
 };
 
 export default withTheme(App);
