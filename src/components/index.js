@@ -10,12 +10,7 @@ import Paper from '@mui/material/Paper';
 import Themes from './../themes';
 import { SnackbarProvider } from 'notistack';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useLocation,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 const ROUTES = [
   {
@@ -87,7 +82,8 @@ class App extends React.Component {
   }
 
   render() {
-    const { pathname } = this.props;
+    const { path } = this.props;
+
     const { sideBarIsOpen, lightMode, process, theme } = this.state;
 
     const { toogleSideBar, setTheme, setProcess } = this;
@@ -115,11 +111,12 @@ class App extends React.Component {
                 minHeight: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
+                justifyContent: 'space-between',
                 alignItems: 'center',
+                backgroundColor: 'rgb(33, 33, 33)',
               }}
             >
-              {pathname === '/' && (
+              {path === '/' && (
                 <div align="center" className="cd-ads-google">
                   <ins
                     className="adsbygoogle"
@@ -173,9 +170,14 @@ class App extends React.Component {
 
 const withTheme = (Component) => (props) => {
   const matches = useMediaQuery('(prefers-color-scheme: dark)');
-  //get current path with hook react
-  const { pathname } = useLocation();
-  return <Component {...props} useDark={matches} pathname={pathname} />;
+  const [path, setPath] = React.useState(window.location.pathname);
+  React.useEffect(() => {
+    if (path !== window.location.pathname) {
+      setPath(window.location.pathname);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.pathname]);
+  return <Component {...props} useDark={matches} path={path} />;
 };
 
 export default withTheme(App);
