@@ -105,6 +105,7 @@ class App extends React.Component {
             <Paper
               square
               sx={{
+                minWidth: '100%',
                 minHeight: '100%',
                 display: 'flex',
                 flexDirection: 'column',
