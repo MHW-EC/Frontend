@@ -12,7 +12,22 @@ function AdGoogle({
   justOnHome = false,
 }) {
   const { pathname } = useLocation();
+  const showAd = justOnHome ? pathname === '/' : true;
+
+  function loadAds() {
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  React.useEffect(() => {
+    if (showAd) loadAds();
+  }, [showAd]);
+
   if (justOnHome && pathname !== '/') return null;
+
   return (
     <div align="center" className={`${className} cd-ads-google`}>
       <ins
