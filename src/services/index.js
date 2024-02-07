@@ -1,22 +1,14 @@
-
-
 const API_URL = 'https://9vddyr4p34.execute-api.us-east-1.amazonaws.com/prod/';
 
-
 export async function getData(params, abortSignal) {
-  const {
-    resourceName,
-    query,
-    queryParams,
-    projectedFields
-  } = params || {};
+  const { resourceName, query, queryParams, projectedFields } = params || {};
   if (!resourceName || !query) throw new Error('EMPTY PARAMS NOT ALLOWED');
 
   const payload = {
     resourceName,
     query,
     queryParams,
-    projectedFields
+    projectedFields,
   };
   let response;
   let apiUrl = new URL('read', API_URL).toString();
@@ -24,7 +16,7 @@ export async function getData(params, abortSignal) {
     response = await fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify(payload),
-      signal: abortSignal
+      signal: abortSignal,
     });
   } catch (error) {
     throw error;
@@ -34,9 +26,7 @@ export async function getData(params, abortSignal) {
 }
 
 export async function generate(params, abortSignal) {
-  const {
-    body
-  } = params || {};
+  const { body } = params || {};
   if (!body) throw new Error('EMPTY PARAMS NOT ALLOWED');
 
   let response;
@@ -45,9 +35,10 @@ export async function generate(params, abortSignal) {
     response = await fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify({ payload: body }),
-      signal: abortSignal
+      signal: abortSignal,
     });
   } catch (error) {
+    console.log('error', error);
     throw error;
   }
   const result = await response.json();

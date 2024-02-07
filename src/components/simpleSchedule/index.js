@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import CareerStep from './career';
 import SubjectStep from './subject';
@@ -13,6 +14,7 @@ import Schedule from './schedule/tableView';
 import { withSnackbar } from 'notistack';
 import VALIDATIONS from './../../utils/validations';
 import { BOUNDARIES } from './../../utils/constants';
+import GoogleAd from './../ads';
 
 class Steps extends React.Component {
   state = {
@@ -245,104 +247,117 @@ class Steps extends React.Component {
           enqueueSnackbar,
         }}
       >
-        <Box
-          square
-          sx={{
-            backgroundColor: (theme) => theme.palette.background.default,
-            width: '100%',
-            height: '80vh',
-            pl: '16px',
-            pr: '16px',
-          }}
-        >
-          <Stepper
-            sx={{
-              pt: '16px',
-            }}
-            activeStep={activeStepId}
+        <div style={{ height: '100vh' }}>
+          <Grid
+            style={{ height: '100%' }}
+            sx={{ width: '100vw', height: '100vh' }}
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            {steps.map((step) => {
-              const { id, label, error } = step;
-              const stepProps = {};
-              const labelProps = {};
+            <Grid item sx={{ width: '100vw' }}>
+              <Stepper
+                sx={{
+                  pt: '16px',
+                }}
+                activeStep={activeStepId}
+              >
+                {steps.map((step) => {
+                  const { id, label, error } = step;
+                  const stepProps = {};
+                  const labelProps = {};
 
-              if (isStepSkipped(id)) stepProps.completed = false;
-              if (isStepOptional(id))
-                labelProps.optional = (
-                  <Typography variant="caption">Optional</Typography>
-                );
+                  if (isStepSkipped(id)) stepProps.completed = false;
+                  if (isStepOptional(id))
+                    labelProps.optional = (
+                      <Typography variant="caption">Optional</Typography>
+                    );
 
-              if (error) {
-                labelProps.error = error !== undefined;
-                labelProps.optional = (
-                  <Typography variant="caption" color="error">
-                    {error}
+                  if (error) {
+                    labelProps.error = error !== undefined;
+                    labelProps.optional = (
+                      <Typography variant="caption" color="error">
+                        {error}
+                      </Typography>
+                    );
+                  }
+                  return (
+                    <Step key={String(id)} {...stepProps}>
+                      <StepLabel {...labelProps}>{label}</StepLabel>
+                    </Step>
+                  );
+                })}
+              </Stepper>
+              {activeStepId === steps.length ? (
+                <React.Fragment>
+                  <Typography sx={{ mt: 2, mb: 1 }}>
+                    {'All steps completed - you&apos;re finished'}
                   </Typography>
-                );
-              }
-              return (
-                <Step key={String(id)} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-          {activeStepId === steps.length ? (
-            <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>
-                {'All steps completed - you&apos;re finished'}
-              </Typography>
-              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                <Box sx={{ flex: '1 1 auto' }} />
-                <Button onClick={handleReset}>{'Reset'}</Button>
-              </Box>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  pt: '16px',
-                  justifyContent: 'center',
-                }}
-              >
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  disabled={activeStepId === 0}
-                  onClick={handleBack}
-                  sx={{ mr: 5 }}
-                >
-                  {'Back'}
-                </Button>
-                <Button
-                  disabled={!isStepOptional(activeStepId)}
-                  variant="outlined"
-                  onClick={handleSkip}
-                  sx={{ mr: 1 }}
-                >
-                  {'Skip'}
-                </Button>
-                <Button
-                  disabled={isLoading || !steps[activeStepId].selectedValues}
-                  variant="contained"
-                  onClick={handleNext}
-                >
-                  {activeStepId === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
-              </Box>
-              <Box
-                sx={{
-                  pt: '16px',
-                  pb: '16px',
-                }}
-              >
-                {getComponentByStep(activeStepId)}
-              </Box>
-            </React.Fragment>
-          )}
-        </Box>
+                  <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                    <Box sx={{ flex: '1 1 auto' }} />
+                    <Button onClick={handleReset}>{'Reset'}</Button>
+                  </Box>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      pt: '16px',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      disabled={activeStepId === 0}
+                      onClick={handleBack}
+                      sx={{ mr: 5 }}
+                    >
+                      {'Back'}
+                    </Button>
+                    <Button
+                      disabled={!isStepOptional(activeStepId)}
+                      variant="outlined"
+                      onClick={handleSkip}
+                      sx={{ mr: 1 }}
+                    >
+                      {'Skip'}
+                    </Button>
+                    <Button
+                      disabled={
+                        isLoading || !steps[activeStepId].selectedValues
+                      }
+                      variant="contained"
+                      onClick={handleNext}
+                    >
+                      {activeStepId === steps.length - 1 ? 'Finish' : 'Next'}
+                    </Button>
+                  </Box>
+                  <Box
+                    sx={{
+                      pt: '16px',
+                      pb: '16px',
+                    }}
+                  >
+                    {getComponentByStep(activeStepId)}
+                  </Box>
+                </React.Fragment>
+              )}
+            </Grid>
+            <Grid item>
+              <GoogleAd
+                position="bottom"
+                adFormat="auto"
+                responsive={true}
+                adSlot="6079638243"
+                style={{ display: 'block' }}
+              />
+            </Grid>
+          </Grid>
+        </div>
       </StepsContext.Provider>
     );
   }

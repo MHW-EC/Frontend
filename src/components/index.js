@@ -9,7 +9,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Paper from '@mui/material/Paper';
 import Themes from './../themes';
 import { SnackbarProvider } from 'notistack';
-import GoogleAd from './ads';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -129,11 +128,6 @@ class App extends React.Component {
                     color={progress.color}
                   />
                 )}
-                <GoogleAd
-                  style={{ display: 'block', width: '728px', height: '90px' }}
-                  adSlot="5121779799"
-                  justOnHome={true}
-                />
                 <Switch>
                   {ROUTES.map((route, index) => (
                     <Route key={index} path={route.path} exact={route.exact}>
@@ -142,12 +136,6 @@ class App extends React.Component {
                   ))}
                 </Switch>
                 <Options />
-                <GoogleAd
-                  adFormat="auto"
-                  responsive={true}
-                  adSlot="6079638243"
-                  style={{ display: 'block' }}
-                />
               </Router>
             </Paper>
           </SnackbarProvider>

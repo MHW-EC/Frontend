@@ -21,7 +21,7 @@ code {
   height: 60px;
 }
 
-.cd-ads-response {
+.cd-ads-google {
   min-width: 100%;
 }
 
@@ -32,3 +32,7 @@ div#root {
 #root .MuiPaper-root {
   background-color: rgb(33, 33, 33) !important;
 }
+
+/* .adsbygoogle {
+  background-color: red !important;
+} */

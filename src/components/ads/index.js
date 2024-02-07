@@ -1,7 +1,11 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-const defaultStyle = { display: 'block', width: '728px', height: '90px' };
+const defaultStyle = {
+  display: 'block',
+  width: '728px',
+  height: '90px',
+};
 
 function AdGoogle({
   adSlot,
@@ -9,6 +13,7 @@ function AdGoogle({
   style = {},
   adFormat,
   responsive,
+  position = 'top',
   justOnHome = false,
 }) {
   const { pathname } = useLocation();
@@ -27,7 +32,6 @@ function AdGoogle({
   }, [showAd]);
 
   if (justOnHome && pathname !== '/') return null;
-
   return (
     <div align="center" className={`${className} cd-ads-google`}>
       <ins
